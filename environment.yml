@@ -1,0 +1,6 @@
+name: mne-realtime
+dependencies:
+  - numpy
+  - scipy
+  - mne
+  - pylsl>=1.12
