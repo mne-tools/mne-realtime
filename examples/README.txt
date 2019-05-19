@@ -1,6 +1,5 @@
-.. _general_examples:
+Real-time M/EEG Acquisition
+---------------------------
 
-General examples
-================
-
-Introductory examples.
+Receive data from an MNE Real-time server (mne_rt_server, part of MNE-CPP),
+compute real-time moving averages, etc.

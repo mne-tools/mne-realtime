@@ -16,6 +16,13 @@ matrix:
     - env: PYTHON_VERSION="3.7" NUMPY_VERSION="*" SCIPY_VERSION="*"
            SKLEARN_VERSION="*"
 
+before_install:
+    - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
+          pip install --upgrade pyqt5>=5.10 pylsl;
+        else
+          conda install -c tstenner pylsl;
+      fi;
+
 install:
   # install miniconda
   - deactivate
