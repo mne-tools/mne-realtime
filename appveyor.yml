@@ -1,5 +1,9 @@
 build: false
 
+branches:
+  only:
+    - master
+
 environment:
   matrix:
     - PYTHON: "C:\\Miniconda3-x64"
