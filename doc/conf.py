@@ -12,25 +12,23 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
-import os
-import gc
-import warnings
 from datetime import date
+from distutils.version import LooseVersion
+import gc
+import os
+import sys
+import warnings
 
-import sphinx_gallery
+import sphinx
+import sphinx_gallery  # noqa
+import mne  # noqa
 import sphinx_rtd_theme
-import mne  # this is a MNE-project none the less
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+from mne_realtime import __version__
 
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+needs_sphinx = '1.8'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -50,8 +48,6 @@ extensions = [
 numpydoc_show_class_members = False
 
 # pngmath / imgmath compatibility layer for different sphinx versions
-import sphinx
-from distutils.version import LooseVersion
 if LooseVersion(sphinx.__version__) < LooseVersion('1.4'):
     extensions.append('sphinx.ext.pngmath')
 else:
@@ -88,7 +84,6 @@ copyright = u'2012-%s, MNE Developers. Last updated on %s' % (td.year,
 # built documents.
 #
 # The short X.Y version.
-from mne_realtime import __version__
 version = __version__
 # The full version, including alpha/beta/rc tags.
 release = __version__
@@ -265,10 +260,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    ('index', 'project-template', u'project-template Documentation',
-     [u'Vighnesh Birodkar'], 1)
-]
+man_pages = []
 
 # If true, show URL addresses after external links.
 #man_show_urls = False
@@ -279,11 +271,7 @@ man_pages = [
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
-texinfo_documents = [
-  ('index', 'project-template', u'project-template Documentation',
-   u'Vighnesh Birodkar', 'project-template', 'One line description of project.',
-   'Miscellaneous'),
-]
+texinfo_documents = []
 
 # Documents to append as an appendix to all manuals.
 #texinfo_appendices = []
@@ -301,20 +289,13 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 # intersphinx configuration
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/{.major}'.format(
-        sys.version_info), None),
+    'python': ('https://docs.python.org/3', None),
     'numpy': ('https://www.numpy.org/devdocs', None),
     'scipy': ('https://scipy.github.io/devdocs', None),
     'matplotlib': ('https://matplotlib.org', None),
     'sklearn': ('https://scikit-learn.org/stable', None),
     'joblib': ('https://joblib.readthedocs.io/en/latest', None),
-    'mayavi': ('http://docs.enthought.com/mayavi/mayavi', None),
-    'nibabel': ('https://nipy.org/nibabel', None),
-    'nilearn': ('http://nilearn.github.io', None),
-    'surfer': ('https://pysurfer.github.io/', None),
-    'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
-    'statsmodels': ('http://www.statsmodels.org/stable/', None),
-    'dipy': ('http://nipy.org/dipy', None),
+    'mne': ('https://mne-tools.github.io/dev', None),
 }
 
 ##############################################################################

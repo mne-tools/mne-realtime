@@ -317,8 +317,7 @@ class RtEpochs(BaseEpochs):
             If True, return both an epoch and and event_id.
         verbose: bool, str, int, or None
             If not None, override default verbose level (see
-            :func:`mne.verbose` and :ref:`Logging documentation <tut_logging>`
-            for more). Defaults to self.verbose.
+            :func:`mne.verbose`. Defaults to self.verbose.
 
         Returns
         -------
@@ -362,8 +361,7 @@ class RtEpochs(BaseEpochs):
         %(picks_all)s
         verbose: bool, str, int, or None
             If not None, override default verbose level (see
-            :func:`mne.verbose` and :ref:`Logging documentation <tut_logging>`
-            for more). Defaults to self.verbose.
+            :func:`mne.verbose`. Defaults to self.verbose.
 
         Returns
         -------

@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
       - master
+      - maint/*
 
 jobs:
 - job: Windows
@@ -27,12 +28,10 @@ jobs:
         TEST_MODE: 'conda'
         CONDA_ENVIRONMENT: 'environment.yml'
         PIP_NO_UPGRADE: 'True'
-      Python37-64bit-full-conda:
+      Python37-64bit-full-pip:
         PYTHON_VERSION: '3.7'
         PYTHON_ARCH: 'x64'
-        TEST_MODE: 'conda'
-        CONDA_ENVIRONMENT: 'environment.yml'
-        PIP_NO_UPGRADE: 'True'
+        TEST_MODE: 'pip'
   steps:
   - task: UsePythonVersion@0
     inputs:
@@ -74,6 +73,20 @@ jobs:
     condition: eq(variables['TEST_MODE'], 'conda')
     displayName: 'Install dependencies with conda'
   - script: python setup.py develop
-    displayName: 'Install mne-realtime dev'
+    displayName: 'Install MNE-Realtime'
+  - script: python -c "import mne; print(mne.sys_info())"
+    displayName: 'Print config'
+  - script: python -c "import mne; mne.datasets.testing.data_path(verbose=True)"
+    displayName: 'Get test data'
   - script: pytest mne_realtime
     displayName: 'Run tests'
+  - script: codecov --root %BUILD_REPOSITORY_LOCALPATH% -t %CODECOV_TOKEN%
+    displayName: 'Codecov'
+    env:
+      CODECOV_TOKEN: $(CODECOV_TOKEN)
+    condition: always()
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: 'junit-*.xml'
+      testRunTitle: 'Publish test results for Python $(python.version)'
+    condition: always()

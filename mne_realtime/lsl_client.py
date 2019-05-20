@@ -40,7 +40,7 @@ class LSLClient(_BaseClient):
         Size of each buffer in terms of number of samples.
     verbose : bool, str, int, or None
         If not None, override default verbose level (see :func:`mne.verbose`
-        and :ref:`Logging documentation <tut_logging>` for more).
+        for more).
     """
 
     @fill_doc
