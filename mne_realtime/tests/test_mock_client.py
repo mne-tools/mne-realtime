@@ -13,9 +13,8 @@ from mne.utils import run_tests_if_main
 from mne.datasets import testing
 
 from mne_realtime import MockRtClient, RtEpochs
-from mne import __file__ as _mne_init_path
 
-base_dir = op.join(op.dirname(_mne_init_path), 'io', 'tests', 'data')
+base_dir = op.join(op.dirname(__file__), '_data')
 raw_fname = op.join(base_dir, 'test_raw.fif')
 event_name = op.join(base_dir, 'test-eve.fif')
 
