@@ -13,13 +13,14 @@ cache:
 
 matrix:
   include:
-        # Linux
-        - os: linux
-          env: CONDA_ENVIRONMENT="environment.yml"
+    # Linux
+    - os: linux
+      env: CONDA_ENVIRONMENT="environment.yml"
 
-        # OSX conda
-        - os: osx
-          env: CONDA_ENVIRONMENT="environment.yml"
+    # OSX conda
+    - os: osx
+      osx_image: xcode8.3
+      env: CONDA_ENVIRONMENT="environment.yml"
 
 before_install:
   - deactivate
