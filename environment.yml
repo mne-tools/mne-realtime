@@ -1,6 +1,28 @@
-name: mne-realtime
+name: mne_realtime
+channels:
+- defaults
 dependencies:
-  - numpy
-  - scipy
+- python<3.7
+- pip
+- mkl
+- numpy
+- scipy
+- matplotlib
+- pyqt>=5.9
+- scikit-learn
+- pillow
+- pytest
+- pytest-cov
+- pytest-mock
+- pytest-timeout
+- joblib
+- psutil
+- numpydoc
+- flake8
+- pip:
   - mne
+  - pytest-faulthandler
+  - pytest-sugar
+  - pydocstyle
+  - codespell
   - pylsl>=1.12

@@ -12,21 +12,23 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
+from datetime import date
+from distutils.version import LooseVersion
+import gc
 import os
+import sys
+import warnings
 
-import sphinx_gallery
+import sphinx
+import sphinx_gallery  # noqa
+import mne  # noqa
 import sphinx_rtd_theme
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+from mne_realtime import __version__
 
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+needs_sphinx = '1.8'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -46,8 +48,6 @@ extensions = [
 numpydoc_show_class_members = False
 
 # pngmath / imgmath compatibility layer for different sphinx versions
-import sphinx
-from distutils.version import LooseVersion
 if LooseVersion(sphinx.__version__) < LooseVersion('1.4'):
     extensions.append('sphinx.ext.pngmath')
 else:
@@ -68,21 +68,22 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # Generate the plots for the gallery
-plot_gallery = True
+# plot_gallery = True
 
 # The master toctree document.
 master_doc = 'index'
 
 # General information about the project.
 project = u'mne-realtime'
-copyright = u'2016, Vighnesh Birodkar'
+td = date.today()
+copyright = u'2012-%s, MNE Developers. Last updated on %s' % (td.year,
+                                                              td.isoformat())
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-from mne_realtime import __version__
 version = __version__
 # The full version, including alpha/beta/rc tags.
 release = __version__
@@ -211,7 +212,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'project-templatedoc'
+htmlhelp_basename = 'mne-realtime-doc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -231,8 +232,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'project-template.tex', u'project-template Documentation',
-   u'Vighnesh Birodkar', 'manual'),
+  # ('index', 'project-template.tex', u'project-template Documentation',
+  #  u'Vighnesh Birodkar', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -255,15 +256,11 @@ latex_documents = [
 # If false, no module index is generated.
 #latex_domain_indices = True
 
-
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    ('index', 'project-template', u'project-template Documentation',
-     [u'Vighnesh Birodkar'], 1)
-]
+man_pages = []
 
 # If true, show URL addresses after external links.
 #man_show_urls = False
@@ -274,11 +271,7 @@ man_pages = [
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
-texinfo_documents = [
-  ('index', 'project-template', u'project-template Documentation',
-   u'Vighnesh Birodkar', 'project-template', 'One line description of project.',
-   'Miscellaneous'),
-]
+texinfo_documents = []
 
 # Documents to append as an appendix to all manuals.
 #texinfo_appendices = []
@@ -296,22 +289,193 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 # intersphinx configuration
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/{.major}'.format(
-        sys.version_info), None),
-    'numpy': ('https://docs.scipy.org/doc/numpy/', None),
-    'scipy': ('https://docs.scipy.org/doc/scipy/reference', None),
-    'matplotlib': ('https://matplotlib.org/', None),
-    'sklearn': ('http://scikit-learn.org/stable', None)
+    'python': ('https://docs.python.org/3', None),
+    'numpy': ('https://www.numpy.org/devdocs', None),
+    'scipy': ('https://scipy.github.io/devdocs', None),
+    'matplotlib': ('https://matplotlib.org', None),
+    'sklearn': ('https://scikit-learn.org/stable', None),
+    'joblib': ('https://joblib.readthedocs.io/en/latest', None),
+    'mne': ('https://mne-tools.github.io/dev', None),
 }
 
+##############################################################################
+# sphinx-gallery
+
+examples_dirs = ['../examples', '../tutorials']
+gallery_dirs = ['auto_examples', 'auto_tutorials']
+
+class Resetter(object):
+    """Simple class to make the str(obj) static for Sphinx build env hash."""
+
+    def __repr__(self):
+        return '<%s>' % (self.__class__.__name__,)
+
+    def __call__(self, gallery_conf, fname):
+        import matplotlib.pyplot as plt
+        reset_warnings(gallery_conf, fname)
+        # in case users have interactive mode turned on in matplotlibrc,
+        # turn it off here (otherwise the build can be very slow)
+        plt.ioff()
+        gc.collect()
+
+
+def reset_warnings(gallery_conf, fname):
+    """Ensure we are future compatible and ignore silly warnings."""
+    # In principle, our examples should produce no warnings.
+    # Here we cause warnings to become errors, with a few exceptions.
+    # This list should be considered alongside
+    # setup.cfg -> [tool:pytest] -> filterwarnings
+
+    # remove tweaks from other module imports or example runs
+    warnings.resetwarnings()
+    # restrict
+    warnings.filterwarnings('error')
+    # allow these, but show them
+    warnings.filterwarnings('always', '.*cannot make axes width small.*')
+    warnings.filterwarnings('always', '.*Axes that are not compatible.*')
+    warnings.filterwarnings('always', '.*FastICA did not converge.*')
+    warnings.filterwarnings(  # xhemi morph (should probably update sample)
+        'always', '.*does not exist, creating it and saving it.*')
+    warnings.filterwarnings('default', module='sphinx')  # internal warnings
+    warnings.filterwarnings(
+        'always', '.*converting a masked element to nan.*')  # matplotlib?
+    # allow these warnings, but don't show them
+    warnings.filterwarnings(
+        'ignore', '.*OpenSSL\\.rand is deprecated.*')
+    warnings.filterwarnings('ignore', '.*is currently using agg.*')
+    warnings.filterwarnings(  # SciPy-related warning (maybe 1.2.0 will fix it)
+        'ignore', '.*the matrix subclass is not the recommended.*')
+    warnings.filterwarnings(  # some joblib warning
+        'ignore', '.*semaphore_tracker: process died unexpectedly.*')
+    warnings.filterwarnings(  # needed until SciPy 1.2.0 is released
+        'ignore', '.*will be interpreted as an array index.*', module='scipy')
+    for key in ('HasTraits', r'numpy\.testing', 'importlib', r'np\.loads',
+                'Using or importing the ABCs from',  # internal modules on 3.7
+                r"it will be an error for 'np\.bool_'",  # ndimage
+                "DocumenterBridge requires a state object",  # sphinx dev
+                "'U' mode is deprecated",  # sphinx io
+                r"joblib is deprecated in 0\.21",  # nilearn
+                ):
+        warnings.filterwarnings(  # deal with other modules having bad imports
+            'ignore', message=".*%s.*" % key, category=DeprecationWarning)
+    warnings.filterwarnings(  # deal with bootstrap-theme bug
+        'ignore', message=".*modify script_files in the theme.*",
+        category=Warning)
+    warnings.filterwarnings(  # deal with other modules having bad imports
+        'ignore', message=".*ufunc size changed.*", category=RuntimeWarning)
+    warnings.filterwarnings(  # realtime
+        'ignore', message=".*unclosed file.*", category=ResourceWarning)
+    warnings.filterwarnings('ignore', message='Exception ignored in.*')
+    # allow this ImportWarning, but don't show it
+    warnings.filterwarnings(
+        'ignore', message="can't resolve package from", category=ImportWarning)
+    warnings.filterwarnings(
+        'ignore', message='.*mne-realtime.*', category=DeprecationWarning)
+
+
+reset_warnings(None, None)
 # sphinx-gallery configuration
 sphinx_gallery_conf = {
     'doc_module': 'mne_realtime',
     'backreferences_dir': os.path.join('generated'),
-    'reference_url': {
-        'mne_realtime': None}
+    'reference_url': dict(mne_realtime=None),
+    'examples_dirs': examples_dirs,
+    'plot_gallery': 'True',  # Avoid annoying Unicode/bool default warning
+    'abort_on_example_error': False,
+    'reset_modules': ('matplotlib', Resetter()),  # called w/each script
 }
+
+##############################################################################
+# numpydoc
+
+# XXX This hack defines what extra methods numpydoc will document
+# docscrape.ClassDoc.extra_public_methods = mne.utils._doc_special_members
+numpydoc_class_members_toctree = False
+numpydoc_attributes_as_param_list = False
+numpydoc_xref_param_type = True
+numpydoc_xref_aliases = {
+    'Popen': 'python:subprocess.Popen',
+    'file-like': ':term:`file-like <python:file object>`',
+    # Matplotlib
+    'colormap': ':doc:`colormap <matplotlib:tutorials/colors/colormaps>`',
+    'color': ':doc:`color <matplotlib:api/colors_api>`',
+    'collection': ':doc:`collections <matplotlib:api/collections_api>`',
+    'Axes': 'matplotlib.axes.Axes',
+    'Figure': 'matplotlib.figure.Figure',
+    'Axes3D': 'mpl_toolkits.mplot3d.axes3d.Axes3D',
+    # Mayavi
+    'mayavi.mlab.Figure': 'mayavi.core.api.Scene',
+    'mlab.Figure': 'mayavi.core.api.Scene',
+    # sklearn
+    'LeaveOneOut': 'sklearn.model_selection.LeaveOneOut',
+    # joblib
+    'joblib.Parallel': 'joblib.Parallel',
+    # nibabel
+    'Nifti1Image': 'nibabel.nifti1.Nifti1Image',
+    'Nifti2Image': 'nibabel.nifti2.Nifti2Image',
+    # MNE
+    'Label': 'mne.Label', 'Forward': 'mne.Forward', 'Evoked': 'mne.Evoked',
+    'Info': 'mne.Info', 'SourceSpaces': 'mne.SourceSpaces',
+    'Epochs': 'mne.Epochs', 'Layout': 'mne.channels.Layout',
+    'EvokedArray': 'mne.EvokedArray', 'BiHemiLabel': 'mne.BiHemiLabel',
+    'AverageTFR': 'mne.time_frequency.AverageTFR',
+    'EpochsTFR': 'mne.time_frequency.EpochsTFR',
+    'Raw': 'mne.io.Raw', 'ICA': 'mne.preprocessing.ICA',
+    'Covariance': 'mne.Covariance', 'Annotations': 'mne.Annotations',
+    'Montage': 'mne.channels.Montage',
+    'DigMontage': 'mne.channels.DigMontage',
+    'VectorSourceEstimate': 'mne.VectorSourceEstimate',
+    'VolSourceEstimate': 'mne.VolSourceEstimate',
+    'VolVectorSourceEstimate': 'mne.VolVectorSourceEstimate',
+    'MixedSourceEstimate': 'mne.MixedSourceEstimate',
+    'SourceEstimate': 'mne.SourceEstimate', 'Projection': 'mne.Projection',
+    'ConductorModel': 'mne.bem.ConductorModel',
+    'Dipole': 'mne.Dipole', 'DipoleFixed': 'mne.DipoleFixed',
+    'InverseOperator': 'mne.minimum_norm.InverseOperator',
+    'CrossSpectralDensity': 'mne.time_frequency.CrossSpectralDensity',
+    'RtEpochs': 'mne.realtime.RtEpochs',
+    'SourceMorph': 'mne.SourceMorph',
+    'Xdawn': 'mne.preprocessing.Xdawn',
+    'Report': 'mne.Report', 'Forward': 'mne.Forward',
+    'TimeDelayingRidge': 'mne.decoding.TimeDelayingRidge',
+    'Vectorizer': 'mne.decoding.Vectorizer',
+    'UnsupervisedSpatialFilter': 'mne.decoding.UnsupervisedSpatialFilter',
+    'TemporalFilter': 'mne.decoding.TemporalFilter',
+    'Scaler': 'mne.decoding.Scaler', 'SPoC': 'mne.decoding.SPoC',
+    'PSDEstimator': 'mne.decoding.PSDEstimator',
+    'LinearModel': 'mne.decoding.LinearModel',
+    'FilterEstimator': 'mne.decoding.FilterEstimator',
+    'EMS': 'mne.decoding.EMS', 'CSP': 'mne.decoding.CSP',
+    'Beamformer': 'mne.beamformer.Beamformer',
+}
+numpydoc_xref_ignore = {
+    # words
+    'instance', 'instances', 'of', 'default', 'shape', 'or',
+    'with', 'length', 'pair', 'matplotlib', 'optional', 'kwargs', 'in',
+    'dtype', 'object', 'self.verbose',
+    # shapes
+    'n_vertices', 'n_faces', 'n_channels', 'm', 'n', 'n_events', 'n_colors',
+    'n_times', 'obj', 'n_chan', 'n_epochs', 'n_picks', 'n_ch_groups',
+    'n_dipoles', 'n_ica_components', 'n_pos', 'n_node_names', 'n_tapers',
+    'n_signals', 'n_step', 'n_freqs', 'wsize', 'Tx', 'M', 'N', 'p', 'q',
+    'n_observations', 'n_regressors', 'n_cols', 'n_frequencies', 'n_tests',
+    'n_samples', 'n_permutations', 'nchan', 'n_points', 'n_features',
+    'n_parts', 'n_features_new', 'n_components', 'n_labels', 'n_events_in',
+    'n_splits', 'n_scores', 'n_outputs', 'n_trials', 'n_estimators', 'n_tasks',
+    'nd_features', 'n_classes', 'n_targets', 'n_slices', 'n_hpi', 'n_fids',
+    'n_elp', 'n_pts', 'n_tris', 'n_nodes', 'n_nonzero', 'n_events_out',
+    # Undocumented (on purpose)
+    'RawKIT', 'RawEximia', 'RawEGI', 'RawEEGLAB', 'RawEDF', 'RawCTF', 'RawBTi',
+    'RawBrainVision',
+    # sklearn subclasses
+    'mapping', 'to', 'any',
+    # unlinkable
+    'mayavi.mlab.pipeline.surface',
+}
+
+##############################################################################
+
 
 def setup(app):
     # a copy button to copy snippet of code from the documentation
-    app.add_javascript('js/copybutton.js')
+    app.add_js_file('js/copybutton.js')
