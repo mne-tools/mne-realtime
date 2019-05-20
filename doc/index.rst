@@ -12,13 +12,6 @@ projects based from MNE.
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: Getting Started
-
-   quick_start
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
    :caption: Documentation
 
    user_guide
@@ -30,11 +23,6 @@ projects based from MNE.
    :caption: Tutorial - Examples
 
    auto_examples/index
-
-`Getting started <quick_start.html>`_
--------------------------------------
-
-Information regarding this template and how to modify it for your own project.
 
 `User Guide <user_guide.html>`_
 -------------------------------
