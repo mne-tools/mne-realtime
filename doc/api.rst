@@ -1,17 +1,20 @@
-####################
+################
 mne-realtime API
-####################
+################
 
-This is an example on how to document the API of your own project.
+:py:mod:`mne_realtime`:
 
-.. currentmodule:: mne_realtime
+.. automodule:: mne_realtime
+   :no-members:
+   :no-inherited-members:
 
 MNE-Realtime
 ============
 
+.. currentmodule:: mne_realtime
+
 .. autosummary::
    :toctree: generated/
-   :template: class.rst
 
    LSLClient
    MockLSLStream
@@ -20,6 +23,3 @@ MNE-Realtime
    RtClient
    StimServer
    StimClient
-
-
-

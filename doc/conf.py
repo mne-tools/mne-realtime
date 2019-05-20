@@ -16,11 +16,14 @@ from datetime import date
 from distutils.version import LooseVersion
 import gc
 import os
+import os.path as op
 import sys
 import warnings
 
 import sphinx
 import sphinx_gallery  # noqa
+from sphinx_gallery.sorting import FileNameSortKey
+from numpydoc import docscrape
 import mne  # noqa
 import sphinx_rtd_theme
 from mne_realtime import __version__
@@ -53,13 +56,11 @@ if LooseVersion(sphinx.__version__) < LooseVersion('1.4'):
 else:
     extensions.append('sphinx.ext.imgmath')
 
-autodoc_default_flags = ['members', 'inherited-members']
+autosummary_generate = True
+autodoc_default_options = {'inherited-members': None}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-
-# generate autosummary even if no references
-autosummary_generate = True
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -74,10 +75,13 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'mne-realtime'
+project = u'MNE-Realtime'
 td = date.today()
 copyright = u'2012-%s, MNE Developers. Last updated on %s' % (td.year,
                                                               td.isoformat())
+
+nitpicky = True
+suppress_warnings = ['image.nonlocal_uri']  # we intentionally link outside
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -104,7 +108,7 @@ exclude_patterns = ['_build', '_templates']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
-#default_role = None
+default_role = "autolink"
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 #add_function_parentheses = True
@@ -124,7 +128,7 @@ pygments_style = 'sphinx'
 html_style = 'css/project-template.css'
 
 # A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
+#modindex_common_prefix = ['mne_realtime']
 
 # If true, keep warnings as "system message" paragraphs in the built documents.
 #keep_warnings = False
@@ -153,12 +157,12 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = None
+html_logo = "_static/mne_logo_small.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-#html_favicon = None
+html_favicon = "_static/favicon.ico"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -195,10 +199,11 @@ html_static_path = ['_static']
 #html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
+html_show_sourcelink = False
+html_copy_source = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
-#html_show_sphinx = True
+html_show_sphinx = False
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 #html_show_copyright = True
@@ -304,6 +309,10 @@ intersphinx_mapping = {
 examples_dirs = ['../examples', '../tutorials']
 gallery_dirs = ['auto_examples', 'auto_tutorials']
 
+
+scrapers = ('matplotlib',)
+
+
 class Resetter(object):
     """Simple class to make the str(obj) static for Sphinx build env hash."""
 
@@ -331,36 +340,16 @@ def reset_warnings(gallery_conf, fname):
     # restrict
     warnings.filterwarnings('error')
     # allow these, but show them
-    warnings.filterwarnings('always', '.*cannot make axes width small.*')
-    warnings.filterwarnings('always', '.*Axes that are not compatible.*')
-    warnings.filterwarnings('always', '.*FastICA did not converge.*')
-    warnings.filterwarnings(  # xhemi morph (should probably update sample)
-        'always', '.*does not exist, creating it and saving it.*')
     warnings.filterwarnings('default', module='sphinx')  # internal warnings
-    warnings.filterwarnings(
-        'always', '.*converting a masked element to nan.*')  # matplotlib?
     # allow these warnings, but don't show them
-    warnings.filterwarnings(
-        'ignore', '.*OpenSSL\\.rand is deprecated.*')
     warnings.filterwarnings('ignore', '.*is currently using agg.*')
-    warnings.filterwarnings(  # SciPy-related warning (maybe 1.2.0 will fix it)
-        'ignore', '.*the matrix subclass is not the recommended.*')
-    warnings.filterwarnings(  # some joblib warning
-        'ignore', '.*semaphore_tracker: process died unexpectedly.*')
-    warnings.filterwarnings(  # needed until SciPy 1.2.0 is released
-        'ignore', '.*will be interpreted as an array index.*', module='scipy')
     for key in ('HasTraits', r'numpy\.testing', 'importlib', r'np\.loads',
                 'Using or importing the ABCs from',  # internal modules on 3.7
-                r"it will be an error for 'np\.bool_'",  # ndimage
                 "DocumenterBridge requires a state object",  # sphinx dev
                 "'U' mode is deprecated",  # sphinx io
-                r"joblib is deprecated in 0\.21",  # nilearn
                 ):
         warnings.filterwarnings(  # deal with other modules having bad imports
             'ignore', message=".*%s.*" % key, category=DeprecationWarning)
-    warnings.filterwarnings(  # deal with bootstrap-theme bug
-        'ignore', message=".*modify script_files in the theme.*",
-        category=Warning)
     warnings.filterwarnings(  # deal with other modules having bad imports
         'ignore', message=".*ufunc size changed.*", category=RuntimeWarning)
     warnings.filterwarnings(  # realtime
@@ -369,27 +358,33 @@ def reset_warnings(gallery_conf, fname):
     # allow this ImportWarning, but don't show it
     warnings.filterwarnings(
         'ignore', message="can't resolve package from", category=ImportWarning)
-    warnings.filterwarnings(
-        'ignore', message='.*mne-realtime.*', category=DeprecationWarning)
 
 
 reset_warnings(None, None)
-# sphinx-gallery configuration
 sphinx_gallery_conf = {
     'doc_module': 'mne_realtime',
-    'backreferences_dir': os.path.join('generated'),
     'reference_url': dict(mne_realtime=None),
     'examples_dirs': examples_dirs,
+    'default_thumb_file': os.path.join('_static', 'mne_helmet.png'),
+    'backreferences_dir': 'generated',
     'plot_gallery': 'True',  # Avoid annoying Unicode/bool default warning
+    'download_section_examples': False,
+    'thumbnail_size': (160, 112),
+    'min_reported_time': 1.,
     'abort_on_example_error': False,
     'reset_modules': ('matplotlib', Resetter()),  # called w/each script
+    'image_scrapers': scrapers,
+    'show_memory': True,
+    'line_numbers': False,  # XXX currently (0.3.dev0) messes with style
+    'within_subsection_order': FileNameSortKey,
+    'junit': op.join('..', 'test-results', 'sphinx-gallery', 'junit.xml'),
 }
 
 ##############################################################################
 # numpydoc
 
 # XXX This hack defines what extra methods numpydoc will document
-# docscrape.ClassDoc.extra_public_methods = mne.utils._doc_special_members
+docscrape.ClassDoc.extra_public_methods = mne.utils._doc_special_members
 numpydoc_class_members_toctree = False
 numpydoc_attributes_as_param_list = False
 numpydoc_xref_param_type = True

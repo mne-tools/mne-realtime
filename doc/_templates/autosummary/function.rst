@@ -1,5 +1,5 @@
-:mod:`{{module}}`.{{objname}}
-{{ underline }}====================
+{{ fullname }}
+{{ underline }}
 
 .. currentmodule:: {{ module }}
 
