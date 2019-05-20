@@ -32,11 +32,11 @@ before_install:
   - conda create -n testenv --yes python=$PYTHON_VERSION pip
   - source activate testenv
   - conda install --yes numpy==$NUMPY_VERSION scipy==$SCIPY_VERSION scikit-learn==$SKLEARN_VERSION nose pytest pytest-cov
-  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
-        pip install --upgrade pyqt5>=5.10 pylsl;
-      else
-        conda install -c tstenner pylsl;
-    fi;
+  # - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
+  #       pip install --upgrade pyqt5>=5.10 pylsl;
+  #     else
+  #       conda install -c tstenner pylsl;
+  #   fi;
 
 install:
   - pip install codecov
