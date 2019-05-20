@@ -17,18 +17,10 @@ matrix:
     - os: linux
       env: CONDA_ENVIRONMENT="environment.yml"
 
-    # OSX conda
-    - os: osx
-      osx_image: xcode8.3
-      env: CONDA_ENVIRONMENT="environment.yml"
-
 before_install:
   - deactivate
   - git clone https://github.com/astropy/ci-helpers.git;
   - source ci-helpers/travis/setup_conda.sh;
-  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
-        pip install --upgrade pyqt5>=5.10 pylsl;
-    fi;
 
 install:
   - pip install -e .
