@@ -22,25 +22,12 @@ matrix:
           env: CONDA_ENVIRONMENT="environment.yml"
 
 before_install:
-  # install miniconda
   - deactivate
-
   - git clone https://github.com/astropy/ci-helpers.git;
   - source ci-helpers/travis/setup_conda.sh;
-  # - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-  # - MINICONDA_PATH=/home/travis/miniconda
-  # - chmod +x miniconda.sh && ./miniconda.sh -b -p $MINICONDA_PATH
-  # - export PATH=$MINICONDA_PATH/bin:$PATH
-  # - conda update --yes conda
-  # # create the testing environment
-  # - conda create -n testenv --yes python=$PYTHON_VERSION pip
-  # - source activate testenv
-  # - conda install --yes numpy==$NUMPY_VERSION scipy==$SCIPY_VERSION scikit-learn==$SKLEARN_VERSION nose pytest pytest-cov
-  # # - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
-  # #       pip install --upgrade pyqt5>=5.10 pylsl;
-  # #     else
-  # #       conda install -c tstenner pylsl;
-  # #   fi;
+  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
+        pip install --upgrade pyqt5>=5.10 pylsl;
+    fi;
 
 install:
   - pip install -e .
