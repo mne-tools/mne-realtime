@@ -1,6 +1,20 @@
 name: mne-realtime
+channels:
+  - defaults
+
 dependencies:
+  - python<3.7
+  - pip
+  - matplotlib
   - numpy
   - scipy
-  - mne
-  - pylsl>=1.12
+  - pytest
+  - pytest-cov
+  - pytest-mock
+  - flake8
+  - pip:
+    - mne
+    - pydocstyle
+    - pytest-sugar
+    - codespell
+    - pylsl>=1.12
