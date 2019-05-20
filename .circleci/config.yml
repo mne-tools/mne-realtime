@@ -60,7 +60,7 @@ jobs:
             command: |
               pip install --user --upgrade --progress-bar off pip numpy
               pip install --user --upgrade --progress-bar off -r requirements.txt
-              pip install --user --upgrade --progress-bar off "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
+              pip install --user --upgrade --progress-bar off "https://api.github.com/repos/mne-tools/mne-python/zipball/master" "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
 
         - save_cache:
             key: pip-cache
