@@ -13,7 +13,6 @@ MNE-Realtime
    :toctree: generated/
    :template: class.rst
 
-   FieldTripClient
    LSLClient
    MockLSLStream
    MockRtClient
