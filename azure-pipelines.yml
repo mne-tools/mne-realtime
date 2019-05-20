@@ -30,7 +30,9 @@ jobs:
       Python37-64bit-full-pip:
         PYTHON_VERSION: '3.7'
         PYTHON_ARCH: 'x64'
-        TEST_MODE: 'pip'
+        TEST_MODE: 'conda'
+        CONDA_ENVIRONMENT: 'environment.yml'
+        PIP_NO_UPGRADE: 'True'
   steps:
   - task: UsePythonVersion@0
     inputs:
