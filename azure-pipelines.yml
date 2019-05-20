@@ -27,7 +27,7 @@ jobs:
         TEST_MODE: 'conda'
         CONDA_ENVIRONMENT: 'environment.yml'
         PIP_NO_UPGRADE: 'True'
-      Python37-64bit-full-pip:
+      Python37-64bit-full-conda:
         PYTHON_VERSION: '3.7'
         PYTHON_ARCH: 'x64'
         TEST_MODE: 'conda'
