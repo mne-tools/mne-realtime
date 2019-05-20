@@ -17,4 +17,5 @@ dependencies:
     - pydocstyle
     - pytest-sugar
     - codespell
+    - codecov
     - pylsl>=1.12

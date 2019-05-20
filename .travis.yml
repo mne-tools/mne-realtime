@@ -39,8 +39,7 @@ before_install:
   #   fi;
 
 install:
-  - pip install codecov
-  - pip install .
+  - pip install -e .
 
 script:
   - mkdir for_test
