@@ -21,11 +21,11 @@ import sys
 import warnings
 
 import sphinx
+import sphinx_rtd_theme
 import sphinx_gallery  # noqa
 from sphinx_gallery.sorting import FileNameSortKey
 from numpydoc import docscrape
 import mne  # noqa
-import sphinx_rtd_theme
 from mne_realtime import __version__
 
 # -- General configuration ------------------------------------------------
@@ -128,7 +128,7 @@ pygments_style = 'sphinx'
 html_style = 'css/project-template.css'
 
 # A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = ['mne_realtime']
+modindex_common_prefix = ['mne_realtime.']
 
 # If true, keep warnings as "system message" paragraphs in the built documents.
 #keep_warnings = False
@@ -300,14 +300,15 @@ intersphinx_mapping = {
     'matplotlib': ('https://matplotlib.org', None),
     'sklearn': ('https://scikit-learn.org/stable', None),
     'joblib': ('https://joblib.readthedocs.io/en/latest', None),
+    'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
     'mne': ('https://mne-tools.github.io/dev', None),
 }
 
 ##############################################################################
 # sphinx-gallery
 
-examples_dirs = ['../examples', '../tutorials']
-gallery_dirs = ['auto_examples', 'auto_tutorials']
+examples_dirs = ['../examples']
+gallery_dirs = ['auto_examples']
 
 
 scrapers = ('matplotlib',)
