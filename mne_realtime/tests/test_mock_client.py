@@ -14,7 +14,7 @@ from mne.datasets import testing
 
 from mne_realtime import MockRtClient, RtEpochs
 
-base_dir = op.join(op.dirname(__file__), '_data')
+base_dir = op.join(op.dirname(__file__), 'data')
 raw_fname = op.join(base_dir, 'test_raw.fif')
 event_name = op.join(base_dir, 'test-eve.fif')
 

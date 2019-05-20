@@ -10,7 +10,7 @@ from mne.datasets import testing
 
 from mne_realtime import LSLClient, MockLSLStream
 
-base_dir = op.join(op.dirname(__file__), '_data')
+base_dir = op.join(op.dirname(__file__), 'data')
 
 host = 'myuid34234'
 raw_fname = op.join(base_dir, 'test_raw.fif')
