@@ -16,6 +16,7 @@ MNE-Realtime
 .. autosummary::
    :toctree: generated/
 
+   FieldTripClient
    LSLClient
    MockLSLStream
    MockRtClient
