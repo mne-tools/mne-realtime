@@ -21,8 +21,9 @@ from sklearn.model_selection import cross_val_score, ShuffleSplit
 from mne.decoding import Vectorizer, FilterEstimator
 
 import mne
-from mne.realtime import MockRtClient, RtEpochs
 from mne.datasets import sample
+
+from mne_realtime import MockRtClient, RtEpochs
 
 print(__doc__)
 

@@ -4,14 +4,16 @@
 from os import getenv, path as op
 import pytest
 
-from mne.realtime import LSLClient, MockLSLStream
 from mne.utils import run_tests_if_main, requires_pylsl
 from mne.io import read_raw_fif
 from mne.datasets import testing
 
+from mne import __file__ as _mne_init_path
+from mne_realtime import LSLClient, MockLSLStream
+
+base_dir = op.join(op.dirname(_mne_init_path), 'io', 'tests', 'data')
 
 host = 'myuid34234'
-base_dir = op.join(op.dirname(__file__), '..', '..', 'io', 'tests', 'data')
 raw_fname = op.join(base_dir, 'test_raw.fif')
 
 

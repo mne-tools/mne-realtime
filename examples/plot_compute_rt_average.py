@@ -21,7 +21,8 @@ import matplotlib.pyplot as plt
 
 import mne
 from mne.datasets import sample
-from mne.realtime import RtEpochs, MockRtClient
+
+from mne_realtime import RtEpochs, MockRtClient
 
 print(__doc__)
 

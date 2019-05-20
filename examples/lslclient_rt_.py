@@ -15,9 +15,10 @@ the desired stream.
 # License: BSD (3-clause)
 import matplotlib.pyplot as plt
 
-from mne.realtime import LSLClient, MockLSLStream
 from mne.datasets import sample
 from mne.io import read_raw_fif
+
+from mne_realtime import LSLClient, MockLSLStream
 
 print(__doc__)
 

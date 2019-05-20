@@ -31,14 +31,14 @@ responses using moving averages.
 # License: BSD (3-clause)
 
 import os.path as op
+import matplotlib.pyplot as plt
 import subprocess
 
 import mne
 from mne.viz import plot_events
-from mne.realtime import FieldTripClient, RtEpochs
 from mne.utils import running_subprocess
 
-import matplotlib.pyplot as plt
+from mne_realtime import FieldTripClient, RtEpochs
 
 print(__doc__)
 

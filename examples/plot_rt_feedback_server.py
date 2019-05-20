@@ -37,7 +37,7 @@ from sklearn.metrics import confusion_matrix
 import mne
 from mne.datasets import sample
 from mne.utils import running_subprocess
-from mne.realtime import StimServer, MockRtClient
+from mne_realtime import StimServer, MockRtClient
 from mne.decoding import Vectorizer
 
 print(__doc__)

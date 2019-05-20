@@ -23,9 +23,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import mne
-from mne.realtime import FieldTripClient
 from mne.time_frequency import psd_welch
 from mne.utils import running_subprocess
+
+from mne_realtime import FieldTripClient
 
 print(__doc__)
 

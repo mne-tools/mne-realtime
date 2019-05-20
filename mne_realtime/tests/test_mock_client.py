@@ -10,10 +10,12 @@ from mne import (Epochs, read_events, read_epochs, find_events, create_info,
                  pick_channels, pick_types, concatenate_raws)
 from mne.io import RawArray, read_raw_fif
 from mne.utils import run_tests_if_main
-from mne.realtime import MockRtClient, RtEpochs
 from mne.datasets import testing
 
-base_dir = op.join(op.dirname(__file__), '..', '..', 'io', 'tests', 'data')
+from mne_realtime import MockRtClient, RtEpochs
+from mne import __file__ as _mne_init_path
+
+base_dir = op.join(op.dirname(_mne_init_path), 'io', 'tests', 'data')
 raw_fname = op.join(base_dir, 'test_raw.fif')
 event_name = op.join(base_dir, 'test-eve.fif')
 

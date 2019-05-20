@@ -14,9 +14,11 @@ from .epochs import RtEpochs
 from .lsl_client import LSLClient
 from .mock_lsl_stream import MockLSLStream
 from .mock_client import MockRtClient
-from .fieldtrip_client import FieldTripClient
+# from .fieldtrip_client import FieldTripClient
 from .stim_server_client import StimServer, StimClient
 
 
-__all__ = ['__version__', 'FieldTripClient', 'LSLClient', 'MockRtClient',
+# __all__ = ['__version__', 'FieldTripClient', 'LSLClient', 'MockRtClient',
+#            'RtClient', 'RtEpochs', 'StimClient', 'StimServer']
+__all__ = ['__version__', 'LSLClient', 'MockRtClient',
            'RtClient', 'RtEpochs', 'StimClient', 'StimServer']

@@ -28,7 +28,7 @@ for a real experiment.
 #
 # License: BSD (3-clause)
 
-from mne.realtime import StimClient
+from mne_realtime import StimClient
 import time
 
 print(__doc__)

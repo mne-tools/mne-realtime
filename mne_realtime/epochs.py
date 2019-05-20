@@ -25,10 +25,10 @@ class RtEpochs(BaseEpochs):
     For example, to get some epochs from a running mne_rt_server on
     'localhost', you could use::
 
-        client = mne.realtime.RtClient('localhost')
+        client = mne_realtime.RtClient('localhost')
         event_id, tmin, tmax = 1, -0.2, 0.5
 
-        epochs = mne.realtime.RtEpochs(client, event_id, tmin, tmax)
+        epochs = mne_realtime.RtEpochs(client, event_id, tmin, tmax)
         epochs.start()  # start the measurement and start receiving epochs
 
         evoked_1 = epochs.average()  # computed over all epochs
@@ -36,7 +36,7 @@ class RtEpochs(BaseEpochs):
 
     Parameters
     ----------
-    client : instance of mne.realtime.RtClient
+    client : instance of mne_realtime.RtClient
         The realtime client.
     event_id : int | list of int
         The id of the event to consider. If int, only events with the

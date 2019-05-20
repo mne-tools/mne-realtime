@@ -3,9 +3,9 @@ import threading
 import time
 
 import pytest
-from mne.realtime import StimServer, StimClient
 from mne.utils import requires_good_network, run_tests_if_main
 
+from mne_realtime import StimServer, StimClient
 
 _server = None
 _have_put_in_trigger = False

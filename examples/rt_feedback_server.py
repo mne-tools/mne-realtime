@@ -41,9 +41,10 @@ from sklearn.metrics import confusion_matrix
 
 import mne
 from mne.datasets import sample
-from mne.realtime import StimServer
-from mne.realtime import MockRtClient
 from mne.decoding import Vectorizer, FilterEstimator
+
+from mne_realtime import StimServer
+from mne_realtime import MockRtClient
 
 print(__doc__)
 
