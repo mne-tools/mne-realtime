@@ -35,20 +35,6 @@ before_install:
       else
           conda install -c tstenner pylsl;
       fi
-    # Don't source mne_setup_sh here because changing PATH etc. can't be done in a script
-    - if [ "${DEPS}" == "" ]; then
-        export MNE_ROOT="${PWD}/minimal_cmds";
-        export PATH=${MNE_ROOT}/bin:$PATH;
-        if [ "${TRAVIS_OS_NAME}" == "linux" ]; then
-          curl https://staff.washington.edu/larsoner/minimal_cmds.tar.gz | tar xz;
-          export LD_LIBRARY_PATH=${MNE_ROOT}/lib:$LD_LIBRARY_PATH;
-          export NEUROMAG2FT_ROOT="${PWD}/minimal_cmds/bin";
-        else
-          curl https://staff.washington.edu/larsoner/minimal_cmds_osx.tar.gz | tar xz;
-          export DYLD_LIBRARY_PATH=${MNE_ROOT}/lib:$DYLD_LIBRARY_PATH;
-        fi;
-        mne_surf2bem --version;
-      fi;
 
 install:
     # Rvm overrides cd with a function so that it can hook into it to run
