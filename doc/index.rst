@@ -38,3 +38,11 @@ An example of API documentation.
 --------------------------------------
 
 A set of examples. It complements the `User Guide <user_guide.html>`_.
+
+.. _tut_logging:
+
+dead link tut_logging
+---------------------
+
+Nothing here
+
