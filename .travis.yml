@@ -104,6 +104,4 @@ script:
       fi;
 
 after_script:
-    # Need to run from source dir to exectue "git" commands
-    - cd ${SRC_DIR};
-    - codecov;
+    - codecov
