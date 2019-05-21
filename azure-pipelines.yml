@@ -19,9 +19,6 @@ jobs:
   strategy:
     maxParallel: 4
     matrix:
-      # Eventually we should test x86 (32-bit), but it was a nightmare
-      # to get it to download 32-bit Anaconda properly, and VTK does not ship
-      # 32-bit Windows binaries via pip.
       Python36-64bit-full-conda:
         PYTHON_VERSION: '3.6'
         PLATFORM: 'x86-64'
@@ -39,13 +36,6 @@ jobs:
       architecture: $(PYTHON_ARCH)
       addToPath: true
     condition: eq(variables['TEST_MODE'], 'pip')
-  - powershell: |
-      Set-StrictMode -Version Latest
-      $ErrorActionPreference = "Stop"
-      $PSDefaultParameterValues['*:ErrorAction']='Stop'
-      git clone --depth 1 git://github.com/pyvista/gl-ci-helpers.git
-      powershell gl-ci-helpers/appveyor/install_opengl.ps1
-    displayName: Install OpenGL
   - powershell: |
       Set-StrictMode -Version Latest
       $ErrorActionPreference = "Stop"
