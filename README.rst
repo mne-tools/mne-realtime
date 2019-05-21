@@ -14,9 +14,9 @@
 .. |Codecov| image:: https://codecov.io/gh/mne-tools/mne-realtime/branch/master/graph/badge.svg
 .. _Codecov: https://codecov.io/gh/mne-tools/mne-realtime
 
-`MNE-Realtime - M/EEG processing on the fly <mne-realtime>`_
-===========================================================
-
-.. _documentation: https://mne-tools.github.io/mne-realtime
+MNE-Realtime
+============
 
 Refer to the documentation_ for more information.
+
+.. _documentation: https://mne-tools.github.io/mne-realtime
