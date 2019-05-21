@@ -390,59 +390,20 @@ numpydoc_class_members_toctree = False
 numpydoc_attributes_as_param_list = False
 numpydoc_xref_param_type = True
 numpydoc_xref_aliases = {
-    'Popen': 'python:subprocess.Popen',
-    'file-like': ':term:`file-like <python:file object>`',
     # Matplotlib
     'colormap': ':doc:`colormap <matplotlib:tutorials/colors/colormaps>`',
     'color': ':doc:`color <matplotlib:api/colors_api>`',
-    'collection': ':doc:`collections <matplotlib:api/collections_api>`',
     'Axes': 'matplotlib.axes.Axes',
     'Figure': 'matplotlib.figure.Figure',
     'Axes3D': 'mpl_toolkits.mplot3d.axes3d.Axes3D',
-    # Mayavi
-    'mayavi.mlab.Figure': 'mayavi.core.api.Scene',
-    'mlab.Figure': 'mayavi.core.api.Scene',
-    # sklearn
-    'LeaveOneOut': 'sklearn.model_selection.LeaveOneOut',
-    # joblib
-    'joblib.Parallel': 'joblib.Parallel',
-    # nibabel
-    'Nifti1Image': 'nibabel.nifti1.Nifti1Image',
-    'Nifti2Image': 'nibabel.nifti2.Nifti2Image',
     # MNE
-    'Label': 'mne.Label', 'Forward': 'mne.Forward', 'Evoked': 'mne.Evoked',
-    'Info': 'mne.Info', 'SourceSpaces': 'mne.SourceSpaces',
     'Epochs': 'mne.Epochs', 'Layout': 'mne.channels.Layout',
-    'EvokedArray': 'mne.EvokedArray', 'BiHemiLabel': 'mne.BiHemiLabel',
-    'AverageTFR': 'mne.time_frequency.AverageTFR',
-    'EpochsTFR': 'mne.time_frequency.EpochsTFR',
-    'Raw': 'mne.io.Raw', 'ICA': 'mne.preprocessing.ICA',
-    'Covariance': 'mne.Covariance', 'Annotations': 'mne.Annotations',
+    'Raw': 'mne.io.Raw', 'Covariance': 'mne.Covariance',
+    'Evoked': 'mne.Evoked', 'Info': 'mne.Info',
     'Montage': 'mne.channels.Montage',
     'DigMontage': 'mne.channels.DigMontage',
-    'VectorSourceEstimate': 'mne.VectorSourceEstimate',
-    'VolSourceEstimate': 'mne.VolSourceEstimate',
-    'VolVectorSourceEstimate': 'mne.VolVectorSourceEstimate',
-    'MixedSourceEstimate': 'mne.MixedSourceEstimate',
-    'SourceEstimate': 'mne.SourceEstimate', 'Projection': 'mne.Projection',
-    'ConductorModel': 'mne.bem.ConductorModel',
-    'Dipole': 'mne.Dipole', 'DipoleFixed': 'mne.DipoleFixed',
-    'InverseOperator': 'mne.minimum_norm.InverseOperator',
-    'CrossSpectralDensity': 'mne.time_frequency.CrossSpectralDensity',
-    'RtEpochs': 'mne.realtime.RtEpochs',
-    'SourceMorph': 'mne.SourceMorph',
-    'Xdawn': 'mne.preprocessing.Xdawn',
-    'Report': 'mne.Report', 'Forward': 'mne.Forward',
-    'TimeDelayingRidge': 'mne.decoding.TimeDelayingRidge',
-    'Vectorizer': 'mne.decoding.Vectorizer',
-    'UnsupervisedSpatialFilter': 'mne.decoding.UnsupervisedSpatialFilter',
-    'TemporalFilter': 'mne.decoding.TemporalFilter',
-    'Scaler': 'mne.decoding.Scaler', 'SPoC': 'mne.decoding.SPoC',
-    'PSDEstimator': 'mne.decoding.PSDEstimator',
-    'LinearModel': 'mne.decoding.LinearModel',
-    'FilterEstimator': 'mne.decoding.FilterEstimator',
-    'EMS': 'mne.decoding.EMS', 'CSP': 'mne.decoding.CSP',
-    'Beamformer': 'mne.beamformer.Beamformer',
+    # mne_realtime
+    'RtEpochs': 'mne_realtime.RtEpochs',
 }
 numpydoc_xref_ignore = {
     # words
@@ -450,27 +411,12 @@ numpydoc_xref_ignore = {
     'with', 'length', 'pair', 'matplotlib', 'optional', 'kwargs', 'in',
     'dtype', 'object', 'self.verbose',
     # shapes
-    'n_vertices', 'n_faces', 'n_channels', 'm', 'n', 'n_events', 'n_colors',
-    'n_times', 'obj', 'n_chan', 'n_epochs', 'n_picks', 'n_ch_groups',
-    'n_dipoles', 'n_ica_components', 'n_pos', 'n_node_names', 'n_tapers',
-    'n_signals', 'n_step', 'n_freqs', 'wsize', 'Tx', 'M', 'N', 'p', 'q',
-    'n_observations', 'n_regressors', 'n_cols', 'n_frequencies', 'n_tests',
-    'n_samples', 'n_permutations', 'nchan', 'n_points', 'n_features',
-    'n_parts', 'n_features_new', 'n_components', 'n_labels', 'n_events_in',
-    'n_splits', 'n_scores', 'n_outputs', 'n_trials', 'n_estimators', 'n_tasks',
-    'nd_features', 'n_classes', 'n_targets', 'n_slices', 'n_hpi', 'n_fids',
-    'n_elp', 'n_pts', 'n_tris', 'n_nodes', 'n_nonzero', 'n_events_out',
-    # Undocumented (on purpose)
-    'RawKIT', 'RawEximia', 'RawEGI', 'RawEEGLAB', 'RawEDF', 'RawCTF', 'RawBTi',
-    'RawBrainVision',
-    # sklearn subclasses
-    'mapping', 'to', 'any',
-    # unlinkable
-    'mayavi.mlab.pipeline.surface',
+    'n_channels', 'n_times', 'nchan', 'n_epochs', 'n_events', 'n_picks',
+    'n_ch_groups',
 }
 
-##############################################################################
 
+##############################################################################
 
 def setup(app):
     # a copy button to copy snippet of code from the documentation
