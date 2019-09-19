@@ -18,7 +18,5 @@ from .mock_client import MockRtClient
 from .stim_server_client import StimServer, StimClient
 
 
-# __all__ = ['__version__', 'FieldTripClient', 'LSLClient', 'MockRtClient',
-#            'RtClient', 'RtEpochs', 'StimClient', 'StimServer']
-__all__ = ['__version__', 'LSLClient', 'MockRtClient',
+__all__ = ['__version__', 'FieldTripClient', 'LSLClient', 'MockRtClient',
            'RtClient', 'RtEpochs', 'StimClient', 'StimServer']
