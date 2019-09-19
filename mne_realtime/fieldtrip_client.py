@@ -9,12 +9,12 @@ import time
 
 import numpy as np
 
-from ..io import _empty_info
-from ..io.pick import _picks_to_idx, pick_info
-from ..io.constants import FIFF
-from ..epochs import EpochsArray
-from ..utils import logger, warn, fill_doc
-from ..externals.FieldTrip import Client as FtClient
+from mne.io import _empty_info
+from mne.io.pick import _picks_to_idx, pick_info
+from mne.io.constants import FIFF
+from mne.epochs import EpochsArray
+from mne.utils import logger, warn, fill_doc
+from .externals.FieldTrip import Client as FtClient
 
 
 def _buffer_recv_worker(ft_client):
