@@ -16,6 +16,7 @@ from .mock_lsl_stream import MockLSLStream
 from .mock_client import MockRtClient
 # from .fieldtrip_client import FieldTripClient
 from .stim_server_client import StimServer, StimClient
+from .fieldtrip_client import FieldTripClient
 
 
 __all__ = ['__version__', 'FieldTripClient', 'LSLClient', 'MockRtClient',

@@ -28,8 +28,8 @@ Bug
 API
 ~~~
 
-Changes when mne-realtime was part of MNE
------------------------------------------
+Changes when mne-realtime was part of MNE-Python
+------------------------------------------------
 
 Changelog
 ~~~~~~~~~
@@ -64,10 +64,15 @@ API
 Authors
 ~~~~~~~
 
-People who contributed to this release (in alphabetical order):
+People who contributed to MNE-realtime while it was part of MNE-Python (in alphabetical order):
 
-* Alexandre Gramfort
+* Alex Gramfort
+* Antti Rantala
+* Christopher Dinh
+* Denis Engemann
+* Henrich Kolkhorst
 * Mainak Jas
+* Martin Luessi
 * Teon Brooks
 
 .. _Mainak Jas: https://perso.telecom-paristech.fr/mjas/
