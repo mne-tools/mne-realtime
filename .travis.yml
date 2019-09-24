@@ -3,7 +3,7 @@ dist: xenial
 sudo: false
 cache:
   apt: true
-  pip: true
+  pip: false
 env:
     # TRAVIS_PYTHON_VERSION is only needed for neo's setup.py
     # OPENBLAS_NUM_THREADS=1 avoid slowdowns:
@@ -83,8 +83,7 @@ install:
     - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
         unset -f cd;
       fi;
-    - python setup.py build
-    - python setup.py install
+    - python setup.py develop
     - python -c "import mne; mne.sys_info()"
     # Trigger download of testing data
     - if [ "${DEPS}" != "nodata" ]; then
