@@ -6,9 +6,6 @@
 Welcome to mne-realtime's documentation!
 ========================================
 
-This project is a reference implementation to anyone who wishes to develop
-projects based from MNE.
-
 .. toctree::
    :maxdepth: 2
    :hidden:
@@ -23,18 +20,3 @@ projects based from MNE.
    :caption: Tutorial - Examples
 
    auto_examples/index
-
-`User Guide <user_guide.html>`_
--------------------------------
-
-An example of narrative documentation.
-
-`API Documentation <api.html>`_
--------------------------------
-
-An example of API documentation.
-
-`Examples <auto_examples/index.html>`_
---------------------------------------
-
-A set of examples. It complements the `User Guide <user_guide.html>`_.
