@@ -66,7 +66,6 @@ def _start_buffer_thread(buffer_port):
     return signal_queue
 
 
-@pytest.mark.slowtest
 @requires_neuromag2ft
 def test_fieldtrip_rtepochs(free_tcp_port, tmpdir):
     """Test FieldTrip RtEpochs."""
@@ -125,7 +124,6 @@ def test_fieldtrip_rtepochs(free_tcp_port, tmpdir):
         kill_signal.put(False)  # stop the buffer
 
 
-@requires_neuromag2ft
 def test_fieldtrip_client(free_tcp_port):
     """Test fieldtrip_client."""
     kill_signal = _start_buffer_thread(free_tcp_port)

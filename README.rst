@@ -17,6 +17,12 @@
 MNE-Realtime
 ============
 
+Dependencies
+~~~~~~~~~~~~
+
+* numpy
+* MNE
+
 Refer to the documentation_ for more information.
 
 .. _documentation: https://mne-tools.github.io/mne-realtime
