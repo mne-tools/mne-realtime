@@ -3,20 +3,4 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to mne-realtime's documentation!
-========================================
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: Documentation
-
-   user_guide
-   api
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: Tutorial - Examples
-
-   auto_examples/index
+.. include:: ../README.rst
