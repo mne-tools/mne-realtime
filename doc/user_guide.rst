@@ -1,6 +1,4 @@
-.. title:: User guide : contents
-
-.. _user_guide:
+:orphan:
 
 =======================================
 User guide: create your own mne project
@@ -9,7 +7,7 @@ User guide: create your own mne project
 Some title
 ----------
 
-This is an example on how to import :meth:`mne_realtime.RtEpochs`::
+This is an example on how to import :meth:`mne_realtime.RtEpochs`:
 
     >>> from mne_realtime import RtEpochs
 
