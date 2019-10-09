@@ -19,11 +19,11 @@ MNE-realtime
 
 This is a repository for realtime analysis of MEG/EEG data with MNE. The documentation can be found here:
 
-   * `Examples <auto_examples/index.html>`_
-   * `API <api.html>`_
+   * `Examples <https://mne.tools/mne-realtime/auto_examples/index.html>`_
+   * `API`_
 
 Dependencies
-~~~~~~~~~~~~
+------------
 
 * numpy
 * MNE
@@ -52,8 +52,31 @@ These ``pip`` commands also work if you want to upgrade if a newer version of
 ``mne-realtime`` is available. If you do not have administrator privileges on the
 computer, use the ``--user`` flag with ``pip``.
 
+Quickstart
+----------
+
+.. code-block:: python
+
+    info = mne.io.read_info(op.join(data_path, 'MEG', 'sample',
+                            'sample_audvis_raw.fif'))
+    with FieldTripClient(host='localhost', port=1972,
+                         tmax=30, wait_max=5, info=info) as rt_client:
+        rt_epochs = RtEpochs(rt_client, event_id, tmin, tmax, ...)
+        rt_epochs.start()
+        for ev in rt_epochs.iter_evoked():
+            epoch_data = ev.data
+
+        # or alternatively, get last n_samples
+        rt_epoch = rt_client.get_data_as_epoch(n_samples=500)
+        continuous_data = rt_epoch.get_data()
+
+The ``FieldTripClient`` supports `multiple vendors through the FieldTrip buffer <http://www.fieldtriptoolbox.org/development/realtime/implementation/>`_.
+It can be replaced with other clients such as ``LSLClient``. See `API`_ section for a list of clients.
+
 Bug reports
 -----------
 
 Use the `github issue tracker <https://github.com/mne-tools/mne-realtime/issues>`_
 to report bugs.
+
+ .. _API: <https://mne.tools/mne-realtime/api.html>
