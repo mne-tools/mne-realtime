@@ -105,7 +105,7 @@ class LSLClient(_BaseClient):
         for k in range(1,  lsl_info.channel_count() + 1):
             ch_names.append(ch_info.child_value("label") or
                             '{} {:03d}'.format(ch_type.upper(), k))
-            ch_types.append(ch_info.child_value("type") or ch_type)
+            ch_types.append(ch_info.child_value("type").lower() or ch_type)
             ch_info = ch_info.next_sibling()
         if ch_type == "eeg":
             try:
