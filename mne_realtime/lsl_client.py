@@ -19,8 +19,11 @@ class LSLClient(_BaseClient):
     ----------
     info : instance of mne.Info | None
         The measurement info read in from a file. If None, it is generated from
-        the LSL stream. This method may result in less info than expected. If
-        the channel type is EEG, the `standard_1005` montage is used for
+        the LSL stream. This method may result in less info than expected.
+        Also, the channel type of the LSL stream must be one the MNE supported
+        channel types: ‘ecg’, ‘bio’, ‘stim’, ‘eog’, ‘misc’, ‘seeg’,
+        ‘ecog’, ‘mag’, ‘eeg’, ‘ref_meg’, ‘grad’, ‘emg’, ‘hbr’ or ‘hbo’.
+        If the channel type is EEG, the `standard_1005` montage is used for
         electrode location.
     host : str
         The LSL identifier of the server. This is the source_id designated
