@@ -27,6 +27,9 @@ jobs:
         run: ./tools/pip_dependencies.sh
         name: 'Install MNE-Realtime'
       - shell: bash -el {0}
+        run: mne sys_info
+        name: Print config
+      - shell: bash -el {0}
         run: python -c "import mne; print(mne.datasets.testing.data_path(verbose=True))"
         name: 'Get test data'
       - shell: bash -el {0}

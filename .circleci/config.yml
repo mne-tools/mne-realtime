@@ -2,24 +2,37 @@ version: 2
 jobs:
     build_docs:
       docker:
-        - image: circleci/python:3.7-stretch
+        - image: circleci/python:3.8.5-buster
       steps:
+        - restore_cache:
+            keys:
+              - source-cache
         - checkout
+        - run:
+            name: Complete checkout
+            command: |
+              if ! git remote -v | grep upstream; then
+                git remote add upstream git://github.com/mne-tools/mne-python.git
+              fi
+              git fetch upstream
+        - save_cache:
+            key: source-cache
+            paths:
+              - ".git"
         - run:
             name: Set BASH_ENV
             command: |
+              set -e
               echo "set -e" >> $BASH_ENV
-              echo "export SUBJECTS_DIR=~/mne_data/MNE-sample-data/subjects" >> $BASH_ENV
-              echo "export DISPLAY=:99" >> $BASH_ENV
               echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
-              export MNE_ROOT=${PWD}/minimal_cmds
-              echo "export MNE_ROOT=${PWD}/minimal_cmds" >> $BASH_ENV
+              echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci"  >> $BASH_ENV
+              wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
+              source tools/get_minimal_commands.sh
+              echo "source ${PWD}/tools/get_minimal_commands.sh" >> $BASH_ENV
               echo "export PATH=~/.local/bin/:${MNE_ROOT}/bin:$PATH" >> $BASH_ENV
-              curl https://staff.washington.edu/larsoner/minimal_cmds.tar.gz | tar xz
-              echo "export LD_LIBRARY_PATH=${MNE_ROOT}/lib:$LD_LIBRARY_PATH" >> $BASH_ENV
-              echo "export NEUROMAG2FT_ROOT=${PWD}/minimal_cmds/bin" >> $BASH_ENV
               echo "BASH_ENV:"
               cat $BASH_ENV
+              mkdir -p ~/mne_data
         - run:
             name: check neuromag2ft
             command: |
@@ -32,9 +45,7 @@ jobs:
               echo ${CI_PULL_REQUEST//*pull\//} | tee merge.txt
               if [[ $(cat merge.txt) != "" ]]; then
                 echo "Merging $(cat merge.txt)";
-                git remote add upstream git://github.com/mne-tools/mne-realtime.git;
                 git pull --ff-only upstream "refs/pull/$(cat merge.txt)/merge";
-                git fetch upstream master;
               fi
 
         - run:
@@ -44,11 +55,6 @@ jobs:
                   libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 \
                   graphviz \
                   optipng
-
-        - run:
-            name: Spin up Xvfb
-            command: |
-              /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1400x900x24 -ac +extension GLX +render -noreset;
 
         - restore_cache:
             keys:
