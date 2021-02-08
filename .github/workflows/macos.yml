@@ -16,10 +16,11 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: conda-incubator/setup-miniconda@v2
         with:
           python-version: '3.7'
-        name: 'Setup python'
+          auto-update-conda: true
+        name: 'Setup conda'
       - shell: bash -el {0}
         run: ./tools/pip_dependencies.sh
         name: 'Install MNE-Realtime'
