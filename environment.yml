@@ -2,27 +2,20 @@ name: mne_realtime
 channels:
 - defaults
 dependencies:
-- python<3.7
+- python
 - pip
-- mkl
 - numpy
 - scipy
 - matplotlib
-- pyqt>=5.9
+- pyqt
 - scikit-learn
 - pillow
 - pytest
 - pytest-cov
-- pytest-mock
-- pytest-timeout
-- joblib
-- psutil
 - numpydoc
 - flake8
 - pip:
   - mne
-  - pytest-faulthandler
-  - pytest-sugar
   - pydocstyle
   - codespell
-  - pylsl>=1.12
+  - pylsl>=1.12,<1.13
