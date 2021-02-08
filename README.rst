@@ -1,9 +1,6 @@
 .. -*- mode: rst -*-
 
-|Travis|_ |Azure|_ |CircleCI|_ |Codecov|_
-
-.. |Travis| image:: https://travis-ci.com/mne-tools/mne-realtime.svg?branch=master
-.. _Travis: https://travis-ci.com/mne-tools/mne-realtime/branches
+|Azure|_ |CircleCI|_ |Codecov|_
 
 .. |Azure| image:: https://dev.azure.com/mne-tools/mne-realtime/_apis/build/status/mne-tools.mne-realtime?branchName=master
 .. _Azure: https://dev.azure.com/mne-tools/mne-realtime/_build/latest?definitionId=1&branchName=master
