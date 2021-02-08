@@ -29,7 +29,7 @@ jobs:
               wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/larsoner/mne-python/cis/tools/get_minimal_commands.sh
               source tools/get_minimal_commands.sh
               echo "source ${PWD}/tools/get_minimal_commands.sh" >> $BASH_ENV
-              echo "export PATH=~/.local/bin/:${MNE_ROOT}/bin:$PATH" >> $BASH_ENV
+              echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
               echo "BASH_ENV:"
               cat $BASH_ENV
               mkdir -p ~/mne_data
