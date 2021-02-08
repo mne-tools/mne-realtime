@@ -29,7 +29,7 @@ jobs:
           source mne-python/tools/get_minimal_commands.sh
         name: 'Install neuromag2ft'
       - shell: bash -el {0}
-        run: tools/pip_dependencies.sh
+        run: ./tools/pip_dependencies.sh
         name: 'Install MNE-Realtime'
       - shell: bash -el {0}
         run: python -c "import mne; print(mne.datasets.testing.data_path(verbose=True))"
