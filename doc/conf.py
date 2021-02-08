@@ -369,7 +369,7 @@ sphinx_gallery_conf = {
     'default_thumb_file': os.path.join('_static', 'mne_helmet.png'),
     'backreferences_dir': 'generated',
     'plot_gallery': 'True',  # Avoid annoying Unicode/bool default warning
-    'download_section_examples': False,
+    'download_all_examples': False,
     'thumbnail_size': (160, 112),
     'min_reported_time': 1.,
     'abort_on_example_error': False,
