@@ -86,12 +86,28 @@ class LSLClient(_BaseClient):
         # To use this function with an LSL stream which has a 'name' but no
         # 'source_id', change the keyword in pylsl.resolve_byprop accordingly.
         pylsl = _check_pylsl_installed(strict=True)
-        stream_info = pylsl.resolve_byprop('source_id', self.host,
-                                           timeout=self.wait_max)[0]
+        print(f'Looking for LSL stream {self.host}...')
+        # resolve_byprop is a bit fragile
+        streams = pylsl.resolve_streams(wait_time=min(0.1, self.wait_max))
+        ids = list()
+        for stream_info in streams:
+            ids.append(stream_info.source_id())
+            if ids[-1] == self.host:
+                break
+        else:
+            raise RuntimeError(f'{self.host} not found in streams: {ids}')
+        print(f'Found stream {repr(stream_info.name())} via '
+              f'{stream_info.source_id()}...')
         self.client = pylsl.StreamInlet(info=stream_info,
                                         max_buflen=self.buffer_size)
 
         return self
+
+    def _connection_error(self):
+        pylsl = _check_pylsl_installed(strict=True)
+        extra = (f' Available streams on {self.host} from resolve_streams():\n'
+                 f'{pylsl.resolve_streams()}')
+        super()._connection_error(extra)
 
     def _create_info(self):
         montage = None

@@ -61,7 +61,6 @@ class _BaseClient(object):
         self._recv_callbacks = list()
 
     def __enter__(self):  # noqa: D105
-
         # connect to buffer
         logger.info("Client: Waiting for server to start")
         start_time = time.time()
@@ -70,16 +69,20 @@ class _BaseClient(object):
                 self._connect()
                 logger.info("Client: Connected")
                 break
-            except Exception:
+            except Exception as exc:
+                print(exc)
                 time.sleep(0.1)
         else:
-            raise RuntimeError('Could not connect to Client.')
+            self._connection_error()
 
         if not self.info:
             self.info = self._create_info()
         self._enter_extra()
 
         return self
+
+    def _connection_error(self, extra=''):
+        raise RuntimeError(f'Could not connect to Client.{extra}')
 
     def __exit__(self, type, value, traceback):
         self._disconnect()

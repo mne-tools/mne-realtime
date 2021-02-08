@@ -18,5 +18,5 @@ from .stim_server_client import StimServer, StimClient
 from .fieldtrip_client import FieldTripClient
 
 
-__all__ = ['__version__', 'FieldTripClient', 'LSLClient', 'MockRtClient',
-           'RtClient', 'RtEpochs', 'StimClient', 'StimServer']
+__all__ = ['__version__', 'FieldTripClient', 'LSLClient', 'MockLSLStream',
+           'MockRtClient', 'RtClient', 'RtEpochs', 'StimClient', 'StimServer']

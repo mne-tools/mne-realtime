@@ -3,7 +3,7 @@ import threading
 import time
 
 import pytest
-from mne.utils import requires_good_network, run_tests_if_main
+from mne.utils import requires_good_network
 
 from mne_realtime import StimServer, StimClient
 
@@ -77,6 +77,3 @@ def _connect_client(trig_queue):
 
     trig_queue.put(stim_client.get_trigger())
     stim_client.close()
-
-
-run_tests_if_main()
