@@ -16,5 +16,5 @@ psutil
 numpydoc
 pydocstyle
 flake8
-pylsl>=1.12;<1.13
+pylsl>=1.12,<1.13
 mne
