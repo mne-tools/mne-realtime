@@ -37,23 +37,22 @@ jobs:
                 git fetch upstream master;
               fi
 
-        # Load our data
-        - restore_cache:
-            keys:
-              - data-cache
-              - pip-cache
+        - run:
+            name: Install 3D rendering libraries \ PyQt5 dependencies \ graphviz \ optipng (for optimized images)
+            command: |
+              sudo apt-get install libosmesa6 libglx-mesa0 libopengl0 libglx0 libdbus-1-3 \
+                  libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 \
+                  graphviz \
+                  optipng
 
         - run:
             name: Spin up Xvfb
             command: |
               /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1400x900x24 -ac +extension GLX +render -noreset;
 
-        # https://github.com/ContinuumIO/anaconda-issues/issues/9190#issuecomment-386508136
-        # https://github.com/golemfactory/golem/issues/1019
-        - run:
-            name: Fix libgcc_s.so.1 pthread_cancel bug
-            command: |
-              sudo apt-get install qt5-default
+        - restore_cache:
+            keys:
+              - pip-cache
 
         - run:
             name: Get Python running
@@ -77,7 +76,11 @@ jobs:
                python -c "import mne; mne.set_config('MNE_LOGGING_LEVEL', 'info')"
                python -c "import mne; level = mne.get_config('MNE_LOGGING_LEVEL'); assert level.lower() == 'info', repr(level)"
 
-        # Figure out if we should run a full, pattern, or noplot version
+        # Load our data
+        - restore_cache:
+            keys:
+              - data-cache
+
         - run:
             name: Get data
             command: |
