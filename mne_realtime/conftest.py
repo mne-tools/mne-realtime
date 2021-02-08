@@ -20,6 +20,7 @@ def pytest_configure(config):
     # - This list should also be considered alongside reset_warnings in
     #   doc/conf.py.
     warning_lines = """
+    ignore:.*may indicate binary incompatibility.*:RuntimeWarning
     error::
     """  # noqa: E501
     for warning_line in warning_lines.split('\n'):
