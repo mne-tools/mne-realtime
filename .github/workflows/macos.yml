@@ -14,14 +14,11 @@ jobs:
     defaults:
       run:
         shell: bash
-    env:
-      PYTHON_VERSION: '3.7'
-      MNE_LOGGING_LEVEL: 'warning'
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: '3.7'
         name: 'Setup python'
       - shell: bash -el {0}
         run: ./tools/pip_dependencies.sh

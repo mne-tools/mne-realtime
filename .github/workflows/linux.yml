@@ -14,14 +14,11 @@ jobs:
     defaults:
       run:
         shell: bash
-    env:
-      PYTHON_VERSION: '3.9'
-      MNE_LOGGING_LEVEL: 'info'
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: '3.9'
         name: 'Setup python'
       - shell: bash -el {0}
         run: |

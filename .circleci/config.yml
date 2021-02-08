@@ -12,7 +12,7 @@ jobs:
             name: Complete checkout
             command: |
               if ! git remote -v | grep upstream; then
-                git remote add upstream git://github.com/mne-tools/mne-python.git
+                git remote add upstream git://github.com/mne-tools/mne-realtime.git
               fi
               git fetch upstream
         - save_cache:
