@@ -24,7 +24,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
         name: 'Setup python'
       - shell: bash -el {0}
-        run: tools/pip_dependencies.sh
+        run: ./tools/pip_dependencies.sh
         name: 'Install MNE-Realtime'
       - shell: bash -el {0}
         run: python -c "import mne; print(mne.datasets.testing.data_path(verbose=True))"
