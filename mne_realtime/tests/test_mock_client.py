@@ -9,7 +9,6 @@ import pytest
 from mne import (Epochs, read_events, read_epochs, find_events, create_info,
                  pick_channels, pick_types, concatenate_raws)
 from mne.io import RawArray, read_raw_fif
-from mne.utils import run_tests_if_main
 from mne.datasets import testing
 
 from mne_realtime import MockRtClient, RtEpochs
@@ -142,6 +141,13 @@ def test_get_event_data():
     assert_array_equal(rt_data, data)
 
 
+def _update_times(raw):
+    try:  # 0.23+ not needed
+        raw._update_times()
+    except AttributeError:
+        pass
+
+
 def test_find_events():
     """Test find_events in rt_epochs."""
     raw = read_raw_fif(raw_fname, preload=True, verbose=False)
@@ -164,7 +170,7 @@ def test_find_events():
     raw._data[stim_channel_idx, 520:530] = 6
     raw._data[stim_channel_idx, 530:532] = 5
     raw._data[stim_channel_idx, 540] = 6
-    raw._update_times()
+    _update_times(raw)
 
     # consecutive=False
     find_events = dict(consecutive=False)
@@ -228,7 +234,7 @@ def test_find_events():
     # Test that we can handle events at the beginning of the buffer
     raw._data[stim_channel_idx, :] = 0
     raw._data[stim_channel_idx, 1000:1005] = 5
-    raw._update_times()
+    _update_times(raw)
 
     # Check that we find events that start at the beginning of the buffer
     find_events = dict(consecutive=False)
@@ -249,7 +255,7 @@ def test_find_events():
     # Test that we can handle events over different buffers
     raw._data[stim_channel_idx, :] = 0
     raw._data[stim_channel_idx, 997:1003] = 5
-    raw._update_times()
+    _update_times(raw)
     for min_dur in [0.002, 0.004]:
         find_events = dict(consecutive=False, min_duration=min_dur)
         rt_client = MockRtClient(raw)
@@ -284,10 +290,11 @@ def test_rejection(buffer_size):
     epochs_to_reject = [1, 3]
     epochs_to_keep = np.setdiff1d(np.arange(len(epoch_start_samples)),
                                   epochs_to_reject)
-    expected_drop_log = [list() for _ in range(len(epoch_start_samples))]
+    expected_drop_log = [tuple() for _ in range(len(epoch_start_samples))]
     for cur_epoch in epochs_to_reject:
         raw_array[1, epoch_start_samples[cur_epoch]] = reject_threshold + 1
-        expected_drop_log[cur_epoch] = [ch_names[1]]
+        expected_drop_log[cur_epoch] = (ch_names[1],)
+    expected_drop_log = tuple(expected_drop_log)
 
     raw = RawArray(raw_array, info)
     events = find_events(raw, shortest_event=1, initial_event=True)
@@ -300,7 +307,7 @@ def test_rejection(buffer_size):
     assert len(epochs) == len(epoch_start_samples) - len(epochs_to_reject)
     assert_array_equal(epochs_data[:, 1, 0],
                        raw_array[1, epoch_start_samples[epochs_to_keep]])
-    assert_array_equal(epochs.drop_log, expected_drop_log)
+    assert epochs.drop_log == expected_drop_log
     assert_array_equal(epochs.selection, epochs_to_keep)
 
     rt_client = MockRtClient(raw)
@@ -315,7 +322,7 @@ def test_rejection(buffer_size):
                         buffer_size=buffer_size)
 
     assert len(rt_epochs) == len(epochs_to_keep)
-    assert_array_equal(rt_epochs.drop_log, expected_drop_log)
+    assert rt_epochs.drop_log == expected_drop_log
     assert_array_equal(rt_epochs.selection, epochs_to_keep)
     rt_data = rt_epochs.get_data()
     assert rt_data.shape == epochs_data.shape
@@ -382,6 +389,3 @@ def test_events_long():
     y_offline = epochs_offline.events[:, 2]
     assert_array_equal(X_rt, X_offline)
     assert_array_equal(y_rt, y_offline)
-
-
-run_tests_if_main()

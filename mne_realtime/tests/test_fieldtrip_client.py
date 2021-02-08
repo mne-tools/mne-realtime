@@ -18,7 +18,6 @@ import pytest
 from mne import Epochs, find_events, pick_types
 from mne.io import read_raw_fif
 from mne.utils import requires_neuromag2ft
-from mne.utils import run_tests_if_main
 from mne_realtime import FieldTripClient, RtEpochs
 
 from mne_realtime.tests.test_mock_client import _call_base_epochs_public_api
@@ -165,6 +164,3 @@ def test_fieldtrip_client(free_tcp_port):
         assert n_channels2 == len(picks)
     finally:
         kill_signal.put(False)  # stop the buffer
-
-
-run_tests_if_main()

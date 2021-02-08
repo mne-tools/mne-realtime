@@ -22,9 +22,11 @@ class MockLSLStream(object):
     time_dilation : int
         A scale factor to speed up or slow down the rate of
         the data being streamed.
+    status : bool
+        If True, give status updates every ``sfreq`` samples.
     """
 
-    def __init__(self, host, raw, ch_type, time_dilation=1):
+    def __init__(self, host, raw, ch_type, time_dilation=1, status=False):
         self._host = host
         self._ch_type = ch_type
         self._time_dilation = time_dilation
@@ -32,20 +34,21 @@ class MockLSLStream(object):
         raw.load_data().pick(ch_type)
         self._raw = raw
         self._sfreq = int(self._raw.info['sfreq'])
+        self._status = bool(status)
 
     def start(self):
         """Start a mock LSL stream."""
-        print("now sending data...")
-        self.process = Process(target=self._initiate_stream)
-        self.process.daemon = True
+        if self._status:
+            print("Now sending data...")
+        self.process = Process(target=self._initiate_stream, daemon=True)
         self.process.start()
-
         return self
 
     def stop(self):
         """Stop a mock LSL stream."""
         self._streaming = False
-        print("Stopping stream...")
+        if self._status:
+            print("Stopping stream...")
         self.process.terminate()
         return self
 
@@ -82,9 +85,13 @@ class MockLSLStream(object):
 
         # let's make some data
         counter = 0
+        every = max(int(round(self._sfreq)), 1)
         while self._streaming:
             mysample = self._raw[:, counter][0].ravel().tolist()
             # now send it and wait for a bit
+            if self._status and counter % every == 0:
+                print(f'Sending sample {counter} on {self._host}, '
+                      f'have_consumers={outlet.have_consumers()}')
             outlet.push_sample(mysample)
             counter = 0 if counter == self._raw.last_samp else counter + 1
             time.sleep(self._time_dilation / self._sfreq)

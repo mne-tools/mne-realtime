@@ -11,6 +11,7 @@ import copy
 import numpy as np
 
 from mne import pick_channels
+from mne.io.pick import _picks_to_idx
 from mne.utils import logger, verbose, fill_doc
 from mne.epochs import BaseEpochs
 from mne.event import _find_events
@@ -151,6 +152,10 @@ class RtEpochs(BaseEpochs):
         self._events = list()
         self._selection = list()
 
+        # Number of good and bad epochs received
+        self._n_good = 0
+        self._n_bad = 0
+
         # call BaseEpochs constructor
         super(RtEpochs, self).__init__(
             info, None, None, event_id, tmin, tmax, baseline, picks=picks,
@@ -200,10 +205,6 @@ class RtEpochs(BaseEpochs):
         self._last_buffer = None
         self._first_samp = 0
         self._event_backlog = list()
-
-        # Number of good and bad epochs received
-        self._n_good = 0
-        self._n_bad = 0
 
         self._started = False
         self._last_time = time.time()
@@ -350,7 +351,7 @@ class RtEpochs(BaseEpochs):
     next = __next__
 
     @verbose
-    def _get_data(self, out=True, picks=None,  verbose=None):
+    def _get_data(self, out=True, picks=None, item=None, verbose=None):
         """
         Return all data as numpy array.
 
@@ -374,16 +375,14 @@ class RtEpochs(BaseEpochs):
         not on data loading.
         """
         if out:
-            epochs = list()
-            for epoch in self._epoch_queue:
-                epochs.append(epoch)
-
-            data = np.array(epochs)
-
-            if picks is not None:
-                picks = _picks_to_idx(self.info, picks)
-                data = data[:, picks]
-            return data
+            item = slice(None) if item is None else item
+            select = self._item_to_select(item)  # indices or slice
+            use_idx = np.arange(len(self._events))[select]
+            if picks is None:
+                picks = slice(None)
+            else:
+                picks = _picks_to_idx(self.info, picks, none='all', exclude=())
+            return np.array([self._epoch_queue[idx][picks] for idx in use_idx])
 
     def _process_raw_buffer(self, raw_buffer):
         """Process raw buffer (callback from RtClient).
@@ -409,11 +408,11 @@ class RtEpochs(BaseEpochs):
         raw_buffer = self._cals * raw_buffer
 
         # detect events
-        data = np.abs(raw_buffer[self._stim_picks]).astype(np.int)
+        data = np.abs(raw_buffer[self._stim_picks]).astype(np.int64)
         # if there is a previous buffer check the last samples from it too
         if self._last_buffer is not None:
-            prev_data = self._last_buffer[self._stim_picks,
-                                          -raw_buffer.shape[1]:].astype(np.int)
+            prev_data = self._last_buffer[
+                self._stim_picks, -raw_buffer.shape[1]:].astype(np.int64)
             data = np.concatenate((prev_data, data), axis=1)
             data = np.atleast_2d(data)
             buff_events = _find_events(data,
@@ -507,7 +506,12 @@ class RtEpochs(BaseEpochs):
         epoch = epoch[self.picks, :]
 
         # Detrend, baseline correct, decimate
-        epoch = self._detrend_offset_decim(epoch, verbose='ERROR')
+        kwargs = dict()
+        try:  # 0.23+
+            kwargs['picks'] = self._detrend_picks
+        except AttributeError:
+            pass
+        epoch = self._detrend_offset_decim(epoch, verbose='ERROR', **kwargs)
 
         # apply SSP
         epoch = self._project_epoch(epoch)
@@ -519,11 +523,11 @@ class RtEpochs(BaseEpochs):
         if is_good:
             self._epoch_queue.append(epoch)
             self._events.append((event_samp, 0, event_id))
-            self.drop_log.append(list())
+            self.drop_log = self.drop_log + (tuple(),)
             self._selection.append(len(self.drop_log) - 1)
             self._n_good += 1
         else:
-            self.drop_log.append(offending_reasons)
+            self.drop_log = self.drop_log + (tuple(offending_reasons),)
             self._n_bad += 1
 
     @verbose
