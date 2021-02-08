@@ -33,7 +33,7 @@ jobs:
       $ErrorActionPreference = "Stop"
       $PSDefaultParameterValues['*:ErrorAction']='Stop'
       pip install --upgrade --pre numpy scipy matplotlib
-      pip install https://github.com/mne-tools/mne-python/archive/c304072d1c67912da9b4ac62fe64e07ed41f2dd6.tar.gz
+      pip install https://api.github.com/repos/mne-tools/mne-python/zipball/main
       pip install --upgrade -r requirements.txt
       pip install codecov pylsl
     displayName: 'Install dependencies with pip'

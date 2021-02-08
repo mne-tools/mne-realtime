@@ -11,4 +11,4 @@ numpydoc
 pydocstyle
 flake8
 pylsl>=1.12,<1.13
-mne
+https://api.github.com/repos/mne-tools/mne-python/zipball/main
