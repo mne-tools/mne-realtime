@@ -1,0 +1,42 @@
+name: 'linux / pip'
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  job:
+    name: 'py3.9'
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHON_VERSION: '3.9'
+      MNE_LOGGING_LEVEL: 'info'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+        name: 'Setup python'
+      - shell: bash -el {0}
+        run: |
+          git clone https://github.com/mne-tools/mne-python.git --depth=1
+          source mne-python/tools/get_minimal_commands.sh
+        name: 'Install neuromag2ft'
+      - shell: bash -el {0}
+        run: tools/pip_dependencies.sh
+        name: 'Install MNE-Realtime'
+      - shell: bash -el {0}
+        run: python -c "import mne; print(mne.datasets.testing.data_path(verbose=True))"
+        name: 'Get test data'
+      - shell: bash -el {0}
+        run: pytest mne_realtime
+        name: 'Run tests'
+      - uses: codecov/codecov-action@v1
+        if: success()
+        name: 'Upload coverage to CodeCov'
