@@ -20,6 +20,8 @@ jobs:
         with:
           python-version: '3.7'
           auto-update-conda: true
+          environment-file: 'environment.yml'
+          activate-environment: 'mne_realtime'
         name: 'Setup conda'
       - shell: bash -el {0}
         run: ./tools/pip_dependencies.sh

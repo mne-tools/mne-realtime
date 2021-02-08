@@ -44,6 +44,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'numpydoc',
     'sphinx_gallery.gen_gallery',
+    'sphinxcontrib.bibtex',
 ]
 
 # this is needed for some reason...
@@ -295,14 +296,21 @@ texinfo_documents = []
 # intersphinx configuration
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
-    'numpy': ('https://www.numpy.org/devdocs', None),
+    'numpy': ('https://numpy.org/devdocs', None),
     'scipy': ('https://scipy.github.io/devdocs', None),
     'matplotlib': ('https://matplotlib.org', None),
     'sklearn': ('https://scikit-learn.org/stable', None),
     'joblib': ('https://joblib.readthedocs.io/en/latest', None),
     'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
-    'mne': ('https://mne-tools.github.io/dev', None),
+    'mne': ('https://mne.tools/dev', None),
 }
+
+##############################################################################
+# sphinxcontrib-bibtex
+
+bibtex_bibfiles = ['./references.bib']
+bibtex_style = 'unsrt'
+bibtex_footbibliography_header = ''
 
 ##############################################################################
 # sphinx-gallery
@@ -400,7 +408,7 @@ numpydoc_xref_aliases = {
     'Epochs': 'mne.Epochs', 'Layout': 'mne.channels.Layout',
     'Raw': 'mne.io.Raw', 'Covariance': 'mne.Covariance',
     'Evoked': 'mne.Evoked', 'Info': 'mne.Info',
-    'Montage': 'mne.channels.Montage',
+    'Montage': 'mne.channels.Montage', 'Forward': 'mne.Forward',
     'DigMontage': 'mne.channels.DigMontage',
     # mne_realtime
     'RtEpochs': 'mne_realtime.RtEpochs',
