@@ -22,7 +22,7 @@ jobs:
         name: 'Setup python'
       - shell: bash -el {0}
         run: |
-          wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/larsoner/mne-python/cis/tools/get_minimal_commands.sh
+          wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
           source ./tools/get_minimal_commands.sh
         name: 'Install neuromag2ft'
       - shell: bash -el {0}
