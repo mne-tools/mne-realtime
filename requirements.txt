@@ -10,5 +10,5 @@ pytest-cov
 numpydoc
 pydocstyle
 flake8
-pylsl>=1.12,<1.13
+pylsl>=1.12
 https://api.github.com/repos/mne-tools/mne-python/zipball/main
