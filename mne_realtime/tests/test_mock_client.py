@@ -142,7 +142,7 @@ def test_get_event_data():
 
 
 def _update_times(raw):
-    try:  # 0.23+ not needed
+    try:  # on MNE 0.23+ this is not needed
         raw._update_times()
     except AttributeError:
         pass

@@ -507,7 +507,7 @@ class RtEpochs(BaseEpochs):
 
         # Detrend, baseline correct, decimate
         kwargs = dict()
-        try:  # 0.23+
+        try:  # Needed on MNE 0.23+
             kwargs['picks'] = self._detrend_picks
         except AttributeError:
             pass
