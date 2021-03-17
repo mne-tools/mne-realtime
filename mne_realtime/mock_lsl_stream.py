@@ -3,6 +3,7 @@
 # License: BSD (3-clause)
 import time
 from multiprocessing import Process
+from warnings import warn
 
 from mne.utils import _check_pylsl_installed
 from mne.io import constants
@@ -85,13 +86,18 @@ class MockLSLStream(object):
 
         # let's make some data
         counter = 0
+        delta = self._time_dilation / self._sfreq  # desired push step
+        next_t = time.time()
         every = max(int(round(self._sfreq)), 1)
         while self._streaming:
-            mysample = self._raw[:, counter][0].ravel().tolist()
+            mysample = self._raw[:, counter][0].ravel()
             # now send it and wait for a bit
             if self._status and counter % every == 0:
                 print(f'Sending sample {counter} on {self._host}, '
                       f'have_consumers={outlet.have_consumers()}')
             outlet.push_sample(mysample)
             counter = 0 if counter == self._raw.last_samp else counter + 1
-            time.sleep(self._time_dilation / self._sfreq)
+            next_t += delta
+            sleep = next_t - time.time()
+            if sleep > 0:
+                time.sleep(sleep)

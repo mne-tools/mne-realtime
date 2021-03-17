@@ -82,7 +82,8 @@ class LSLClient(_BaseClient):
         """Return an iterator over raw buffers."""
         while True:
             samples, _ = self.client.pull_chunk(max_samples=self.buffer_size)
-
+            if not len(samples):
+                samples = np.empty((self.info['nchan'], 0))
             yield np.vstack(samples).T
 
     def _connect(self):
