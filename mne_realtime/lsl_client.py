@@ -127,7 +127,7 @@ class LSLClient(_BaseClient):
             try:
                 montage = 'standard_1005'
                 info = create_info(ch_names, sfreq, ch_types, montage=montage)
-            except ValueError:
+            except TypeError:
                 info = create_info(ch_names, sfreq, ch_types)
 
         return info
