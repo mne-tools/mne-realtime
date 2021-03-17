@@ -36,17 +36,19 @@ raw = read_raw_fif(raw_fname).crop(0, 30).load_data().pick('eeg')
 # For this example, let's use the mock LSL stream.
 _, ax = plt.subplots(1)
 n_epochs = 5
-with MockLSLStream(host, raw, 'eeg'):
-    with LSLClient(info=raw.info, host=host, wait_max=wait_max) as client:
-        client_info = client.get_measurement_info()
-        sfreq = int(client_info['sfreq'])
 
-        # let's observe ten seconds of data
-        for ii in range(n_epochs):
-            print('Got epoch %d/%d' % (ii + 1, n_epochs))
-            plt.cla()
-            epoch = client.get_data_as_epoch(n_samples=sfreq)
-            epoch.average().plot(axes=ax)
-            plt.pause(1.)
-        plt.draw()
+if __name__ == '__main__':    
+    with MockLSLStream(host, raw, 'eeg'):
+        with LSLClient(info=raw.info, host=host, wait_max=wait_max) as client:
+            client_info = client.get_measurement_info()
+            sfreq = int(client_info['sfreq'])
+    
+            # let's observe ten seconds of data
+            for ii in range(n_epochs):
+                print('Got epoch %d/%d' % (ii + 1, n_epochs))
+                plt.cla()
+                epoch = client.get_data_as_epoch(n_samples=sfreq)
+                epoch.average().plot(axes=ax)
+                plt.pause(1.)
+            plt.draw()
 print('Streams closed')
