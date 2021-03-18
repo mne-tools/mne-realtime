@@ -37,6 +37,8 @@ raw = read_raw_fif(raw_fname).crop(0, 30).load_data().pick('eeg')
 _, ax = plt.subplots(1)
 n_epochs = 5
 
+# main function is necessary here to enable script as own program 
+# in such way a child process can be started
 if __name__ == '__main__':    
     with MockLSLStream(host, raw, 'eeg'):
         with LSLClient(info=raw.info, host=host, wait_max=wait_max) as client:
