@@ -38,7 +38,7 @@ _, ax = plt.subplots(1)
 n_epochs = 5
 
 # main function is necessary here to enable script as own program 
-# in such way a child process can be started
+# in such way a child process can be started (primarily for Windows)
 if __name__ == '__main__':    
     with MockLSLStream(host, raw, 'eeg'):
         with LSLClient(info=raw.info, host=host, wait_max=wait_max) as client:
