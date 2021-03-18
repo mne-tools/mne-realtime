@@ -124,11 +124,11 @@ class LSLClient(_BaseClient):
             ch_types.append(ch_info.child_value("type") or ch_type)
             ch_info = ch_info.next_sibling()
         if ch_type == "eeg":
+            info = create_info(ch_names, sfreq, ch_types)
             try:
-                montage = 'standard_1005'
-                info = create_info(ch_names, sfreq, ch_types, montage=montage)
-            except TypeError:
-                info = create_info(ch_names, sfreq, ch_types)
+                info.set_montage('standard_1005', match_case=False)
+            except ValueError:
+                pass
 
         return info
 
