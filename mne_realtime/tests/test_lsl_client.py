@@ -1,7 +1,9 @@
 # Author: Teon Brooks <teon.brooks@gmail.com>
 #
 # License: BSD (3-clause)
-from os import path as op
+from os import getenv, path as op
+import time
+import pytest
 
 from mne.utils import requires_pylsl
 from mne.io import read_raw_fif
@@ -28,6 +30,9 @@ def test_lsl_client():
         with LSLClient(info=raw_info, host=host, wait_max=5) as client:
             client_info = client.get_measurement_info()
             epoch = client.get_data_as_epoch(n_samples=sfreq * n_secs * 2)
+            time.sleep(1.)
+            raw = list(client.iter_raw_buffers())
+            assert len(raw) > 0
 
     assert client_info['nchan'] == raw_info['nchan']
     assert ([ch["ch_name"] for ch in client_info["chs"]] ==
