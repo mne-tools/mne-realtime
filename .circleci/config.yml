@@ -29,7 +29,6 @@ jobs:
               echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
               wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
               source tools/get_minimal_commands.sh
-              echo "source ${PWD}/tools/get_minimal_commands.sh" >> $BASH_ENV
               echo "export MNE_3D_BACKEND=pyvistaqt" >> $BASH_ENV
               echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
               echo "source ~/python_env/bin/activate" >> $BASH_ENV
@@ -68,9 +67,9 @@ jobs:
         - run:
             name: Get Python running
             command: |
-              pip install --user --upgrade --progress-bar off pip numpy
-              pip install --user --upgrade --progress-bar off -r requirements.txt
-              pip install --user --upgrade --progress-bar off "sphinxcontrib-bibtex==2.0.0" "https://api.github.com/repos/mne-tools/mne-python/zipball/main" "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
+              python -m pip install --user --upgrade --progress-bar off pip numpy
+              python -m pip install --user --upgrade --progress-bar off -r requirements.txt
+              python -m pip install --user --upgrade --progress-bar off "sphinxcontrib-bibtex==2.0.0" "https://api.github.com/repos/mne-tools/mne-python/zipball/main" "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
 
         - save_cache:
             key: pip-cache
