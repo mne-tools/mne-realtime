@@ -60,7 +60,8 @@ jobs:
                 libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
                 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 \
                 graphviz optipng
-              wget -O - https://github.com/sccn/liblsl/releases/download/v1.15.2/liblsl-1.15.2-focal_amd64.deb > /dev/null 2>&1 | sudo dpkg -i -
+              wget -O lsl.deb https://github.com/sccn/liblsl/releases/download/v1.15.2/liblsl-1.15.2-focal_amd64.deb
+              sudo dpkg -i lsl.deb
         - restore_cache:
             keys:
               - pip-cache
