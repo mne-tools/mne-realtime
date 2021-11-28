@@ -35,8 +35,7 @@ def _call_base_epochs_public_api(epochs, tmpdir):
     epochs_copy = epochs.copy()
     epochs_copy.decimate(1)
     assert epochs_copy.get_data().shape == orig_data.shape
-    epochs_copy.info['lowpass'] = 10  # avoid warning
-    epochs_copy.decimate(10)
+    epochs_copy.decimate(10, verbose='error')
     assert np.abs(10.0 - orig_data.shape[2] /
                   epochs_copy.get_data().shape[2]) <= 1
 
@@ -163,14 +162,13 @@ def test_find_events():
 
     # Reset some data for ease of comparison
     raw._first_samps[0] = 0
-    raw.info['sfreq'] = 1000
+    half_sec = int(np.ceil(raw.info['sfreq'])) // 2
     # Test that we can handle consecutive events with no gap
     raw._data[stim_channel_idx, :] = 0
-    raw._data[stim_channel_idx, 500:520] = 5
-    raw._data[stim_channel_idx, 520:530] = 6
-    raw._data[stim_channel_idx, 530:532] = 5
-    raw._data[stim_channel_idx, 540] = 6
-    _update_times(raw)
+    raw._data[stim_channel_idx, half_sec:half_sec + 20] = 5
+    raw._data[stim_channel_idx, half_sec + 20:half_sec + 30] = 6
+    raw._data[stim_channel_idx, half_sec + 30:half_sec + 32] = 5
+    raw._data[stim_channel_idx, half_sec + 40] = 6
 
     # consecutive=False
     find_events = dict(consecutive=False)
@@ -230,11 +228,10 @@ def test_find_events():
 
     # Reset some data for ease of comparison
     raw._first_samps[0] = 0
-    raw.info['sfreq'] = 1000
+    one_sec = int(np.ceil(raw.info['sfreq']))
     # Test that we can handle events at the beginning of the buffer
     raw._data[stim_channel_idx, :] = 0
-    raw._data[stim_channel_idx, 1000:1005] = 5
-    _update_times(raw)
+    raw._data[stim_channel_idx, one_sec:one_sec + 5] = 5
 
     # Check that we find events that start at the beginning of the buffer
     find_events = dict(consecutive=False)
@@ -251,10 +248,9 @@ def test_find_events():
 
     # Reset some data for ease of comparison
     raw._first_samps[0] = 0
-    raw.info['sfreq'] = 1000
     # Test that we can handle events over different buffers
     raw._data[stim_channel_idx, :] = 0
-    raw._data[stim_channel_idx, 997:1003] = 5
+    raw._data[stim_channel_idx, one_sec - 3:one_sec + 3] = 5
     _update_times(raw)
     for min_dur in [0.002, 0.004]:
         find_events = dict(consecutive=False, min_duration=min_dur)

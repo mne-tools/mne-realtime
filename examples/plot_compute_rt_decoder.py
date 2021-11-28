@@ -116,7 +116,7 @@ for ev_num, ev in enumerate(rt_epochs.iter_evoked()):
                                 color='b', alpha=0.5)
         plt.pause(0.01)
         plt.draw()
-        ax.collections.remove(fill)  # Remove old fill area
+        fill.remove()  # Remove old fill area
 
 plt.fill_between(scores_x, hyp_limits[0], y2=hyp_limits[1], color='b',
                  alpha=0.5)

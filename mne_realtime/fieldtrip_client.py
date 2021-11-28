@@ -136,6 +136,7 @@ class FieldTripClient(object):
                  'FieldTrip Header object')
 
             info = _empty_info(self.ft_header.fSample)  # create info
+            info._unlocked = True
 
             # modify info attributes according to the FieldTrip Header object
             info['comps'] = list()
@@ -210,6 +211,7 @@ class FieldTripClient(object):
                 info['chs'].append(this_info)
                 info._update_redundant()
                 info._check_consistency()
+            info._unlocked = False
 
             if chs_unknown:
                 msg = ('Following channels in the FieldTrip header were '
