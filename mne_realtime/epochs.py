@@ -12,7 +12,7 @@ import numpy as np
 
 from mne import pick_channels
 from mne.io.pick import _picks_to_idx
-from mne.utils import logger, verbose, fill_doc
+from mne.utils import logger, verbose, fill_doc, warn
 from mne.epochs import BaseEpochs
 from mne.event import _find_events
 
@@ -351,7 +351,7 @@ class RtEpochs(BaseEpochs):
     next = __next__
 
     @verbose
-    def _get_data(self, out=True, picks=None, item=None, verbose=None):
+    def _get_data(self, out=True, picks=None, item=None, units=None, verbose=None):
         """
         Return all data as numpy array.
 
@@ -360,6 +360,7 @@ class RtEpochs(BaseEpochs):
         out : bool
             Return the data.
         %(picks_all)s
+        %(units)s
         verbose: bool, str, int, or None
             If not None, override default verbose level (see
             :func:`mne.verbose`. Defaults to self.verbose.
@@ -374,6 +375,9 @@ class RtEpochs(BaseEpochs):
         Rejection in RtEpochs already happens at epoch creation,
         not on data loading.
         """
+        if units is not None:
+            warn('the units argument is currently not supported and will be '
+                 'ignored')
         if out:
             item = slice(None) if item is None else item
             select = self._item_to_select(item)  # indices or slice

@@ -67,9 +67,9 @@ jobs:
         - run:
             name: Get Python running
             command: |
-              python -m pip install --user --upgrade --progress-bar off pip numpy
-              python -m pip install --user --upgrade --progress-bar off -r requirements.txt
-              python -m pip install --user --upgrade --progress-bar off "sphinxcontrib-bibtex==2.0.0" "https://api.github.com/repos/mne-tools/mne-python/zipball/main" "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
+              python -m pip install --upgrade --progress-bar off pip numpy
+              python -m pip install --upgrade --progress-bar off -r requirements.txt
+              python -m pip install --upgrade --progress-bar off "sphinxcontrib-bibtex==2.0.0" "https://api.github.com/repos/mne-tools/mne-python/zipball/main" "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
 
         - save_cache:
             key: pip-cache
@@ -94,7 +94,7 @@ jobs:
         - run:
             name: Get data
             command: |
-              python setup.py develop --user
+              python setup.py develop
               mkdir -p ~/mne_data
               python -c "import mne; print(mne.datasets.sample.data_path(update_path=True))";
 
