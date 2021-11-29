@@ -131,13 +131,12 @@ jobs:
               - ~/mne_data/MNE-sample-data
 
     deploy:
-      docker:
-        - image: circleci/python:3.6-jessie
+      machine:
+        image: ubuntu-2004:202111-01
       steps:
         - add_ssh_keys:
             fingerprints:
               - "e7:19:19:09:fe:63:b2:e0:19:38:74:31:02:fb:f3:c9"
-              - "83:f3:88:48:5b:9f:66:8a:02:ef:dc:71:8d:99:ab:93"
         - attach_workspace:
             at: /tmp/build
         - restore_cache:
@@ -158,23 +157,23 @@ jobs:
             command: |
               set -e;
               if [ "${CIRCLE_BRANCH}" == "main" ]; then
-                git config --global user.email "circle@mne.com";
-                git config --global user.name "Circle CI";
-                cd ~/mne-tools.github.io;
+                git config --global user.email "circle@mne.com"
+                git config --global user.name "Circle CI"
+                ssh-add -D && ssh-add ~/.ssh/id_rsa_e7191909fe63b2e01938743102fbf3c9
+                cd ~/mne-tools.github.io
                 git checkout main
                 git remote -v
                 git fetch origin
                 git reset --hard origin/main
                 git clean -xdf
-                echo "Deploying dev docs for ${CIRCLE_BRANCH}.";
-                rm -Rf mne-realtime;
-                cp -a /tmp/build/html mne-realtime;
-                git add -A;
-                git commit -m "CircleCI update of mne-realtime docs (${CIRCLE_BUILD_NUM}).";
-                git --version;
-                GIT_SSH_COMMAND="ssh -vvv" git push origin main;
+                echo "Deploying dev docs for ${CIRCLE_BRANCH}."
+                rm -Rf mne-realtime
+                cp -a /tmp/build/html mne-realtime
+                git add -A
+                git commit -m "CircleCI update of mne-realtime docs (${CIRCLE_BUILD_NUM})."
+                git push origin main
               else
-                echo "No deployment (build: ${CIRCLE_BRANCH}).";
+                echo "No deployment (build: ${CIRCLE_BRANCH})."
               fi
         - save_cache:
             key: website-cache
