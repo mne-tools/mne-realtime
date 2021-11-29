@@ -2,13 +2,13 @@
 
 |Azure|_ |CircleCI|_ |Codecov|_
 
-.. |Azure| image:: https://dev.azure.com/mne-tools/mne-realtime/_apis/build/status/mne-tools.mne-realtime?branchName=master
-.. _Azure: https://dev.azure.com/mne-tools/mne-realtime/_build/latest?definitionId=1&branchName=master
+.. |Azure| image:: https://dev.azure.com/mne-tools/mne-realtime/_apis/build/status/mne-tools.mne-realtime?branchName=main
+.. _Azure: https://dev.azure.com/mne-tools/mne-realtime/_build/latest?definitionId=1&branchName=main
 
 .. |CircleCI| image:: https://circleci.com/gh/mne-tools/mne-realtime.svg?style=svg
 .. _CircleCI: https://circleci.com/gh/mne-tools/mne-realtime
 
-.. |Codecov| image:: https://codecov.io/gh/mne-tools/mne-realtime/branch/master/graph/badge.svg
+.. |Codecov| image:: https://codecov.io/gh/mne-tools/mne-realtime/branch/main/graph/badge.svg
 .. _Codecov: https://codecov.io/gh/mne-tools/mne-realtime
 
 MNE-realtime
@@ -43,7 +43,7 @@ Then install ``mne-realtime``:
 
 .. code-block:: bash
 
-   $ pip install https://api.github.com/repos/mne-tools/mne-realtime/zipball/master
+   $ pip install https://api.github.com/repos/mne-tools/mne-realtime/zipball/main
 
 These ``pip`` commands also work if you want to upgrade if a newer version of
 ``mne-realtime`` is available. If you do not have administrator privileges on the
