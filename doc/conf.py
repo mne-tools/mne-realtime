@@ -303,6 +303,8 @@ intersphinx_mapping = {
     'joblib': ('https://joblib.readthedocs.io/en/latest', None),
     'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
     'mne': ('https://mne.tools/dev', None),
+    'eeglabio': ('https://eeglabio.readthedocs.io/en/latest', None),
+    'nitime': ('https://nipy.org/nitime/', None),
 }
 
 ##############################################################################
