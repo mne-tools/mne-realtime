@@ -1,8 +1,8 @@
 version: 2
 jobs:
     build_docs:
-      docker:
-        - image: circleci/python:3.8.5-buster
+      machine:
+        image: ubuntu-2004:202111-01
       steps:
         - restore_cache:
             keys:
@@ -23,13 +23,17 @@ jobs:
             name: Set BASH_ENV
             command: |
               set -e
+              python3 -m venv ~/python_env --upgrade-deps
               echo "set -e" >> $BASH_ENV
               echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
               echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
               wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
               source tools/get_minimal_commands.sh
-              echo "source ${PWD}/tools/get_minimal_commands.sh" >> $BASH_ENV
+              echo "export MNE_3D_BACKEND=pyvistaqt" >> $BASH_ENV
               echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
+              echo "source ~/python_env/bin/activate" >> $BASH_ENV
+              mkdir -p ~/.local/bin
+              ln -s ~/python_env/bin/python ~/.local/bin/python
               echo "BASH_ENV:"
               cat $BASH_ENV
               mkdir -p ~/mne_data
@@ -51,11 +55,13 @@ jobs:
         - run:
             name: Install 3D rendering libraries \ PyQt5 dependencies \ graphviz \ optipng (for optimized images)
             command: |
-              sudo apt-get install libosmesa6 libglx-mesa0 libopengl0 libglx0 libdbus-1-3 \
-                  libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 \
-                  graphviz \
-                  optipng
-
+              sudo apt update
+              sudo apt install libosmesa6 libglx-mesa0 libopengl0 libglx0 libdbus-1-3 \
+                libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
+                libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 \
+                graphviz optipng
+              wget -O lsl.deb https://github.com/sccn/liblsl/releases/download/v1.15.2/liblsl-1.15.2-focal_amd64.deb
+              sudo apt install ./lsl.deb && rm lsl.deb
         - restore_cache:
             keys:
               - pip-cache
@@ -63,9 +69,9 @@ jobs:
         - run:
             name: Get Python running
             command: |
-              pip install --user --upgrade --progress-bar off pip numpy
-              pip install --user --upgrade --progress-bar off -r requirements.txt
-              pip install --user --upgrade --progress-bar off "sphinxcontrib-bibtex==2.0.0" "https://api.github.com/repos/mne-tools/mne-python/zipball/main" "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
+              python -m pip install --upgrade --progress-bar off pip numpy
+              python -m pip install --upgrade --progress-bar off -r requirements.txt
+              python -m pip install --upgrade --progress-bar off "sphinxcontrib-bibtex==2.0.0" "https://api.github.com/repos/mne-tools/mne-python/zipball/main" "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
 
         - save_cache:
             key: pip-cache
@@ -90,7 +96,7 @@ jobs:
         - run:
             name: Get data
             command: |
-              python setup.py develop --user
+              python setup.py develop
               mkdir -p ~/mne_data
               python -c "import mne; print(mne.datasets.sample.data_path(update_path=True))";
 
@@ -128,6 +134,9 @@ jobs:
       docker:
         - image: circleci/python:3.6-jessie
       steps:
+        - add_ssh_keys:
+            fingerprints:
+              - "e7:19:19:09:fe:63:b2:e0:19:38:74:31:02:fb:f3:c9"
         - attach_workspace:
             at: /tmp/build
         - restore_cache:
@@ -147,21 +156,21 @@ jobs:
             name: Deploy docs
             command: |
               set -e;
-              if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              if [ "${CIRCLE_BRANCH}" == "main" ]; then
                 git config --global user.email "circle@mne.com";
                 git config --global user.name "Circle CI";
                 cd ~/mne-tools.github.io;
-                git checkout master
+                git checkout main
                 git remote -v
                 git fetch origin
-                git reset --hard origin/master
+                git reset --hard origin/main
                 git clean -xdf
                 echo "Deploying dev docs for ${CIRCLE_BRANCH}.";
                 rm -Rf mne-realtime;
                 cp -a /tmp/build/html mne-realtime;
                 git add -A;
                 git commit -m "CircleCI update of mne-realtime docs (${CIRCLE_BUILD_NUM}).";
-                git push origin master;
+                git push origin main;
               else
                 echo "No deployment (build: ${CIRCLE_BRANCH}).";
               fi
@@ -182,4 +191,4 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main

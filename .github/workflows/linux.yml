@@ -1,4 +1,7 @@
 name: 'linux / pip'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number }}-${{ github.event.ref }}
+  cancel-in-progress: true
 on:
   push:
     branches:
@@ -31,6 +34,9 @@ jobs:
       - shell: bash -el {0}
         run: ./tools/pip_dependencies.sh
         name: 'Install MNE-Realtime'
+      - shell: bash -el {0}
+        run: pip install --upgrade https://github.com/mne-tools/mne-python/zipball/main
+        name: 'Install latest MNE'
       - shell: bash -el {0}
         run: mne sys_info
         name: Print config

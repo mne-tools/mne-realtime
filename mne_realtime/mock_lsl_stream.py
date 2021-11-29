@@ -3,10 +3,11 @@
 # License: BSD (3-clause)
 import time
 from multiprocessing import Process
-from warnings import warn
 
-from mne.utils import _check_pylsl_installed
 from mne.io import constants
+
+from .lsl_client import _check_pylsl_installed
+
 
 
 class MockLSLStream(object):
