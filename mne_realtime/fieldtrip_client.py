@@ -211,7 +211,6 @@ class FieldTripClient(object):
                 info['chs'].append(this_info)
                 info._update_redundant()
                 info._check_consistency()
-            info._unlocked = False
 
             if chs_unknown:
                 msg = ('Following channels in the FieldTrip header were '
@@ -222,15 +221,17 @@ class FieldTripClient(object):
 
             # XXX: the data in real-time mode and offline mode
             # does not match unless this is done
-            self.info['projs'] = list()
+            info = self.info.copy()
+            info._unlocked = True
+            info['projs'] = list()
 
             # FieldTrip buffer already does the calibration
-            for this_info in self.info['chs']:
+            for this_info in info['chs']:
                 this_info['range'] = 1.0
                 this_info['cal'] = 1.0
                 this_info['unit_mul'] = 0
 
-            info = copy.deepcopy(self.info)
+        info._unlocked = False
 
         return info
 
