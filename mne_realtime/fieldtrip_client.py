@@ -136,6 +136,7 @@ class FieldTripClient(object):
                  'FieldTrip Header object')
 
             info = _empty_info(self.ft_header.fSample)  # create info
+            info._unlocked = True
 
             # modify info attributes according to the FieldTrip Header object
             info['comps'] = list()
@@ -220,15 +221,17 @@ class FieldTripClient(object):
 
             # XXX: the data in real-time mode and offline mode
             # does not match unless this is done
-            self.info['projs'] = list()
+            info = self.info.copy()
+            info._unlocked = True
+            info['projs'] = list()
 
             # FieldTrip buffer already does the calibration
-            for this_info in self.info['chs']:
+            for this_info in info['chs']:
                 this_info['range'] = 1.0
                 this_info['cal'] = 1.0
                 this_info['unit_mul'] = 0
 
-            info = copy.deepcopy(self.info)
+        info._unlocked = False
 
         return info
 

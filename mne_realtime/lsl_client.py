@@ -9,7 +9,7 @@ from .base_client import _BaseClient
 from mne.epochs import EpochsArray
 from mne.io.meas_info import create_info
 from mne.io.pick import _picks_to_idx, pick_info
-from mne.utils import fill_doc, _check_pylsl_installed
+from mne.utils import fill_doc
 
 
 class LSLClient(_BaseClient):
@@ -140,3 +140,16 @@ class LSLClient(_BaseClient):
         self.client.close_stream()
 
         return self
+
+
+def _check_pylsl_installed(strict=True):
+    """Aux function."""
+    try:
+        import pylsl
+        return pylsl
+    except ImportError:
+        if strict is True:
+            raise RuntimeError('For this functionality to work, the pylsl '
+                               'library is required.')
+        else:
+            return False

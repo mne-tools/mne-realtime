@@ -12,7 +12,7 @@ import numpy as np
 
 from mne import pick_channels
 from mne.io.pick import _picks_to_idx
-from mne.utils import logger, verbose, fill_doc
+from mne.utils import logger, verbose, fill_doc, warn
 from mne.epochs import BaseEpochs
 from mne.event import _find_events
 
@@ -351,38 +351,23 @@ class RtEpochs(BaseEpochs):
     next = __next__
 
     @verbose
-    def _get_data(self, out=True, picks=None, item=None, verbose=None):
-        """
-        Return all data as numpy array.
-
-        Parameters
-        ----------
-        out : bool
-            Return the data.
-        %(picks_all)s
-        verbose: bool, str, int, or None
-            If not None, override default verbose level (see
-            :func:`mne.verbose`. Defaults to self.verbose.
-
-        Returns
-        -------
-        np.ndarray or None
-        epochs data
-
-        Notes
-        -----
-        Rejection in RtEpochs already happens at epoch creation,
-        not on data loading.
-        """
-        if out:
-            item = slice(None) if item is None else item
-            select = self._item_to_select(item)  # indices or slice
-            use_idx = np.arange(len(self._events))[select]
-            if picks is None:
-                picks = slice(None)
-            else:
-                picks = _picks_to_idx(self.info, picks, none='all', exclude=())
-            return np.array([self._epoch_queue[idx][picks] for idx in use_idx])
+    def _get_data(self, out=True, picks=None, item=None, *, units=None,
+                  tmin=None, tmax=None, verbose=None):
+        if not out:
+            return
+        unused = dict(tmin=tmin, units=units, tmax=tmax)
+        for key, value in unused.items():
+            if value is not None:
+                warn(f'the {key} argument is currently not supported and '
+                     'will be ignored')
+        item = slice(None) if item is None else item
+        select = self._item_to_select(item)  # indices or slice
+        use_idx = np.arange(len(self._events))[select]
+        if picks is None:
+            picks = slice(None)
+        else:
+            picks = _picks_to_idx(self.info, picks, none='all', exclude=())
+        return np.array([self._epoch_queue[idx][picks] for idx in use_idx])
 
     def _process_raw_buffer(self, raw_buffer):
         """Process raw buffer (callback from RtClient).

@@ -15,7 +15,7 @@ dependencies:
 - numpydoc
 - flake8
 - pip:
-  - https://api.github.com/repos/mne-tools/mne-python/zipball/main
+  - mne
   - pydocstyle
   - codespell
   - pylsl>=1.12
