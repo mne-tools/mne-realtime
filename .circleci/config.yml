@@ -137,6 +137,7 @@ jobs:
         - add_ssh_keys:
             fingerprints:
               - "e7:19:19:09:fe:63:b2:e0:19:38:74:31:02:fb:f3:c9"
+              - "83:f3:88:48:5b:9f:66:8a:02:ef:dc:71:8d:99:ab:93"
         - attach_workspace:
             at: /tmp/build
         - restore_cache:
@@ -170,7 +171,8 @@ jobs:
                 cp -a /tmp/build/html mne-realtime;
                 git add -A;
                 git commit -m "CircleCI update of mne-realtime docs (${CIRCLE_BUILD_NUM}).";
-                git push origin main;
+                git --version;
+                GIT_SSH_COMMAND="ssh -vvv" git push origin main;
               else
                 echo "No deployment (build: ${CIRCLE_BRANCH}).";
               fi
