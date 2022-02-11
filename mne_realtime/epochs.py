@@ -533,7 +533,7 @@ class RtEpochs(BaseEpochs):
 
             .. versionadded:: 0.12
 
-        %(verbose_meth)s
+        %(verbose)s
 
         Returns
         -------

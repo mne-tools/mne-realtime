@@ -10,6 +10,7 @@ import threading
 import socket
 import subprocess
 import time
+import warnings
 
 import numpy as np
 from numpy.testing import assert_array_equal, assert_allclose
@@ -49,7 +50,8 @@ def _run_buffer(kill_signal, server_port):
     # Let measurement continue for the entire duration
     kill_signal.get(timeout=40.0)
     process.terminate()
-    with pytest.warns(None):  # still running
+    with warnings.catch_warnings(record=True):  # still running
+        warnings.simplefilter('ignore')
         process.stderr.close()
         process.stdout.close()
         del process

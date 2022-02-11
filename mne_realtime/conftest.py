@@ -19,9 +19,11 @@ def pytest_configure(config):
     #   we should remove them from here.
     # - This list should also be considered alongside reset_warnings in
     #   doc/conf.py.
-    warning_lines = """
-    ignore:.*may indicate binary incompatibility.*:RuntimeWarning
+    warning_lines = r"""
     error::
+    ignore:.*may indicate binary incompatibility.*:RuntimeWarning
+    ignore:.*distutils Version classes are deprecated.*:
+    ignore:`np.MachAr` is deprecated.*:DeprecationWarning
     """  # noqa: E501
     for warning_line in warning_lines.split('\n'):
         warning_line = warning_line.strip()
