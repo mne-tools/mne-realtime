@@ -17,7 +17,7 @@ MNE-realtime
 This is a repository for realtime analysis of MEG/EEG data with MNE. The documentation can be found here:
 
    * `Examples`_
-   * :ref:`API`
+   * `API`_
 
 Dependencies
 ------------
@@ -68,7 +68,7 @@ Quickstart
         continuous_data = rt_epoch.get_data()
 
 The ``FieldTripClient`` supports `multiple vendors through the FieldTrip buffer <http://www.fieldtriptoolbox.org/development/realtime/implementation/>`_.
-It can be replaced with other clients such as ``LSLClient``. See :ref:`API` for a list of clients.
+It can be replaced with other clients such as ``LSLClient``. See `API`_ for a list of clients.
 
 Bug reports
 -----------
@@ -77,5 +77,6 @@ Use the `github issue tracker <https://github.com/mne-tools/mne-realtime/issues>
 to report bugs.
 
  .. _Examples: https://mne.tools/mne-realtime/auto_examples/index.html
+ .. _API: https://mne.tools/mne-realtime/api.html
  .. _numpy: https://numpy.org
  .. _MNE: https://mne.tools
