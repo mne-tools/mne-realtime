@@ -1,6 +1,7 @@
 include *.rst
 include LICENSE.txt
 include requirements.txt
+include mne_realtime/externals/LICENSE_BSD
 
 recursive-include examples *.py
 recursive-include examples *.txt

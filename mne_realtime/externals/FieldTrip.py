@@ -4,6 +4,12 @@ FieldTrip buffer (V1) client in pure Python
 (C) 2010 S. Klanke
 """
 
+# This file was adapted from:
+# https://github.com/fieldtrip/fieldtrip/blob/master/realtime/src/buffer/python/FieldTrip.py  # noqa
+# Under the BSD 3-Clause license terms outlined in:
+# https://github.com/fieldtrip/fieldtrip/blob/master/realtime/src/buffer/COPYING  # noqa
+# With the LICENSE_BSD packaged in the same directory as this file.
+
 # We need socket, struct, and numpy
 import socket
 import struct

@@ -51,6 +51,12 @@ class FieldTripClient(object):
     buffer_size : int
         Size of each buffer in terms of number of samples.
     %(verbose)s
+
+    Notes
+    -----
+    This software uses the FieldTrip buffer open source library.
+    See http:/www.fieldtriptoolbox.org for details.
+    The FieldTrip buffer is used under the BSD 3-Clause License.
     """
 
     def __init__(self, info=None, host='localhost', port=1972, wait_max=30,
