@@ -199,7 +199,7 @@ class StimServer(object):
         ----------
         trigger : int
             The trigger to be added to the queue for sending to StimClient.
-        %(verbose_meth)s
+        %(verbose)s
 
         See Also
         --------
@@ -272,7 +272,7 @@ class StimClient(object):
         ----------
         timeout : float
             maximum time to wait for a valid trigger from the server
-        %(verbose_meth)s
+        %(verbose)s
 
         See Also
         --------
