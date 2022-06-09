@@ -28,7 +28,7 @@ print(__doc__)
 
 # Fiff file to simulate the realtime client
 data_path = sample.data_path()
-raw_fname = data_path + '/MEG/sample/sample_audvis_filt-0-40_raw.fif'
+raw_fname = data_path / 'MEG' / 'sample' / 'sample_audvis_filt-0-40_raw.fif'
 raw = mne.io.read_raw_fif(raw_fname, preload=True)
 
 # select gradiometers
