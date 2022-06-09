@@ -67,10 +67,11 @@ jobs:
               - pip-cache
 
         - run:
-            name: Get Python running
+            name: Install dependencies and mne-realtime
             command: |
               python -m pip install --upgrade --progress-bar off pip
               python -m pip install --upgrade --progress-bar off -r requirements.txt
+              python -m pip install -e .[docs]
 
         - save_cache:
             key: pip-cache
@@ -95,7 +96,6 @@ jobs:
         - run:
             name: Get data
             command: |
-              pip install -e .[docs]
               python -c "import mne; print(mne.datasets.sample.data_path(update_path=True))";
 
         # Build docs
