@@ -44,6 +44,8 @@ EXTRAS_REQUIRE = {
         'sphinx',
         'sphinx-gallery',
         'sphinx_rtd_theme',
+        'sphinx_copybutton',
+        'sphinxcontrib-bibtex',
         'numpydoc',
         'matplotlib'
     ]

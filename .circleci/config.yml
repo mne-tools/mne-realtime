@@ -71,7 +71,6 @@ jobs:
             command: |
               python -m pip install --upgrade --progress-bar off pip
               python -m pip install --upgrade --progress-bar off -r requirements.txt
-              python -m pip install --upgrade --progress-bar off "sphinxcontrib-bibtex==2.0.0" sphinx_copybutton "https://api.github.com/repos/mne-tools/mne-python/zipball/main" "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
 
         - save_cache:
             key: pip-cache
@@ -96,7 +95,7 @@ jobs:
         - run:
             name: Get data
             command: |
-              python setup.py develop
+              pip install -e .[docs]
               mkdir -p ~/mne_data
               python -c "import mne; print(mne.datasets.sample.data_path(update_path=True))";
 
@@ -184,6 +183,17 @@ workflows:
   version: 2
 
   default:
+    jobs:
+      - build_docs
+      - deploy:
+          requires:
+            - build_docs
+          filters:
+            branches:
+              only:
+                - main
+
+  weekly:
     jobs:
       - build_docs
       - deploy:
