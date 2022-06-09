@@ -96,7 +96,6 @@ jobs:
             name: Get data
             command: |
               pip install -e .[docs]
-              mkdir -p ~/mne_data
               python -c "import mne; print(mne.datasets.sample.data_path(update_path=True))";
 
         # Build docs
