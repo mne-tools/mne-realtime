@@ -23,6 +23,7 @@ Dependencies
 ------------
 
 * `numpy`_
+* `scipy`_
 * `MNE`_
 
 Installation
@@ -79,4 +80,5 @@ to report bugs.
  .. _Examples: https://mne.tools/mne-realtime/auto_examples/index.html
  .. _API: https://mne.tools/mne-realtime/api.html
  .. _numpy: https://numpy.org
+ .. _scipy: https://scipy.org/
  .. _MNE: https://mne.tools
