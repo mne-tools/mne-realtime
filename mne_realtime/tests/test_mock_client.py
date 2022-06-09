@@ -329,7 +329,7 @@ def test_rejection(buffer_size):
 def test_events_long():
     """Test events."""
     data_path = testing.data_path()
-    raw_fname = data_path + '/MEG/sample/sample_audvis_trunc_raw.fif'
+    raw_fname = data_path / 'MEG' / 'sample' / 'sample_audvis_trunc_raw.fif'
     raw = read_raw_fif(raw_fname, preload=True)
     raw_tmin, raw_tmax = 0, 90
 
