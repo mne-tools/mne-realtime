@@ -193,3 +193,11 @@ workflows:
             branches:
               only:
                 - main
+
+    triggers:
+      - schedule:
+          cron: "0 4 * * 0"
+          filters:
+            branches:
+              only:
+                - main
