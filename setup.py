@@ -21,7 +21,7 @@ URL = 'https://github.com/mne-tools/mne-realtime'
 LICENSE = 'new BSD'
 DOWNLOAD_URL = 'https://github.com/mne-tools/mne-realtime'
 VERSION = __version__
-INSTALL_REQUIRES = ['numpy', 'scipy', 'mne']
+INSTALL_REQUIRES = ['numpy', 'scipy', 'mne>=1.0.0']
 CLASSIFIERS = ['Intended Audience :: Science/Research',
                'Intended Audience :: Developers',
                'License :: OSI Approved',
@@ -47,7 +47,8 @@ EXTRAS_REQUIRE = {
         'sphinx_copybutton',
         'sphinxcontrib-bibtex',
         'numpydoc',
-        'matplotlib'
+        'matplotlib',
+        'memory_profiler',
     ]
 }
 

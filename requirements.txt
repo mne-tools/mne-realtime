@@ -11,4 +11,4 @@ numpydoc
 pydocstyle
 flake8
 pylsl>=1.12
-mne[data]
+mne[data]>=1.0.0
