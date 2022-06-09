@@ -224,6 +224,8 @@ intersphinx_mapping = {
     'mne': ('https://mne.tools/dev', None),
     'eeglabio': ('https://eeglabio.readthedocs.io/en/latest', None),
     'nitime': ('https://nipy.org/nitime/', None),
+    'qdarkstyle': ('https://qdarkstylesheet.readthedocs.io/en/latest', None),
+
 }
 
 ##############################################################################
@@ -342,4 +344,6 @@ numpydoc_xref_ignore = {
     # shapes
     'n_channels', 'n_times', 'nchan', 'n_epochs', 'n_events', 'n_picks',
     'n_ch_groups',
+    # unlinkable
+    'mne_qt_browser.figure.MNEQtBrowser',
 }
