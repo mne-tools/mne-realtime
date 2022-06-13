@@ -15,7 +15,7 @@ dependencies:
 - numpydoc
 - flake8
 - pip:
-  - mne
+  - mne>=1.0.0
   - pydocstyle
   - codespell
   - pylsl>=1.12

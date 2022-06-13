@@ -12,7 +12,7 @@ jobs:
             name: Complete checkout
             command: |
               if ! git remote -v | grep upstream; then
-                git remote add upstream git://github.com/mne-tools/mne-realtime.git
+                git remote add upstream https://github.com/mne-tools/mne-realtime
               fi
               git fetch upstream
         - save_cache:
@@ -67,11 +67,11 @@ jobs:
               - pip-cache
 
         - run:
-            name: Get Python running
+            name: Install dependencies and mne-realtime
             command: |
-              python -m pip install --upgrade --progress-bar off pip numpy
+              python -m pip install --upgrade --progress-bar off pip
               python -m pip install --upgrade --progress-bar off -r requirements.txt
-              python -m pip install --upgrade --progress-bar off "sphinxcontrib-bibtex==2.0.0" "https://api.github.com/repos/mne-tools/mne-python/zipball/main" "https://api.github.com/repos/rtfd/sphinx_rtd_theme/zipball/master" "https://api.github.com/repos/sphinx-gallery/sphinx-gallery/zipball/master" memory_profiler
+              python -m pip install -e .[docs]
 
         - save_cache:
             key: pip-cache
@@ -96,8 +96,6 @@ jobs:
         - run:
             name: Get data
             command: |
-              python setup.py develop
-              mkdir -p ~/mne_data
               python -c "import mne; print(mne.datasets.sample.data_path(update_path=True))";
 
         # Build docs
@@ -189,6 +187,25 @@ workflows:
       - deploy:
           requires:
             - build_docs
+          filters:
+            branches:
+              only:
+                - main
+
+  weekly:
+    jobs:
+      - build_docs
+      - deploy:
+          requires:
+            - build_docs
+          filters:
+            branches:
+              only:
+                - main
+
+    triggers:
+      - schedule:
+          cron: "0 4 * * 0"
           filters:
             branches:
               only:
