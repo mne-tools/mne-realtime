@@ -16,8 +16,8 @@ MNE-realtime
 
 This is a repository for realtime analysis of MEG/EEG data with MNE. The documentation can be found here:
 
-   * `Examples`_
-   * `API`_
+* `Examples`_
+* `API`_
 
 Dependencies
 ------------
@@ -80,5 +80,5 @@ to report bugs.
  .. _Examples: https://mne.tools/mne-realtime/auto_examples/index.html
  .. _API: https://mne.tools/mne-realtime/api.html
  .. _numpy: https://numpy.org
- .. _scipy: https://scipy.org/
+ .. _scipy: https://scipy.org
  .. _MNE: https://mne.tools
