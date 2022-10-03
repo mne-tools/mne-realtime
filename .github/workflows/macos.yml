@@ -14,7 +14,7 @@ on:
 
 jobs:
   job:
-    name: 'py3.6'
+    name: 'py3.7'
     runs-on: macos-latest
     defaults:
       run:
