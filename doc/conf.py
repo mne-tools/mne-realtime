@@ -333,6 +333,7 @@ numpydoc_xref_aliases = {
     'Evoked': 'mne.Evoked', 'Info': 'mne.Info',
     'Montage': 'mne.channels.Montage', 'Forward': 'mne.Forward',
     'DigMontage': 'mne.channels.DigMontage',
+    'ConductorModel': 'mne.bem.ConductorModel',
     # mne_realtime
     'RtEpochs': 'mne_realtime.RtEpochs',
 }
