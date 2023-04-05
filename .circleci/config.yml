@@ -2,7 +2,7 @@ version: 2
 jobs:
     build_docs:
       machine:
-        image: ubuntu-2204:2023.02.1
+        image: cimg/python:3.10
       steps:
         - restore_cache:
             keys:
@@ -23,19 +23,12 @@ jobs:
             name: Set BASH_ENV
             command: |
               set -e
-              python3 -m venv ~/python_env --upgrade-deps
               echo "set -e" >> $BASH_ENV
               echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
               echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
               wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
               source tools/get_minimal_commands.sh
               echo "export MNE_3D_BACKEND=pyvistaqt" >> $BASH_ENV
-              echo "export PATH=~/.local/bin/:$PATH" >> $BASH_ENV
-              echo "source ~/python_env/bin/activate" >> $BASH_ENV
-              mkdir -p ~/.local/bin
-              ln -s ~/python_env/bin/python ~/.local/bin/python
-              echo "BASH_ENV:"
-              cat $BASH_ENV
               mkdir -p ~/mne_data
         - run:
             name: check neuromag2ft
@@ -69,9 +62,9 @@ jobs:
         - run:
             name: Install dependencies and mne-realtime
             command: |
-              python -m pip install --upgrade --progress-bar off pip setuptools wheel
-              python -m pip install --upgrade --progress-bar off -r requirements.txt git+https://github.com/mne-tools/mne-python@main
-              python -m pip install -e .[docs] git+https://github.com/sphinx-gallery/sphinx-gallery@master
+              pip install --upgrade --progress-bar off pip setuptools wheel
+              pip install --upgrade --progress-bar off -r requirements.txt git+https://github.com/mne-tools/mne-python@main
+              pip install -e .[docs] git+https://github.com/sphinx-gallery/sphinx-gallery@master
 
         - save_cache:
             key: pip-cache-1
