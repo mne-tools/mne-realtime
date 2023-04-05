@@ -19,11 +19,11 @@
    :maxdepth: 0
    :hidden:
 
-   auto_examples/index
+   Examples <auto_examples/index>
 
 .. toctree::
    :caption: GitHub
    :maxdepth: 0
    :hidden:
 
-   Fork mne-realtime on GitHub <https://github.com/mne-tools/mne-realtime>
+   Fork on GitHub <https://github.com/mne-tools/mne-realtime>

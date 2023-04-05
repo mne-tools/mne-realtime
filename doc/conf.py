@@ -21,7 +21,6 @@ import sys
 import warnings
 
 import sphinx
-import sphinx_rtd_theme
 import sphinx_gallery  # noqa
 from sphinx_gallery.sorting import FileNameSortKey
 from numpydoc import docscrape
@@ -144,15 +143,26 @@ modindex_common_prefix = ['mne_realtime.']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+    "icon_links": [  # TODO: This should work but doesn't, fix later...
+        {
+            "name": "GitHub",
+            "url": "https://github.com/mne-tools/mne-realtime",
+            "icon": "fa-brands fa-square-github",
+        }
+    ],
+    "logo": {
+        "text": "MNE-Realtime",
+    },
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+#html_theme_path = []
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -163,7 +173,7 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "_static/mne_logo_small.png"
+html_logo = "_static/mne.svg"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -336,6 +346,7 @@ numpydoc_xref_aliases = {
     'Montage': 'mne.channels.Montage', 'Forward': 'mne.Forward',
     'DigMontage': 'mne.channels.DigMontage',
     'ConductorModel': 'mne.bem.ConductorModel',
+    'EpochsSpectrum': 'mne.time_frequency.EpochsSpectrum',
     # mne_realtime
     'RtEpochs': 'mne_realtime.RtEpochs',
 }

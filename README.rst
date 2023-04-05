@@ -1,20 +1,9 @@
 .. -*- mode: rst -*-
 
-|Azure|_ |CircleCI|_ |Codecov|_
-
-.. |Azure| image:: https://dev.azure.com/mne-tools/mne-realtime/_apis/build/status/mne-tools.mne-realtime?branchName=main
-.. _Azure: https://dev.azure.com/mne-tools/mne-realtime/_build/latest?definitionId=1&branchName=main
-
-.. |CircleCI| image:: https://circleci.com/gh/mne-tools/mne-realtime.svg?style=svg
-.. _CircleCI: https://circleci.com/gh/mne-tools/mne-realtime
-
-.. |Codecov| image:: https://codecov.io/gh/mne-tools/mne-realtime/branch/main/graph/badge.svg
-.. _Codecov: https://codecov.io/gh/mne-tools/mne-realtime
-
 MNE-realtime
 ============
 
-This is a repository for realtime analysis of MEG/EEG data with MNE. The documentation can be found here:
+This is a package for realtime analysis of MEG/EEG data with MNE. The documentation can be found here:
 
 * `Examples`_
 * `API`_
@@ -77,8 +66,8 @@ Bug reports
 Use the `github issue tracker <https://github.com/mne-tools/mne-realtime/issues>`_
 to report bugs.
 
- .. _Examples: https://mne.tools/mne-realtime/auto_examples/index.html
- .. _API: https://mne.tools/mne-realtime/api.html
- .. _numpy: https://numpy.org
- .. _scipy: https://scipy.org
- .. _MNE: https://mne.tools
+.. _Examples: https://mne.tools/mne-realtime/auto_examples/index.html
+.. _API: https://mne.tools/mne-realtime/api.html
+.. _numpy: https://numpy.org
+.. _scipy: https://scipy.org
+.. _MNE: https://mne.tools
