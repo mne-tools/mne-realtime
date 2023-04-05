@@ -2,7 +2,7 @@ version: 2
 jobs:
     build_docs:
       machine:
-        image: ubuntu-2004:202111-01
+        image: ubuntu-2204:2022.10.2
       steps:
         - restore_cache:
             keys:
@@ -64,7 +64,7 @@ jobs:
               sudo apt install ./lsl.deb && rm lsl.deb
         - restore_cache:
             keys:
-              - pip-cache
+              - pip-cache-1
 
         - run:
             name: Install dependencies and mne-realtime
@@ -74,7 +74,7 @@ jobs:
               python -m pip install -e .[docs] git+https://github.com/sphinx-gallery/sphinx-gallery@master
 
         - save_cache:
-            key: pip-cache
+            key: pip-cache-1
             paths:
               - ~/.cache/pip
 
