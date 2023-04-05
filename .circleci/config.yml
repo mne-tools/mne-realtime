@@ -2,7 +2,7 @@ version: 2
 jobs:
     build_docs:
       machine:
-        image: ubuntu-2004:202111-01
+        image: ubuntu-2204:2023.02.1
       steps:
         - restore_cache:
             keys:
