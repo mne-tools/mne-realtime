@@ -70,7 +70,7 @@ jobs:
             name: Install dependencies and mne-realtime
             command: |
               python -m pip install --upgrade --progress-bar off pip
-              python -m pip install --upgrade --progress-bar off -r requirements.txt
+              python -m pip install --upgrade --progress-bar off -r requirements.txt git+https://github.com/mne-tools/mne-python@main
               python -m pip install -e .[docs] git+https://github.com/sphinx-gallery/sphinx-gallery@main
 
         - save_cache:
