@@ -2,7 +2,7 @@ version: 2
 jobs:
     build_docs:
       machine:
-        image: ubuntu-2004:202111-01
+        image: ubuntu-2204:2022.10.2
       steps:
         - restore_cache:
             keys:
@@ -55,6 +55,7 @@ jobs:
         - run:
             name: Install 3D rendering libraries \ PyQt5 dependencies \ graphviz \ optipng (for optimized images)
             command: |
+              export DEBIAN_FRONTEND=noninteractive
               sudo apt update
               sudo apt install libosmesa6 libglx-mesa0 libopengl0 libglx0 libdbus-1-3 \
                 libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
@@ -64,17 +65,17 @@ jobs:
               sudo apt install ./lsl.deb && rm lsl.deb
         - restore_cache:
             keys:
-              - pip-cache
+              - pip-cache-1
 
         - run:
             name: Install dependencies and mne-realtime
             command: |
-              python -m pip install --upgrade --progress-bar off pip
-              python -m pip install --upgrade --progress-bar off -r requirements.txt
-              python -m pip install -e .[docs]
+              python -m pip install --upgrade --progress-bar off pip setuptools wheel
+              python -m pip install --upgrade --progress-bar off -r requirements.txt git+https://github.com/mne-tools/mne-python@main
+              python -m pip install -e .[docs] git+https://github.com/sphinx-gallery/sphinx-gallery@master
 
         - save_cache:
-            key: pip-cache
+            key: pip-cache-1
             paths:
               - ~/.cache/pip
 
@@ -83,7 +84,7 @@ jobs:
             name: Check installation
             command: |
                which python
-               python -c "import mne; mne.sys_info()"
+               python -c "import mne; mne.sys_info(dependencies='developer')"
                LIBGL_DEBUG=verbose python -c "import matplotlib.pyplot as plt; plt.figure()"
                python -c "import mne; mne.set_config('MNE_LOGGING_LEVEL', 'info')"
                python -c "import mne; level = mne.get_config('MNE_LOGGING_LEVEL'); assert level.lower() == 'info', repr(level)"

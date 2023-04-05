@@ -43,7 +43,7 @@ EXTRAS_REQUIRE = {
     'docs': [
         'sphinx',
         'sphinx-gallery',
-        'sphinx_rtd_theme',
+        'pydata-sphinx-theme',
         'sphinx_copybutton',
         'sphinxcontrib-bibtex',
         'numpydoc',
