@@ -37,7 +37,7 @@ jobs:
         run: ./tools/pip_dependencies.sh
         name: 'Install MNE-Realtime'
       - shell: bash -el {0}
-        run: pip install --upgrade https://github.com/mne-tools/mne-python/zipball/main
+        run: pip install --upgrade git+https://github.com/mne-tools/mne-python.git
         name: 'Install latest MNE'
       - shell: bash -el {0}
         run: mne sys_info
