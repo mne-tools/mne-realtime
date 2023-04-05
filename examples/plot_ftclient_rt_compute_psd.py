@@ -23,7 +23,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import mne
-from mne.time_frequency import psd_welch
 from mne.utils import running_subprocess
 
 from mne_realtime import FieldTripClient
@@ -61,7 +60,8 @@ with running_subprocess(command, after='kill',
         for ii in range(5):
             epoch = rt_client.get_data_as_epoch(n_samples=n_samples,
                                                 picks=picks)
-            psd, freqs = psd_welch(epoch, fmin=2, fmax=200, n_fft=n_fft)
+            spectrum = epoch.compute_psd(method='welch', fmin=2, fmax=200, n_fft=n_fft)
+            psd, freqs = spectrum.get_data(return_freqs=True)
 
             cmap = 'RdBu_r'
             freq_mask = freqs < 150
