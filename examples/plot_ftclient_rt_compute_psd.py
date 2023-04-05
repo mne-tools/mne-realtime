@@ -61,7 +61,7 @@ with running_subprocess(command, after='kill',
             epoch = rt_client.get_data_as_epoch(n_samples=n_samples,
                                                 picks=picks)
             spectrum = epoch.compute_psd(method='welch', fmin=2, fmax=200, n_fft=n_fft)
-            psd, freqs = spectrum.get_data(return_freqs=True)
+            psd, freqs = spectrum.get_data(return_freqs=True) 
 
             cmap = 'RdBu_r'
             freq_mask = freqs < 150
