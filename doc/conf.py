@@ -279,7 +279,7 @@ def reset_warnings(gallery_conf, fname):
                 'Using or importing the ABCs from',  # internal modules on 3.7
                 "DocumenterBridge requires a state object",  # sphinx dev
                 "'U' mode is deprecated",  # sphinx io
-                'pkg_resources is deprecated as an API',
+                'pkg_resources is deprecated as an API',  # bibtex
                 ):
         warnings.filterwarnings(  # deal with other modules having bad imports
             'ignore', message=".*%s.*" % key, category=DeprecationWarning)
