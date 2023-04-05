@@ -280,6 +280,7 @@ def reset_warnings(gallery_conf, fname):
                 "DocumenterBridge requires a state object",  # sphinx dev
                 "'U' mode is deprecated",  # sphinx io
                 'pkg_resources is deprecated as an API',  # bibtex
+                'Deprecated call to `pkg_resources',
                 ):
         warnings.filterwarnings(  # deal with other modules having bad imports
             'ignore', message=".*%s.*" % key, category=DeprecationWarning)
