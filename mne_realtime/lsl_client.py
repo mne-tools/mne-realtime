@@ -3,6 +3,7 @@
 #
 # License: BSD (3-clause)
 
+import ctypes
 import numpy as np
 
 from .base_client import _BaseClient
@@ -70,9 +71,13 @@ class LSLClient(_BaseClient):
 
         # create an event at the start of the data collection
         events = np.expand_dims(np.array([0, 1, 1]), axis=0)
-        samples, _ = self.client.pull_chunk(max_samples=n_samples,
-                                            timeout=wait_time)
-        data = np.vstack(samples).T
+        _, timestamps = self.client.pull_chunk(
+            max_samples=self.buffer.shape[0],
+            timeout=wait_time,
+            dest_obj=self.buffer,
+        )
+        num_timestamps = len(timestamps) if timestamps else 0
+        data = self.buffer[:len(timestamps), :]
 
         picks = _picks_to_idx(self.info, picks, 'all', exclude=())
         info = pick_info(self.info, picks)
@@ -81,10 +86,13 @@ class LSLClient(_BaseClient):
     def iter_raw_buffers(self):
         """Return an infinite iterator over raw buffers."""
         while True:
-            samples, _ = self.client.pull_chunk(max_samples=self.buffer_size)
-            if not len(samples):
-                samples = np.empty((self.info['nchan'], 0))
-            yield np.vstack(samples).T
+            _, timestamps = self.client.pull_chunk(
+                max_samples=self.buffer.shape[0],
+                dest_obj=self.buffer,
+            )
+            num_timestamps = len(timestamps) if timestamps else 0
+            data = self.buffer[:len(timestamps), :]
+            yield data.copy()
 
     def _connect(self):
         # To use this function with an LSL stream which has a 'name' but no
@@ -104,6 +112,15 @@ class LSLClient(_BaseClient):
               f'{stream_info.source_id()}...')
         self.client = pylsl.StreamInlet(info=stream_info,
                                         max_buflen=self.buffer_size)
+        # Most ctypes can be converted to numpy dtypes.
+        # Exceptions include c_char_p
+        value_type = pylsl.pylsl.fmt2type[stream_info.channel_format()]
+        if value_type == ctypes.c_char_p:
+            value_type = None
+        self.buffer = np.empty(
+            (self.buffer_size, stream_info.channel_count()),
+            dtype=value_type,
+        )
 
         return self
 
