@@ -72,7 +72,7 @@ class LSLClient(_BaseClient):
         # create an event at the start of the data collection
         events = np.expand_dims(np.array([0, 1, 1]), axis=0)
         _, timestamps = self.client.pull_chunk(
-            max_samples=self.buffer.shape[0],
+            max_samples=min(n_samples, self.buffer.shape[0]),
             timeout=wait_time,
             dest_obj=self.buffer,
         )

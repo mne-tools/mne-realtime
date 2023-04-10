@@ -33,6 +33,11 @@ def test_lsl_client():
             n_samples = math.ceil(sfreq * n_secs * 2)
             epoch = client.get_data_as_epoch(n_samples=n_samples)
 
+            epoch_data = epoch.get_data()
+            n_epochs, n_channels, n_times = epoch_data.shape
+            assert n_epochs == 1
+            assert n_channels == client_info['nchan']
+
     assert client_info['nchan'] == raw_info['nchan']
     assert ([ch["ch_name"] for ch in client_info["chs"]] ==
             [ch_name for ch_name in raw_info['ch_names']])
