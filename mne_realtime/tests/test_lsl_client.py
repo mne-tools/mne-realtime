@@ -24,7 +24,7 @@ def test_lsl_client():
     """Test the LSLClient for connection and data retrieval."""
     raw = read_raw_fif(raw_fname)
     n_secs = 1
-    raw.crop(n_secs)
+    raw.crop(tmin=0, tmax=n_secs)
     raw_info = raw.info
     sfreq = raw_info['sfreq']
     with MockLSLStream(host, raw, ch_type='eeg', status=True):
