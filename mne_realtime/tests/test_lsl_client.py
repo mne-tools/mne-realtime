@@ -1,6 +1,7 @@
 # Author: Teon Brooks <teon.brooks@gmail.com>
 #
 # License: BSD (3-clause)
+import math
 from os import getenv, path as op
 import time
 import pytest
@@ -29,7 +30,8 @@ def test_lsl_client():
     with MockLSLStream(host, raw, ch_type='eeg', status=True):
         with LSLClient(info=raw_info, host=host, wait_max=5) as client:
             client_info = client.get_measurement_info()
-            epoch = client.get_data_as_epoch(n_samples=sfreq * n_secs * 2)
+            n_samples = math.ceil(sfreq * n_secs * 2)
+            epoch = client.get_data_as_epoch(n_samples=n_samples)
             time.sleep(1.)
             raw = list(client.iter_raw_buffers())
             assert len(raw) > 0
