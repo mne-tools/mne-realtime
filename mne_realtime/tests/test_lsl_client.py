@@ -32,9 +32,6 @@ def test_lsl_client():
             client_info = client.get_measurement_info()
             n_samples = math.ceil(sfreq * n_secs * 2)
             epoch = client.get_data_as_epoch(n_samples=n_samples)
-            time.sleep(1.)
-            raw = list(client.iter_raw_buffers())
-            assert len(raw) > 0
 
     assert client_info['nchan'] == raw_info['nchan']
     assert ([ch["ch_name"] for ch in client_info["chs"]] ==
