@@ -50,8 +50,8 @@ Quickstart
                          tmax=30, wait_max=5, info=info) as rt_client:
         rt_epochs = RtEpochs(rt_client, event_id, tmin, tmax, ...)
         rt_epochs.start()
-        for ev in rt_epochs.iter_evoked():
-            epoch_data = ev.data
+        for epoch in rt_epochs:
+            epoch_data = epoch.get_data()
 
         # or alternatively, get last n_samples
         rt_epoch = rt_client.get_data_as_epoch(n_samples=500)
