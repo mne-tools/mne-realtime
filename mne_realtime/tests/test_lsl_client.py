@@ -10,9 +10,9 @@ from mne.utils import requires_pylsl
 from mne.io import read_raw_fif
 from mne.datasets import testing
 import numpy as np
-import pylsl
 
 from mne_realtime import LSLClient, MockLSLStream
+from mne_realtime.lsl_client import _check_pylsl_installed
 
 base_dir = op.join(op.dirname(__file__), 'data')
 
@@ -49,6 +49,9 @@ def test_lsl_client():
 @requires_pylsl
 def test_connect(mocker):
     """Mock connect to LSL stream."""
+    # Import pylsl here so that the test can be skipped if pylsl is not installed
+    pylsl = _check_pylsl_installed(strict=True)
+
     # Constants
     buffer_size = 17
     n_channels = 6
