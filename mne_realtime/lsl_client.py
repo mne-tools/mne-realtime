@@ -76,7 +76,6 @@ class LSLClient(_BaseClient):
             timeout=wait_time,
             dest_obj=self.buffer,
         )
-        num_timestamps = len(timestamps) if timestamps else 0
         data = self.buffer[:len(timestamps), :]
 
         picks = _picks_to_idx(self.info, picks, 'all', exclude=())
@@ -90,7 +89,6 @@ class LSLClient(_BaseClient):
                 max_samples=self.buffer.shape[0],
                 dest_obj=self.buffer,
             )
-            num_timestamps = len(timestamps) if timestamps else 0
             data = self.buffer[:len(timestamps), :]
             yield data.copy()
 
