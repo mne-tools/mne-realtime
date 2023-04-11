@@ -25,20 +25,20 @@ raw_fname = op.join(base_dir, 'test_raw.fif')
 def test_lsl_client():
     """Test the LSLClient for connection and data retrieval."""
     raw = read_raw_fif(raw_fname)
-    n_secs = 1
-    raw.crop(tmin=0, tmax=n_secs)
     raw_info = raw.info
     sfreq = raw_info['sfreq']
+    n_secs = 1
+    n_requested_samples = math.ceil(sfreq * n_secs)
     with MockLSLStream(host, raw, ch_type='eeg', status=True):
         with LSLClient(info=raw_info, host=host, wait_max=5) as client:
             client_info = client.get_measurement_info()
-            n_samples = math.ceil(sfreq * n_secs * 2)
-            epoch = client.get_data_as_epoch(n_samples=n_samples)
+            epoch = client.get_data_as_epoch(n_samples=n_requested_samples)
 
             epoch_data = epoch.get_data()
             n_epochs, n_channels, n_times = epoch_data.shape
             assert n_epochs == 1
             assert n_channels == client_info['nchan']
+            assert n_times == n_requested_samples
 
     assert client_info['nchan'] == raw_info['nchan']
     assert ([ch["ch_name"] for ch in client_info["chs"]] ==

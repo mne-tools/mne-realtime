@@ -76,7 +76,7 @@ class LSLClient(_BaseClient):
             timeout=wait_time,
             dest_obj=self.buffer,
         )
-        data = self.buffer[:len(timestamps), :]
+        data = self.buffer[:len(timestamps)].transpose()  # n_channels x n_samples
 
         picks = _picks_to_idx(self.info, picks, 'all', exclude=())
         info = pick_info(self.info, picks)
@@ -89,7 +89,7 @@ class LSLClient(_BaseClient):
                 max_samples=self.buffer.shape[0],
                 dest_obj=self.buffer,
             )
-            data = self.buffer[:len(timestamps), :]
+            data = self.buffer[:len(timestamps)].transpose()  # n_channels x n_samples
             yield data.copy()
 
     def _connect(self):
