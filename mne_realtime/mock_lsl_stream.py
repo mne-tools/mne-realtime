@@ -94,9 +94,11 @@ class MockLSLStream(object):
             mysample = self._raw[:, counter][0].ravel()
             # now send it and wait for a bit
             if self._status and counter % every == 0:
-                print(f'Sending sample {counter} on {self._host}, '
+                print(f'Sending sample {counter}/{self._raw.last_samp} '
+                      f'of length {len(mysample)} on {self._host}, '
                       f'have_consumers={outlet.have_consumers()}')
-            outlet.push_sample(mysample)
+            if len(mysample) > 0:
+                outlet.push_sample(mysample)
             counter = 0 if counter == self._raw.last_samp else counter + 1
             next_t += delta
             sleep = next_t - time.time()

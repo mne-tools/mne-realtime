@@ -79,7 +79,7 @@ class LSLClient(_BaseClient):
         return EpochsArray(data[picks][np.newaxis], info, events)
 
     def iter_raw_buffers(self):
-        """Return an iterator over raw buffers."""
+        """Return an infinite iterator over raw buffers."""
         while True:
             samples, _ = self.client.pull_chunk(max_samples=self.buffer_size)
             if not len(samples):

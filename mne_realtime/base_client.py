@@ -87,8 +87,6 @@ class _BaseClient(object):
     def __exit__(self, type, value, traceback):
         self._disconnect()
 
-        return self
-
     @fill_doc
     def get_data_as_epoch(self, n_samples=1024, picks=None):
         """Return last n_samples from current time.
