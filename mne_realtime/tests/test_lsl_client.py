@@ -46,6 +46,7 @@ def test_lsl_client():
 
     assert raw_info['nchan'], sfreq == epoch.get_data().shape[1:]
 
+@requires_pylsl
 def test_connect(mocker):
     """Mock connect to LSL stream."""
     # Constants
