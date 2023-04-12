@@ -48,14 +48,17 @@ class LSLClient(_BaseClient):
     """
 
     @fill_doc
-    def get_data_as_epoch(self, n_samples=1024, picks=None):
-        """Return last n_samples from current time.
+    def get_data_as_epoch(self, n_samples=1024, picks=None, timeout=None):
+        """Return n_samples from LSL in FIFO order.
 
         Parameters
         ----------
         n_samples : int
             Number of samples to fetch.
         %(picks_all)s
+        timeout : Optional[float]
+            Maximum amount of time to wait for data from LSL
+            if None: waits for 5x n_samples / sfreq
 
         Returns
         -------
@@ -66,14 +69,15 @@ class LSLClient(_BaseClient):
         --------
         mne.Epochs.iter_evoked
         """
-        # set up timeout in case LSL process hang. wait arb 5x expected time
-        wait_time = n_samples * 5. / self.info['sfreq']
+        if timeout is None:
+            # set up timeout in case LSL process hang. wait arb 5x expected time
+            timeout = n_samples * 5. / self.info['sfreq']
 
         # create an event at the start of the data collection
         events = np.expand_dims(np.array([0, 1, 1]), axis=0)
         _, timestamps = self.client.pull_chunk(
             max_samples=min(n_samples, self.buffer.shape[0]),
-            timeout=wait_time,
+            timeout=timeout,
             dest_obj=self.buffer,
         )
         data = self.buffer[:len(timestamps)].transpose()  # n_channels x n_samples
