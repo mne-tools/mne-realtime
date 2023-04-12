@@ -46,6 +46,18 @@ def test_lsl_client():
 
     assert raw_info['nchan'], sfreq == epoch.get_data().shape[1:]
 
+
+@requires_pylsl
+@testing.requires_testing_data
+def test_lsl_client_nodata():
+    """Test that LSLClient gracefully handles no-data from LSL."""
+    raw = read_raw_fif(raw_fname)
+    raw_info = raw.info
+    with MockLSLStream(host, raw, ch_type='eeg', status=True):
+        with LSLClient(info=raw_info, host=host, wait_max=5) as client:
+            epoch = client.get_data_as_epoch(n_samples=0, timeout=0)
+            assert epoch is None
+
 @requires_pylsl
 def test_connect(mocker):
     """Mock connect to LSL stream."""

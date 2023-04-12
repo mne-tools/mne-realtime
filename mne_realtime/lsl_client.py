@@ -62,8 +62,9 @@ class LSLClient(_BaseClient):
 
         Returns
         -------
-        epoch : instance of Epochs
+        epoch : Optional[EpochsArray]
             The samples fetched as an Epochs object.
+            None if no data was returned from pylsl.
 
         See Also
         --------
@@ -80,6 +81,9 @@ class LSLClient(_BaseClient):
             timeout=timeout,
             dest_obj=self.buffer,
         )
+        if not timestamps:
+            return None
+
         data = self.buffer[:len(timestamps)].transpose()  # n_channels x n_samples
 
         picks = _picks_to_idx(self.info, picks, 'all', exclude=())
