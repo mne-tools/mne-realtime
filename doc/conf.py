@@ -347,6 +347,7 @@ numpydoc_xref_aliases = {
     'DigMontage': 'mne.channels.DigMontage',
     'ConductorModel': 'mne.bem.ConductorModel',
     'EpochsSpectrum': 'mne.time_frequency.EpochsSpectrum',
+    'EpochsArray': 'mne.EpochsArray',
     # mne_realtime
     'RtEpochs': 'mne_realtime.RtEpochs',
 }
