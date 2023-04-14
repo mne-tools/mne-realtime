@@ -62,7 +62,7 @@ class LSLClient(_BaseClient):
 
         Returns
         -------
-        epoch : Optional[EpochsArray]
+        epoch : instance of EpochsArray | None
             The samples fetched as an Epochs object.
             None if no data was returned from pylsl.
 
