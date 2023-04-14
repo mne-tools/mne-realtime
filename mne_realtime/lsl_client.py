@@ -56,7 +56,7 @@ class LSLClient(_BaseClient):
         n_samples : int
             Number of samples to fetch.
         %(picks_all)s
-        timeout : Optional[float]
+        timeout : float | None
             Maximum amount of time to wait for data from LSL
             if None: waits for 5x n_samples / sfreq
 
