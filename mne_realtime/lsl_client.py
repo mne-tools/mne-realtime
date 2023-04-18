@@ -45,7 +45,24 @@ class LSLClient(_BaseClient):
     verbose : bool, str, int, or None
         If not None, override default verbose level (see :func:`mne.verbose`
         for more).
+    host_name : str | None
+        The name of the LSL stream. If None, this is ignored when looking for
+         matching streams.
     """
+
+    def __init__(self, info=None, host='localhost', port=None,
+                 wait_max=10., tmin=None, tmax=np.inf,
+                 buffer_size=1000, verbose=None, host_name=None):  # noqa: D102
+        super(LSLClient, self).__init__(
+            info=info,
+            host=host,
+            port=port,
+            wait_max=wait_max,
+            tmin=tmin,
+            tmax=tmax,
+            buffer_size=buffer_size,
+            verbose=verbose)
+        self.host_name = host_name
 
     @fill_doc
     def get_data_as_epoch(self, n_samples=1024, picks=None, timeout=None):
@@ -110,10 +127,11 @@ class LSLClient(_BaseClient):
         ids = list()
         for stream_info in streams:
             ids.append(stream_info.source_id())
-            if ids[-1] == self.host:
-                break
+            if stream_info.source_id() == self.host:
+                if (self.host_name is None) or (stream_info.name() == self.host_name):
+                    break
         else:
-            raise RuntimeError(f'{self.host} not found in streams: {ids}')
+            raise RuntimeError(f'{(self.host, self.host_name)} not found in streams: {ids}')
         print(f'Found stream {repr(stream_info.name())} via '
               f'{stream_info.source_id()}...')
         self.client = pylsl.StreamInlet(info=stream_info,
