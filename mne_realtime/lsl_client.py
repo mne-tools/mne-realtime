@@ -123,7 +123,7 @@ class LSLClient(_BaseClient):
         pylsl = _check_pylsl_installed(strict=True)
         print(f'Looking for LSL stream {self.host}...')
         # resolve_byprop is a bit fragile
-        streams = pylsl.resolve_streams(wait_time=min(0.1, self.wait_max))
+        streams = pylsl.resolve_streams(wait_time=min(1.0, self.wait_max))
         ids = list()
         for stream_info in streams:
             ids.append(stream_info.source_id())
