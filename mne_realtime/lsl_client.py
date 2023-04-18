@@ -28,9 +28,10 @@ class LSLClient(_BaseClient):
         electrode location.
     host : str
         The LSL identifier of the server. This is the source_id designated
-        when the LSL stream was created. Make sure the source_id is unique on
-        the LSL subnet. For more information on LSL, please check the
-        docstrings on `StreamInfo` and `StreamInlet` in the pylsl.
+        when the LSL stream was created. If the source_id is not unique on
+        the LSL subnet, specify the `host_name` parameter, too. For more information
+        on LSL, please check the docstrings on `StreamInfo` and `StreamInlet`
+        in the pylsl library.
     port : int | None
         Port to use for the connection.
     wait_max : float
@@ -42,12 +43,12 @@ class LSLClient(_BaseClient):
         Time instant to stop receiving buffers.
     buffer_size : int
         Size of each buffer in terms of number of samples.
-    verbose : bool, str, int, or None
-        If not None, override default verbose level (see :func:`mne.verbose`
-        for more).
     host_name : str | None
         The name of the LSL stream. If None, this is ignored when looking for
          matching streams.
+    verbose : bool, str, int, or None
+        If not None, override default verbose level (see :func:`mne.verbose`
+        for more).
     """
 
     def __init__(self, info=None, host='localhost', port=None,

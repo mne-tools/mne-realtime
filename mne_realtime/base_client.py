@@ -43,12 +43,15 @@ class _BaseClient(object):
         Time instant to stop receiving buffers.
     buffer_size : int
         Size of each buffer in terms of number of samples.
+    host_name : str | None
+        The name of the server, e.g. the LSL stream name.
+        If None, the name is ignored.
     %(verbose)s
     """
 
     def __init__(self, info=None, host='localhost', port=None,
                  wait_max=10., tmin=None, tmax=np.inf,
-                 buffer_size=1000, verbose=None):  # noqa: D102
+                 buffer_size=1000, host_name=None, verbose=None):  # noqa: D102
         self.info = info
         self.host = host
         self.port = port
@@ -56,6 +59,7 @@ class _BaseClient(object):
         self.tmin = tmin
         self.tmax = tmax
         self.buffer_size = buffer_size
+        self.host_name = host_name
         self.verbose = verbose
         self._recv_thread = None
         self._recv_callbacks = list()
