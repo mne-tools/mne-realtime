@@ -87,3 +87,22 @@ def test_connect(mocker):
     assert isinstance(lsl_client.client, pylsl.StreamInlet)
     assert lsl_client.buffer.shape == (buffer_size, n_channels)
     assert lsl_client.buffer.dtype == numpy_channel_format
+
+@requires_pylsl
+def test_connect_stream_not_found(mocker):
+    """Mock attempt to connect to non-existent LSL stream."""
+    # Import pylsl here so that the test can be skipped if pylsl is not installed
+    pylsl = _check_pylsl_installed(strict=True)
+
+    # Replace pylsl streams with a mock
+    mock_resolve_streams = mocker.patch(
+        'pylsl.resolve_streams',
+        return_value=[pylsl.StreamInfo(
+            source_id=host,
+        )],
+    )
+
+    stream_name = "non-existent stream"
+    lsl_client = LSLClient(host=host, host_name=stream_name)
+    with pytest.raises(RuntimeError):
+        lsl_client._connect()
