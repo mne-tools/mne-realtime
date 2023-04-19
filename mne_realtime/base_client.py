@@ -51,7 +51,8 @@ class _BaseClient(object):
 
     def __init__(self, info=None, host='localhost', port=None,
                  wait_max=10., tmin=None, tmax=np.inf,
-                 buffer_size=1000, host_name=None, verbose=None):  # noqa: D102
+                 buffer_size=1000, *, host_name=None,
+                 verbose=None):  # noqa: D102
         self.info = info
         self.host = host
         self.port = port
