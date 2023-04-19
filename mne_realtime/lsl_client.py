@@ -51,20 +51,6 @@ class LSLClient(_BaseClient):
         for more).
     """
 
-    def __init__(self, info=None, host='localhost', port=None,
-                 wait_max=10., tmin=None, tmax=np.inf,
-                 buffer_size=1000, verbose=None, host_name=None):  # noqa: D102
-        super(LSLClient, self).__init__(
-            info=info,
-            host=host,
-            port=port,
-            wait_max=wait_max,
-            tmin=tmin,
-            tmax=tmax,
-            buffer_size=buffer_size,
-            verbose=verbose)
-        self.host_name = host_name
-
     @fill_doc
     def get_data_as_epoch(self, n_samples=1024, picks=None, timeout=None):
         """Return n_samples from LSL in FIFO order.
