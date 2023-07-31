@@ -1,4 +1,4 @@
-name: 'linux / pip'
+name: 'test'
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number }}-${{ github.event.ref }}
   cancel-in-progress: true
@@ -9,13 +9,19 @@ on:
   pull_request:
     branches:
       - '*'
-  schedule:
-    - cron: "0 4 * * 0"
 
 jobs:
   job:
-    name: 'py3.11'
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        kind: [pip]
+        python: ['3.11']
+        include:
+          - os: macos-latest
+            kind: mamba
+            python: '3.8'
     defaults:
       run:
         shell: bash -el {0}
@@ -23,15 +29,18 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-        name: 'Setup python'
+          python-version: ${{ matrix.python }}
+        if: ${{ matrix.kind == 'pip' }}
       - run: |
           wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
           source ./tools/get_minimal_commands.sh
+        if: ${{ ! startswith(matrix.os, 'windows') }}
         name: 'Install neuromag2ft'
       - run: neuromag2ft --version
-      - run: ./tools/pip_dependencies.sh
-      - run: pip install --upgrade git+https://github.com/mne-tools/mne-python.git
+        if: ${{ ! startswith(matrix.os, 'windows') }}
+      - run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r requirements.txt git+https://github.com/mne-tools/mne-python -ve .
       - run: mne sys_info
       - run: python -c "import mne; print(mne.datasets.testing.data_path(verbose=True))"
         name: 'Get test data'
