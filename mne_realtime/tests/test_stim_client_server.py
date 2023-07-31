@@ -3,7 +3,6 @@ import threading
 import time
 
 import pytest
-from mne.utils import requires_good_network
 
 from mne_realtime import StimServer, StimClient
 
@@ -12,7 +11,7 @@ _have_put_in_trigger = False
 _max_wait = 10.
 
 
-@requires_good_network
+@pytest.mark.network_test
 def test_connection():
     """Test TCP/IP connection for StimServer <-> StimClient."""
     global _server, _have_put_in_trigger

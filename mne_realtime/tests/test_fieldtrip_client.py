@@ -20,12 +20,14 @@ from mne import Epochs, find_events, pick_types
 from mne.io import read_raw_fif
 from mne.utils import requires_neuromag2ft
 from mne_realtime import FieldTripClient, RtEpochs
-
 from mne_realtime.tests.test_mock_client import _call_base_epochs_public_api
 
 base_dir = op.join(op.dirname(__file__), '..', '..', 'mne_realtime',
                    'tests', 'data')
 raw_fname = op.realpath(op.join(base_dir, 'test_raw.fif'))
+
+if 'NEUROMAG2FT_ROOT' not in os.environ:
+    pytest.skip("NEUROMAG2FT_ROOT env var not found")
 
 
 @pytest.fixture
