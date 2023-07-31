@@ -27,6 +27,7 @@ jobs:
               echo "set -e" >> $BASH_ENV
               echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
               echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
+              mkdir -p tools
               wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
               source tools/get_minimal_commands.sh
               echo "export MNE_3D_BACKEND=pyvistaqt" >> $BASH_ENV
