@@ -56,7 +56,8 @@ jobs:
           python -m pip install -r requirements.txt -ve . -e ./mne-python
         name: Install dependencies and MNE-Realtime
       - run: mne sys_info
-      - run: ./mne-python/tools/get_testing_version.sh
+      - run: ./tools/get_testing_version.sh
+        working-directory: mne-python
       - run: python -c "import mne; print(mne.datasets.testing.data_path(verbose=True))"
         name: Get test data
       - uses: actions/cache@v3
