@@ -23,6 +23,8 @@ jobs:
           - os: macos-latest
             kind: mamba
             python: '3.8'
+    env:
+      CI_OS_NAME: ${{ matrix.os }}
     defaults:
       run:
         shell: bash -el {0}
