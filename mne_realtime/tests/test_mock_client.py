@@ -59,7 +59,7 @@ def _call_base_epochs_public_api(epochs, tmpdir):
     epochs.tmax
     epochs.filename
     repr(epochs)
-    epochs.plot(show=False)
+    epochs.plot(show=False, events=True)
     # save time by not calling all plot functions
     # epochs.plot_psd(show=False)
     # epochs.plot_drop_log(show=False)
