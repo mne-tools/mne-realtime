@@ -39,8 +39,9 @@ jobs:
           environment-file: environment.yml
           create-args: python=${{ matrix.python }}
         if: ${{ matrix.kind == 'conda' }}
+      - run: git clone --single-branch -b main https://github.com/mne-tools/mne-python.git
+        name: Clone MNE-Python
       - run: |
-          git clone --single-branch -b main https://github.com/mne-tools/mne-python.git
           source ./mne-python/tools/get_minimal_commands.sh
           neuromag2ft --version
         name: Install neuromag2ft
@@ -53,10 +54,11 @@ jobs:
       - run: |
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install -r requirements.txt -ve . -e ./mne-python
+        name: Install dependencies and MNE-Realtime
       - run: mne sys_info
       - run: ./mne-python/tools/get_testing_version.sh
       - run: python -c "import mne; print(mne.datasets.testing.data_path(verbose=True))"
-        name: 'Get test data'
+        name: Get test data
       - uses: actions/cache@v3
         with:
           key: ${{ env.TESTING_VERSION }}
