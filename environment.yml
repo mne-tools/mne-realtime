@@ -17,5 +17,5 @@ dependencies:
 - liblsl
 - mne
 - pydocstyle
-pip:
+- pip:
   - pylsl
