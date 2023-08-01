@@ -13,6 +13,12 @@ def pytest_configure(config):
     for fixture in ('matplotlib_config',):
         config.addinivalue_line('usefixtures', fixture)
 
+    # Marks
+    for marker in (
+        "network_test",
+    ):
+        config.addinivalue_line("markers", marker)
+
     # Warnings
     # - Once SciPy updates not to have non-integer and non-tuple errors (1.2.0)
     #   we should remove them from here.

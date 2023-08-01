@@ -45,9 +45,6 @@ test-full: in
 	rm -f .coverage
 	$(PYTESTS) mne
 
-test-no-network: in
-	sudo unshare -n -- sh -c 'MNE_SKIP_NETWORK_TESTS=1 py.test mne'
-
 test-no-testing-data: in
 	@MNE_SKIP_TESTING_DATASET_TESTS=true \
 	$(PYTESTS) mne

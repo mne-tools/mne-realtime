@@ -14,8 +14,8 @@ dependencies:
 - pytest-cov
 - numpydoc
 - flake8
+- liblsl
+- mne
+- pydocstyle
 - pip:
-  - mne>=1.0.0
-  - pydocstyle
-  - codespell
-  - pylsl>=1.12
+  - pylsl

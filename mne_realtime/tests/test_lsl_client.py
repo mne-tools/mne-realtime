@@ -6,7 +6,6 @@ from os import getenv, path as op
 import time
 import pytest
 
-from mne.utils import requires_pylsl
 from mne.io import read_raw_fif
 from mne.datasets import testing
 import numpy as np
@@ -20,10 +19,10 @@ host = 'myuid34234'
 raw_fname = op.join(base_dir, 'test_raw.fif')
 
 
-@requires_pylsl
 @testing.requires_testing_data
 def test_lsl_client():
     """Test the LSLClient for connection and data retrieval."""
+    pytest.importorskip('pylsl')
     raw = read_raw_fif(raw_fname)
     raw_info = raw.info
     sfreq = raw_info['sfreq']
@@ -47,10 +46,10 @@ def test_lsl_client():
     assert raw_info['nchan'], sfreq == epoch.get_data().shape[1:]
 
 
-@requires_pylsl
 @testing.requires_testing_data
 def test_lsl_client_nodata():
     """Test that LSLClient gracefully handles no-data from LSL."""
+    pytest.importorskip('pylsl')
     raw = read_raw_fif(raw_fname)
     raw_info = raw.info
     with MockLSLStream(host, raw, ch_type='eeg', status=True):
@@ -58,11 +57,11 @@ def test_lsl_client_nodata():
             epoch = client.get_data_as_epoch(n_samples=0, timeout=0)
             assert epoch is None
 
-@requires_pylsl
-def test_connect(mocker):
+
+def test_connect(monkeypatch):
     """Mock connect to LSL stream."""
     # Import pylsl here so that the test can be skipped if pylsl is not installed
-    pylsl = _check_pylsl_installed(strict=True)
+    pylsl = pytest.importorskip("pylsl")
 
     # Constants
     buffer_size = 17
@@ -71,15 +70,16 @@ def test_connect(mocker):
     numpy_channel_format = np.float32
 
     # Replace pylsl streams with a mock
-    mock_resolve_streams = mocker.patch(
+    monkeypatch.setattr(
         'pylsl.resolve_streams',
-        return_value=[pylsl.StreamInfo(
-            source_id=host,
-            channel_count=n_channels,
-            channel_format=c_channel_format,
-        )],
+        lambda *args, **kwargs: [
+            pylsl.StreamInfo(
+                source_id=host,
+                channel_count=n_channels,
+                channel_format=c_channel_format,
+            )
+        ],
     )
-
     lsl_client = LSLClient(host=host, buffer_size=buffer_size)
     # Mock out the pylsl.resolve_streams
     lsl_client._connect()

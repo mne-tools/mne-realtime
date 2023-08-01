@@ -32,9 +32,10 @@ CLASSIFIERS = ['Intended Audience :: Science/Research',
                'Operating System :: POSIX',
                'Operating System :: Unix',
                'Operating System :: MacOS',
-               'Programming Language :: Python :: 3.7',
                'Programming Language :: Python :: 3.8',
                'Programming Language :: Python :: 3.9',
+               'Programming Language :: Python :: 3.10',
+               'Programming Language :: Python :: 3.11',
                ]
 EXTRAS_REQUIRE = {
     'tests': [
@@ -65,6 +66,6 @@ setup(name=DISTNAME,
       zip_safe=False,  # the package can run out of an .egg file
       classifiers=CLASSIFIERS,
       packages=find_packages(),
-      python_requires='>=3.7',
+      python_requires='>=3.8',
       install_requires=INSTALL_REQUIRES,
       extras_require=EXTRAS_REQUIRE)

@@ -1,0 +1,70 @@
+name: 'Tests'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number }}-${{ github.event.ref }}
+  cancel-in-progress: true
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  pytest:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        kind: [pip]
+        python: ['3.11']
+        include:
+          - os: macos-latest
+            kind: conda
+            python: '3.8'
+    env:
+      CI_OS_NAME: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+        if: ${{ matrix.kind == 'pip' }}
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: environment.yml
+          create-args: python=${{ matrix.python }}
+        if: ${{ matrix.kind == 'conda' }}
+      - run: git clone --single-branch -b main https://github.com/mne-tools/mne-python.git
+        name: Clone MNE-Python
+      - run: |
+          source ./mne-python/tools/get_minimal_commands.sh
+          neuromag2ft --version
+        name: Install neuromag2ft
+        if: ${{ startswith(matrix.os, 'ubuntu') }}
+      - run: |
+          wget -q https://github.com/sccn/liblsl/releases/download/v1.16.2/liblsl-1.16.2-jammy_amd64.deb
+          sudo apt install ./liblsl-*.deb
+        if: ${{ startswith(matrix.os, 'ubuntu') }}
+        name: Install liblsl
+      - run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r requirements.txt -ve . -e ./mne-python
+        name: Install dependencies and MNE-Realtime
+      - run: mne sys_info
+      - run: ./tools/get_testing_version.sh
+        working-directory: ./mne-python
+      - run: python -c "import mne; print(mne.datasets.testing.data_path(verbose=True))"
+        name: Get test data
+      - uses: actions/cache@v3
+        with:
+          key: ${{ env.TESTING_VERSION }}
+          path: ~/mne_data
+      - run: pytest -vv mne_realtime
+      - uses: codecov/codecov-action@v1
+        if: success()
+        name: 'Upload coverage to CodeCov'

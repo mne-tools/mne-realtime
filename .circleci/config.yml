@@ -27,6 +27,7 @@ jobs:
               echo "set -e" >> $BASH_ENV
               echo "export OPENBLAS_NUM_THREADS=4" >> $BASH_ENV
               echo "export XDG_RUNTIME_DIR=/tmp/runtime-circleci" >> $BASH_ENV
+              mkdir -p tools
               wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
               source tools/get_minimal_commands.sh
               echo "export MNE_3D_BACKEND=pyvistaqt" >> $BASH_ENV
@@ -71,8 +72,7 @@ jobs:
             name: Install dependencies and mne-realtime
             command: |
               python -m pip install --upgrade --progress-bar off pip setuptools wheel
-              python -m pip install --upgrade --progress-bar off -r requirements.txt git+https://github.com/mne-tools/mne-python@main
-              python -m pip install -e .[docs] git+https://github.com/sphinx-gallery/sphinx-gallery@master
+              python -m pip install --upgrade --progress-bar off -r requirements.txt git+https://github.com/mne-tools/mne-python@main -e .[docs] git+https://github.com/sphinx-gallery/sphinx-gallery@master
 
         - save_cache:
             key: pip-cache-1

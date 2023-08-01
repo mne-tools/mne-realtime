@@ -7,7 +7,6 @@ sip
 scikit-learn
 pytest
 pytest-cov
-pytest-mock
 numpydoc
 pydocstyle
 flake8
