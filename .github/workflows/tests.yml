@@ -45,7 +45,9 @@ jobs:
           source ./tools/get_minimal_commands.sh
           neuromag2ft --version
         if: ${{ startswith(matrix.os, 'ubuntu') }}
-      - run: curl https://github.com/sccn/liblsl/releases/download/v1.16.2/liblsl-1.16.2-jammy_amd64.deb | dpkg -i
+      - run: |
+          wget -q https://github.com/sccn/liblsl/releases/download/v1.16.2/liblsl-1.16.2-jammy_amd64.deb
+          sudo dpkg -i liblsl-*.deb
         if: ${{ startswith(matrix.os, 'ubuntu') }}
         name: Install liblsl on Linux
       - run: |
