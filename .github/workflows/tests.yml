@@ -40,13 +40,11 @@ jobs:
           create-args: python=${{ matrix.python }}
         if: ${{ matrix.kind == 'conda' }}
       - run: |
-         mkdir -p tools
-         wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
-         source ./tools/get_minimal_commands.sh
-        if: ${{ !startswith(matrix.os, 'windows') }}
-        name: 'Install neuromag2ft'
-      - run: neuromag2ft --version
-        if: ${{ !startswith(matrix.os, 'windows') }}
+          mkdir -p tools
+          wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
+          source ./tools/get_minimal_commands.sh
+          neuromag2ft --version
+        if: ${{ startswith(matrix.os, 'ubuntu') }}
       - run: curl https://github.com/sccn/liblsl/releases/download/v1.16.2/liblsl-1.16.2-jammy_amd64.deb | dpkg -i
         if: ${{ startswith(matrix.os, 'ubuntu') }}
         name: Install liblsl on Linux
