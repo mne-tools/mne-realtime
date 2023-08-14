@@ -555,7 +555,7 @@ class RtEpochs(BaseEpochs):
 
         .. versionadded:: 0.10.0
         """
-        super(RtEpochs, self).decimate(decim, offset, verbose)
+        super(RtEpochs, self).decimate(decim, offset, verbose=verbose)
         for i in range(len(self._epoch_queue)):
             self._epoch_queue[i] = self._epoch_queue[i][:, self._decim_slice]
         return self
