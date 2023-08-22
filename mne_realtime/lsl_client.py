@@ -7,9 +7,9 @@ import ctypes
 import numpy as np
 
 from .base_client import _BaseClient
+from mne import create_info, pick_info
 from mne.epochs import EpochsArray
-from mne.io.meas_info import create_info
-from mne.io.pick import _picks_to_idx, pick_info
+from mne.io.pick import _picks_to_idx
 from mne.utils import fill_doc
 
 
