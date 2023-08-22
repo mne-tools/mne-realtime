@@ -9,8 +9,8 @@ import time
 
 import numpy as np
 
-from mne.io import _empty_info
-from mne.io.pick import _picks_to_idx, pick_info
+from mne import create_info, pick_info
+from mne.io.pick import _picks_to_idx
 from mne.io.constants import FIFF
 from mne.epochs import EpochsArray
 from mne.utils import logger, warn, fill_doc
@@ -141,7 +141,7 @@ class FieldTripClient(object):
             warn('Info dictionary not provided. Trying to guess it from '
                  'FieldTrip Header object')
 
-            info = _empty_info(self.ft_header.fSample)  # create info
+            info = create_info(1, self.ft_header.fSample, 'mag')  # create info
             info._unlocked = True
 
             # modify info attributes according to the FieldTrip Header object

@@ -13,9 +13,14 @@ import numpy as np
 
 from mne.utils import logger, verbose, fill_doc
 from mne.io.constants import FIFF
-from mne.io.meas_info import read_meas_info
-from mne.io.tag import Tag, read_tag
-from mne.io.tree import make_dir_tree
+try:
+    from mne._fiff.meas_info import read_meas_info
+    from mne._fiff.tag import Tag, read_tag
+    from mne._fiff.tree import make_dir_tree
+except ImportError:  # MNE < 1.6
+    from mne.io.meas_info import read_meas_info
+    from mne.io.tag import Tag, read_tag
+    from mne.io.tree import make_dir_tree
 
 # Constants for fiff realtime fiff messages
 MNE_RT_GET_CLIENT_ID = 1

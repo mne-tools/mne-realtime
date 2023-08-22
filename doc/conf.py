@@ -298,6 +298,8 @@ def reset_warnings(gallery_conf, fname):
         'ignore', message=".*ufunc size changed.*", category=RuntimeWarning)
     warnings.filterwarnings(  # realtime
         'ignore', message=".*unclosed file.*", category=ResourceWarning)
+    warnings.filterwarnings(
+        'ignore', message='The str interface for _CascadingStyleSheet.*')
     warnings.filterwarnings('ignore', message='Exception ignored in.*')
     # allow this ImportWarning, but don't show it
     warnings.filterwarnings(
