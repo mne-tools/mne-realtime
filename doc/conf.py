@@ -294,6 +294,10 @@ def reset_warnings(gallery_conf, fname):
                 ):
         warnings.filterwarnings(  # deal with other modules having bad imports
             'ignore', message=".*%s.*" % key, category=DeprecationWarning)
+    warnings.filterwarnings(
+        "ignore",
+        message=".*is non-interactive, and thus cannot.*",
+    )
     warnings.filterwarnings(  # deal with other modules having bad imports
         'ignore', message=".*ufunc size changed.*", category=RuntimeWarning)
     warnings.filterwarnings(  # realtime
@@ -336,7 +340,7 @@ numpydoc_attributes_as_param_list = False
 numpydoc_xref_param_type = True
 numpydoc_xref_aliases = {
     # Matplotlib
-    'colormap': ':doc:`colormap <matplotlib:tutorials/colors/colormaps>`',
+    'colormap': ':ref:`colormap <matplotlib:colormaps>`',
     'color': ':doc:`color <matplotlib:api/colors_api>`',
     'Axes': 'matplotlib.axes.Axes',
     'Figure': 'matplotlib.figure.Figure',
