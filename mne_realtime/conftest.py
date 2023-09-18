@@ -29,6 +29,7 @@ def pytest_configure(config):
     ignore:.*may indicate binary incompatibility.*:RuntimeWarning
     ignore:.*distutils Version classes are deprecated.*:
     ignore:`np.MachAr` is deprecated.*:DeprecationWarning
+    ignore:mne\.io\.pick\..* is deprecated.*:FutureWarning
     """  # noqa: E501
     for warning_line in warning_lines.split('\n'):
         warning_line = warning_line.strip()
