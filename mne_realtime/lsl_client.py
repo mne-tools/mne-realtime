@@ -28,9 +28,10 @@ class LSLClient(_BaseClient):
         electrode location.
     host : str
         The LSL identifier of the server. This is the source_id designated
-        when the LSL stream was created. Make sure the source_id is unique on
-        the LSL subnet. For more information on LSL, please check the
-        docstrings on `StreamInfo` and `StreamInlet` in the pylsl.
+        when the LSL stream was created. If the source_id is not unique on
+        the LSL subnet, specify the `host_name` parameter, too. For more information
+        on LSL, please check the docstrings on `StreamInfo` and `StreamInlet`
+        in the pylsl library.
     port : int | None
         Port to use for the connection.
     wait_max : float
@@ -42,6 +43,9 @@ class LSLClient(_BaseClient):
         Time instant to stop receiving buffers.
     buffer_size : int
         Size of each buffer in terms of number of samples.
+    host_name : str | None
+        The name of the LSL stream. If None, this is ignored when looking for
+         matching streams.
     verbose : bool, str, int, or None
         If not None, override default verbose level (see :func:`mne.verbose`
         for more).
@@ -106,14 +110,19 @@ class LSLClient(_BaseClient):
         pylsl = _check_pylsl_installed(strict=True)
         print(f'Looking for LSL stream {self.host}...')
         # resolve_byprop is a bit fragile
-        streams = pylsl.resolve_streams(wait_time=min(0.1, self.wait_max))
+        streams = pylsl.resolve_streams(wait_time=min(1.0, self.wait_max))
         ids = list()
+        matching_streams = list()
         for stream_info in streams:
             ids.append(stream_info.source_id())
-            if ids[-1] == self.host:
-                break
-        else:
-            raise RuntimeError(f'{self.host} not found in streams: {ids}')
+            if stream_info.source_id() == self.host:
+                if (self.host_name is None) or (stream_info.name() == self.host_name):
+                    matching_streams.append(stream_info)
+        if not matching_streams:
+            raise RuntimeError(f'{(self.host, self.host_name)} not found in streams: {ids}')
+        if len(matching_streams) > 1:
+            raise RuntimeError(f'{(self.host, self.host_name)} not unique in streams: {ids}')
+        stream_info = matching_streams[0]
         print(f'Found stream {repr(stream_info.name())} via '
               f'{stream_info.source_id()}...')
         self.client = pylsl.StreamInlet(info=stream_info,
