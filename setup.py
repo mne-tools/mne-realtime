@@ -13,7 +13,7 @@ with open(ver_file) as f:
 
 DISTNAME = 'mne-realtime'
 DESCRIPTION = 'A module for real-time data analysis with MNE.'
-with codecs.open('README.rst', encoding='utf-8-sig') as f:
+with codecs.open('README.md', encoding='utf-8-sig') as f:
     LONG_DESCRIPTION = f.read()
 MAINTAINER = 'Teon Brooks'
 MAINTAINER_EMAIL = 'teon.brooks@gmail.com'
