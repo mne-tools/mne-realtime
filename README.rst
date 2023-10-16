@@ -3,8 +3,11 @@
 MNE-realtime
 ============
 
-> [!WARNING]
-> This project is discontinued in favor of [MNE-LSL](https://github.com/mne-tools/mne-lsl). At the moment, [MNE-LSL](https://github.com/mne-tools/mne-lsl) replaces the ``LSLClient`` and does not yet support the FieldTrip buffer.
+.. warning::
+
+    This project is discontinued in favor of [MNE-LSL](https://github.com/mne-tools/mne-lsl).
+    At the moment, [MNE-LSL](https://github.com/mne-tools/mne-lsl) replaces the ``LSLClient``
+    and does not yet support the FieldTrip buffer.
 
 This is a package for realtime analysis of MEG/EEG data with MNE. The documentation can be found here:
 
