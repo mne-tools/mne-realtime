@@ -16,6 +16,10 @@ from mne.utils import fill_doc
 class LSLClient(_BaseClient):
     """LSL Realtime Client.
 
+    .. warning::
+
+        This object is deprecated in favor of :class:`mne_lsl.stream.StreamLSL`.
+
     Parameters
     ----------
     info : instance of mne.Info | None
