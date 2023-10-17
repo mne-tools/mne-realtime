@@ -8,6 +8,8 @@
 #
 # License: BSD (3-clause)
 
+from warnings import warn
+
 from ._version import __version__
 from .client import RtClient
 from .epochs import RtEpochs
@@ -17,6 +19,21 @@ from .mock_client import MockRtClient
 from .stim_server_client import StimServer, StimClient
 from .fieldtrip_client import FieldTripClient
 
+warn(
+    "MNE-realtime is discontinued in favor of the Lab Streaming Layer real-time "
+    "interface availabe in MNE-lsl: https://mne.tools/mne-lsl/",
+    FutureWarning,
+    stacklevel=2,
+)
 
-__all__ = ['__version__', 'FieldTripClient', 'LSLClient', 'MockLSLStream',
-           'MockRtClient', 'RtClient', 'RtEpochs', 'StimClient', 'StimServer']
+__all__ = [
+    "__version__",
+    "FieldTripClient",
+    "LSLClient",
+    "MockLSLStream",
+    "MockRtClient",
+    "RtClient",
+    "RtEpochs",
+    "StimClient",
+    "StimServer",
+]
