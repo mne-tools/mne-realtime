@@ -159,6 +159,7 @@ html_theme_options = {
     "logo": {
         "text": "MNE-Realtime",
     },
+    "navigation_with_keys": False,
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
