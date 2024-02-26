@@ -31,6 +31,7 @@ def pytest_configure(config):
     ignore:`np.MachAr` is deprecated.*:DeprecationWarning
     ignore:mne\.io\.pick\..* is deprecated.*:FutureWarning
     ignore:The current default of copy=False will change.*:FutureWarning
+    ignore:MNE-realtime is discontinued in favor of.*:FutureWarning
     """  # noqa: E501
     for warning_line in warning_lines.split('\n'):
         warning_line = warning_line.strip()

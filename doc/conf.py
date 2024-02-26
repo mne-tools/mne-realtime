@@ -22,6 +22,7 @@ import warnings
 
 import sphinx
 import sphinx_gallery  # noqa
+from docutils import nodes
 from sphinx_gallery.sorting import FileNameSortKey
 from numpydoc import docscrape
 import mne  # noqa
