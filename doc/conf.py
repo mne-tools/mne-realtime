@@ -327,7 +327,7 @@ sphinx_gallery_conf = {
     'abort_on_example_error': False,
     'reset_modules': ('matplotlib', Resetter()),  # called w/each script
     'image_scrapers': scrapers,
-    'show_memory': True,
+    'show_memory': sys.platform.startswith("linux"),
     'line_numbers': False,  # XXX currently (0.3.dev0) messes with style
     'within_subsection_order': FileNameSortKey,
     'junit': op.join('..', 'test-results', 'sphinx-gallery', 'junit.xml'),
