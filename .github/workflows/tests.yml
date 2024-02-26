@@ -22,7 +22,7 @@ jobs:
         include:
           - os: macos-latest
             kind: conda
-            python: '3.8'
+            python: '3.9'
     env:
       CI_OS_NAME: ${{ matrix.os }}
     defaults:

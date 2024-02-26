@@ -22,6 +22,7 @@ import warnings
 
 import sphinx
 import sphinx_gallery  # noqa
+from docutils import nodes
 from sphinx_gallery.sorting import FileNameSortKey
 from numpydoc import docscrape
 import mne  # noqa
@@ -326,7 +327,7 @@ sphinx_gallery_conf = {
     'abort_on_example_error': False,
     'reset_modules': ('matplotlib', Resetter()),  # called w/each script
     'image_scrapers': scrapers,
-    'show_memory': True,
+    'show_memory': sys.platform.startswith("linux"),
     'line_numbers': False,  # XXX currently (0.3.dev0) messes with style
     'within_subsection_order': FileNameSortKey,
     'junit': op.join('..', 'test-results', 'sphinx-gallery', 'junit.xml'),
@@ -356,6 +357,7 @@ numpydoc_xref_aliases = {
     'ConductorModel': 'mne.bem.ConductorModel',
     'EpochsSpectrum': 'mne.time_frequency.EpochsSpectrum',
     'EpochsArray': 'mne.EpochsArray',
+    'SourceEstimate': 'mne.SourceEstimate',
     # mne_realtime
     'RtEpochs': 'mne_realtime.RtEpochs',
 }
@@ -370,3 +372,34 @@ numpydoc_xref_ignore = {
     # unlinkable
     'mne_qt_browser.figure.MNEQtBrowser',
 }
+
+# Adapted from MNE-Python
+
+def unit_role(name, rawtext, text, lineno, inliner, options={}, content=[]):  # noqa: B006
+    parts = text.split()
+
+    def pass_error_to_sphinx(rawtext, text, lineno, inliner):
+        msg = inliner.reporter.error(
+            "The :unit: role requires a space-separated number and unit; "
+            f"got {text}",
+            line=lineno,
+        )
+        prb = inliner.problematic(rawtext, rawtext, msg)
+        return [prb], [msg]
+
+    # ensure only two parts
+    if len(parts) != 2:
+        return pass_error_to_sphinx(rawtext, text, lineno, inliner)
+    # ensure first part is a number
+    try:
+        _ = float(parts[0])
+    except ValueError:
+        return pass_error_to_sphinx(rawtext, text, lineno, inliner)
+    # input is well-formatted: proceed
+    node = nodes.Text("\u202F".join(parts))
+    return [node], []
+
+
+def setup(app):
+    app.add_role("unit", unit_role)
+    return

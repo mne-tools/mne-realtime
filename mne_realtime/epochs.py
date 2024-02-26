@@ -352,7 +352,7 @@ class RtEpochs(BaseEpochs):
 
     @verbose
     def _get_data(self, out=True, picks=None, item=None, *, units=None,
-                  tmin=None, tmax=None, verbose=None):
+                  tmin=None, tmax=None, copy=True, verbose=None):
         if not out:
             return
         unused = dict(tmin=tmin, units=units, tmax=tmax)
