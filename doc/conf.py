@@ -356,6 +356,7 @@ numpydoc_xref_aliases = {
     'ConductorModel': 'mne.bem.ConductorModel',
     'EpochsSpectrum': 'mne.time_frequency.EpochsSpectrum',
     'EpochsArray': 'mne.EpochsArray',
+    'SourceEstimate': 'mne.SourceEstimate',
     # mne_realtime
     'RtEpochs': 'mne_realtime.RtEpochs',
 }
