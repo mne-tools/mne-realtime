@@ -68,7 +68,6 @@ def _start_buffer_thread(buffer_port):
     return signal_queue
 
 
-@pytest.mark.filterwarnings("ignore:unclosed .*:ResourceWarning")
 def test_fieldtrip_rtepochs(free_tcp_port, tmpdir):
     """Test FieldTrip RtEpochs."""
     raw_tmax = 7
