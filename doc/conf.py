@@ -358,6 +358,8 @@ numpydoc_xref_aliases = {
     'EpochsSpectrum': 'mne.time_frequency.EpochsSpectrum',
     'EpochsArray': 'mne.EpochsArray',
     'SourceEstimate': 'mne.SourceEstimate',
+    "EpochsTFR": "mne.time_frequency.EpochsTFR",
+    "AverageTFR": "mne.time_frequency.AverageTFR",
     # mne_realtime
     'RtEpochs': 'mne_realtime.RtEpochs',
 }
