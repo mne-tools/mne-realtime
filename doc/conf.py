@@ -373,6 +373,7 @@ numpydoc_xref_ignore = {
     'n_ch_groups',
     # unlinkable
     'mne_qt_browser.figure.MNEQtBrowser',
+    'mne.utils._typing.Self',
 }
 
 # Adapted from MNE-Python
