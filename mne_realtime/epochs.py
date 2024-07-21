@@ -211,6 +211,25 @@ class RtEpochs(BaseEpochs):
 
         self.isi_max = isi_max
 
+    def __getitem__(self, item):
+        """Return an Epochs object with a copied subset of epochs.
+
+        Parameters
+        ----------
+        item : int | slice | array-like | str
+            See Notes for use cases.
+
+        Returns
+        -------
+        epochs : instance of Epochs
+            The subset of epochs.
+
+        Notes
+        -----
+        See :class:`mne.Epochs` for more information.
+        """
+        return super().__getitem__(item)
+
     @property
     def events(self):
         """The events associated with the epochs currently in the queue."""

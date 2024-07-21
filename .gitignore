@@ -63,6 +63,7 @@ junit-results.xml
 # Sphinx documentation
 doc/_build/
 doc/generated/
+sg_execution_times.rst
 
 # PyBuilder
 target/

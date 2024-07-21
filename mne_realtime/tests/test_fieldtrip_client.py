@@ -138,7 +138,7 @@ def test_fieldtrip_client(free_tcp_port):
                                  tmax=5, wait_max=2) as rt_client:
                 tmin_samp1 = rt_client.tmin_samp
 
-        time.sleep(1)  # Pause measurement
+        time.sleep(5)  # Pause measurement
 
         # Start the FieldTrip buffer again
         with pytest.warns(RuntimeWarning):
