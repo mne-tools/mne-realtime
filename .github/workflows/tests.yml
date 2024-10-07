@@ -18,11 +18,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         kind: [pip]
-        python: ['3.11']
+        python: ['3.12']
         include:
           - os: macos-latest
             kind: conda
-            python: '3.9'
+            python: '3.10'
     env:
       CI_OS_NAME: ${{ matrix.os }}
     defaults:
