@@ -116,8 +116,8 @@ jobs:
               - ~/mne_data/MNE-sample-data
 
     deploy:
-      machine:
-        image: ubuntu-2004:202111-01
+      docker:
+        - image: cimg/base:current
       steps:
         - add_ssh_keys:
             fingerprints:
