@@ -14,19 +14,20 @@
 
 from datetime import date
 from distutils.version import LooseVersion
-import gc
+from pathlib import Path
 import os
 import os.path as op
 import sys
-import warnings
 
 import sphinx
-import sphinx_gallery  # noqa
 from docutils import nodes
-from sphinx_gallery.sorting import FileNameSortKey
 from numpydoc import docscrape
 import mne  # noqa
 from mne_realtime import __version__
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from mne_realtime_doc_helper import reset_warnings  # noqa
 
 # -- General configuration ------------------------------------------------
 
@@ -69,7 +70,7 @@ autodoc_default_options = {'inherited-members': None}
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = {".rst": "restructuredtext"}
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -254,65 +255,6 @@ bibtex_footbibliography_header = ''
 examples_dirs = ['../examples']
 gallery_dirs = ['auto_examples']
 
-
-scrapers = ('matplotlib',)
-
-
-class Resetter(object):
-    """Simple class to make the str(obj) static for Sphinx build env hash."""
-
-    def __repr__(self):
-        return '<%s>' % (self.__class__.__name__,)
-
-    def __call__(self, gallery_conf, fname):
-        import matplotlib.pyplot as plt
-        reset_warnings(gallery_conf, fname)
-        # in case users have interactive mode turned on in matplotlibrc,
-        # turn it off here (otherwise the build can be very slow)
-        plt.ioff()
-        gc.collect()
-
-
-def reset_warnings(gallery_conf, fname):
-    """Ensure we are future compatible and ignore silly warnings."""
-    # In principle, our examples should produce no warnings.
-    # Here we cause warnings to become errors, with a few exceptions.
-    # This list should be considered alongside
-    # setup.cfg -> [tool:pytest] -> filterwarnings
-
-    # remove tweaks from other module imports or example runs
-    warnings.resetwarnings()
-    # restrict
-    warnings.filterwarnings('error')
-    # allow these, but show them
-    warnings.filterwarnings('default', module='sphinx')  # internal warnings
-    # allow these warnings, but don't show them
-    warnings.filterwarnings('ignore', '.*is currently using agg.*')
-    for key in ('HasTraits', r'numpy\.testing', 'importlib', r'np\.loads',
-                'Using or importing the ABCs from',  # internal modules on 3.7
-                "DocumenterBridge requires a state object",  # sphinx dev
-                "'U' mode is deprecated",  # sphinx io
-                'pkg_resources is deprecated as an API',  # bibtex
-                'Deprecated call to `pkg_resources',
-                ):
-        warnings.filterwarnings(  # deal with other modules having bad imports
-            'ignore', message=".*%s.*" % key, category=DeprecationWarning)
-    warnings.filterwarnings(
-        "ignore",
-        message=".*is non-interactive, and thus cannot.*",
-    )
-    warnings.filterwarnings(  # deal with other modules having bad imports
-        'ignore', message=".*ufunc size changed.*", category=RuntimeWarning)
-    warnings.filterwarnings(  # realtime
-        'ignore', message=".*unclosed file.*", category=ResourceWarning)
-    warnings.filterwarnings(
-        'ignore', message='The str interface for _CascadingStyleSheet.*')
-    warnings.filterwarnings('ignore', message='Exception ignored in.*')
-    # allow this ImportWarning, but don't show it
-    warnings.filterwarnings(
-        'ignore', message="can't resolve package from", category=ImportWarning)
-
-
 reset_warnings(None, None)
 sphinx_gallery_conf = {
     'doc_module': 'mne_realtime',
@@ -325,11 +267,10 @@ sphinx_gallery_conf = {
     'thumbnail_size': (160, 112),
     'min_reported_time': 1.,
     'abort_on_example_error': False,
-    'reset_modules': ('matplotlib', Resetter()),  # called w/each script
-    'image_scrapers': scrapers,
+    'reset_modules': ('matplotlib', "mne_realtime_doc_helper.reset"),
     'show_memory': sys.platform.startswith("linux"),
     'line_numbers': False,  # XXX currently (0.3.dev0) messes with style
-    'within_subsection_order': FileNameSortKey,
+    'within_subsection_order': "sphinx_gallery.sorting.FileNameSortKey",
     'junit': op.join('..', 'test-results', 'sphinx-gallery', 'junit.xml'),
 }
 
