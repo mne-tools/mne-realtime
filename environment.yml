@@ -12,6 +12,7 @@ dependencies:
 - pillow
 - pytest
 - pytest-cov
+- flaky
 - numpydoc
 - flake8
 - liblsl
