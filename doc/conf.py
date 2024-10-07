@@ -21,7 +21,6 @@ import sys
 
 import sphinx
 from docutils import nodes
-from sphinx_gallery.sorting import FileNameSortKey
 from numpydoc import docscrape
 import mne  # noqa
 from mne_realtime import __version__
@@ -271,7 +270,7 @@ sphinx_gallery_conf = {
     'reset_modules': ('matplotlib', "mne_realtime_doc_helper.reset"),
     'show_memory': sys.platform.startswith("linux"),
     'line_numbers': False,  # XXX currently (0.3.dev0) messes with style
-    'within_subsection_order': FileNameSortKey,
+    'within_subsection_order': "sphinx_gallery.sorting.FileNameSortKey",
     'junit': op.join('..', 'test-results', 'sphinx-gallery', 'junit.xml'),
 }
 
