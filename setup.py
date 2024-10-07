@@ -41,7 +41,6 @@ EXTRAS_REQUIRE = {
     'tests': [
         'pytest',
         'pytest-cov',
-        'flaky',
     ],
     'docs': [
         'sphinx',
