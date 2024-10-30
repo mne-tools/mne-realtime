@@ -13,8 +13,8 @@ on:
 jobs:
   pytest:
     runs-on: ${{ matrix.os }}
-    continue-on-error: true
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         kind: [pip]
@@ -66,5 +66,5 @@ jobs:
           path: ~/mne_data
       - run: pytest -vv mne_realtime
       - uses: codecov/codecov-action@v4
-        if: success()
+        if: success() || failure()
         name: 'Upload coverage to CodeCov'
