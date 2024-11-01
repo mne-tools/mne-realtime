@@ -34,7 +34,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
         if: ${{ matrix.kind == 'pip' }}
-      - uses: mamba-org/setup-micromamba@v1
+      - uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: environment.yml
           create-args: python=${{ matrix.python }}

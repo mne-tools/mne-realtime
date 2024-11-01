@@ -7,7 +7,6 @@ dependencies:
 - numpy
 - scipy
 - matplotlib
-- pyqt
 - scikit-learn
 - pillow
 - pytest
@@ -15,7 +14,7 @@ dependencies:
 - numpydoc
 - flake8
 - liblsl
-- mne
+- mne-base
 - pydocstyle
 - pip:
   - pylsl
