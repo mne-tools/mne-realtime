@@ -7,7 +7,6 @@ dependencies:
 - numpy
 - scipy
 - matplotlib
-- pyqt
 - scikit-learn
 - pillow
 - pytest
