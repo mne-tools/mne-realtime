@@ -1,9 +1,6 @@
 numpy
 scipy
 matplotlib
-pyqt5
-pyqt5-sip
-sip
 scikit-learn
 pytest
 pytest-cov
