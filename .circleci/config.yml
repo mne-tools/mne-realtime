@@ -48,7 +48,7 @@ jobs:
               fi
 
         - run:
-            name: Install 3D rendering libraries \ PyQt5 dependencies \ graphviz \ optipng (for optimized images)
+            name: Install 3D rendering libraries \ Qt dependencies \ graphviz \ optipng (for optimized images)
             command: |
               export DEBIAN_FRONTEND=noninteractive
               sudo apt update
