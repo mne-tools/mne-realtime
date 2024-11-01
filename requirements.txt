@@ -2,7 +2,6 @@ numpy
 scipy
 matplotlib
 PySide6
-sip
 scikit-learn
 pytest
 pytest-cov
