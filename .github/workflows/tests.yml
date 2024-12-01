@@ -65,6 +65,6 @@ jobs:
           key: ${{ env.TESTING_VERSION }}
           path: ~/mne_data
       - run: pytest -vv mne_realtime
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         if: success() || failure()
         name: 'Upload coverage to CodeCov'
