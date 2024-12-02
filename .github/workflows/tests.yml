@@ -67,4 +67,5 @@ jobs:
       - run: pytest -vv mne_realtime
       - uses: codecov/codecov-action@v5
         if: success() || failure()
-        name: 'Upload coverage to CodeCov'
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
