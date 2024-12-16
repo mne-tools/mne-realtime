@@ -124,7 +124,11 @@ class LSLClient(_BaseClient):
                                         max_buflen=self.buffer_size)
         # Most ctypes can be converted to numpy dtypes.
         # Exceptions include c_char_p
-        value_type = pylsl.pylsl.fmt2type[stream_info.channel_format()]
+        try:
+            from pylsl.lib import fmt2type  # 1.17.6+
+        except Exception:
+            from pylsl.pylsl import fmt2type
+        value_type = fmt2type[stream_info.channel_format()]
         if value_type == ctypes.c_char_p:
             value_type = None
         self.buffer = np.empty(
