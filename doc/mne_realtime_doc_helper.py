@@ -20,8 +20,8 @@ def reset_warnings(gallery_conf, fname):
 
     # remove tweaks from other module imports or example runs
     warnings.resetwarnings()
-    # restrict
-    warnings.filterwarnings('error')
+    # allow warnings now that mne-realtime is deprecated
+    warnings.filterwarnings('always')
     # allow these, but show them
     warnings.filterwarnings('default', module='sphinx')  # internal warnings
     # allow these warnings, but don't show them
