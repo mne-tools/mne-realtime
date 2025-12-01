@@ -8,3 +8,7 @@ updates:
       actions:
         patterns:
           - "*"
+    commit-message:
+      prefix: "[dependabot]"
+    cooldown:
+      default-days: 7
