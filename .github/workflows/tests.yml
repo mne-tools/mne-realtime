@@ -60,7 +60,7 @@ jobs:
         working-directory: ./mne-python
       - run: python -c "import mne; print(mne.datasets.testing.data_path(verbose=True))"
         name: Get test data
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           key: ${{ env.TESTING_VERSION }}
           path: ~/mne_data
