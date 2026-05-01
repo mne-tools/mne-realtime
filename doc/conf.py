@@ -308,7 +308,7 @@ numpydoc_xref_ignore = {
     # words
     'instance', 'instances', 'of', 'default', 'shape', 'or',
     'with', 'length', 'pair', 'matplotlib', 'optional', 'kwargs', 'in',
-    'dtype', 'object', 'self.verbose',
+    'dtype', 'object', 'self.verbose', "same", "as", "the", "data",
     # shapes
     'n_channels', 'n_times', 'nchan', 'n_epochs', 'n_events', 'n_picks',
     'n_ch_groups',
