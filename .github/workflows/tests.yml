@@ -34,7 +34,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
         if: ${{ matrix.kind == 'pip' }}
-      - uses: mamba-org/setup-micromamba@v2
+      - uses: mamba-org/setup-micromamba@v3
         with:
           environment-file: environment.yml
           create-args: python=${{ matrix.python }}
@@ -65,7 +65,7 @@ jobs:
           key: ${{ env.TESTING_VERSION }}
           path: ~/mne_data
       - run: pytest -vv mne_realtime
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         if: success() || failure()
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
