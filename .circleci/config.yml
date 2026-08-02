@@ -1,8 +1,8 @@
 version: 2
 jobs:
     build_docs:
-      docker:
-        - image: cimg/python:3.12.7
+      machine:
+        image: ubuntu-2604:2026.05.1
       steps:
         - restore_cache:
             keys:
@@ -29,6 +29,8 @@ jobs:
               mkdir -p tools
               wget -q -O tools/get_minimal_commands.sh https://raw.githubusercontent.com/mne-tools/mne-python/main/tools/get_minimal_commands.sh
               source tools/get_minimal_commands.sh
+              python3 -m venv ~/venv
+              echo "source ~/venv/bin/activate" >> $BASH_ENV
               echo "BASH_ENV:"
               cat $BASH_ENV
               mkdir -p ~/mne_data
