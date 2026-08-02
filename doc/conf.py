@@ -65,6 +65,7 @@ else:
 
 autosummary_generate = True
 autodoc_default_options = {'inherited-members': None}
+autodoc_typehints = "none"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -309,6 +310,7 @@ numpydoc_xref_ignore = {
     'instance', 'instances', 'of', 'default', 'shape', 'or',
     'with', 'length', 'pair', 'matplotlib', 'optional', 'kwargs', 'in',
     'dtype', 'object', 'self.verbose', "same", "as", "the", "data",
+    "class",
     # shapes
     'n_channels', 'n_times', 'nchan', 'n_epochs', 'n_events', 'n_picks',
     'n_ch_groups',
