@@ -2,7 +2,7 @@ version: 2
 jobs:
     build_docs:
       docker:
-        - image: cimg/python:3.12.7
+        - image: cimg/python:3.14.6
       steps:
         - restore_cache:
             keys:
