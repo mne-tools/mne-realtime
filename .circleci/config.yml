@@ -2,7 +2,9 @@ version: 2
 jobs:
     build_docs:
       machine:
-        image: ubuntu-2604:2026.05.1
+        # gen3 resource classes require the `current` tag, not a pinned dated one
+        image: ubuntu-2604:current
+      resource_class: medium.gen3
       steps:
         - restore_cache:
             keys:
@@ -121,51 +123,27 @@ jobs:
       docker:
         - image: cimg/base:current
       steps:
-        - add_ssh_keys:
-            fingerprints:
-              - "e7:19:19:09:fe:63:b2:e0:19:38:74:31:02:fb:f3:c9"
         - attach_workspace:
             at: /tmp/build
-        - restore_cache:
-            keys:
-              - website-cache
         - run:
-            name: Fetch docs
-            command: |
-              set -e
-              mkdir -p ~/.ssh
-              echo -e "Host *\nStrictHostKeyChecking no" > ~/.ssh/config
-              chmod og= ~/.ssh/config
-              if [ ! -d ~/mne-tools.github.io ]; then
-                git clone git@github.com:/mne-tools/mne-tools.github.io.git ~/mne-tools.github.io --depth=1
-              fi
+            name: Tarball docs
+            command: tar czf doc.tar.gz -C /tmp/build html
+        - store_artifacts:
+            path: doc.tar.gz
+            destination: doc.tar.gz
         - run:
-            name: Deploy docs
+            name: Trigger GitHub Actions Pages deployment
             command: |
-              set -e;
-              if [ "${CIRCLE_BRANCH}" == "main" ]; then
-                git config --global user.email "circle@mne.com"
-                git config --global user.name "Circle CI"
-                ssh-add -D && ssh-add ~/.ssh/id_rsa_e7191909fe63b2e01938743102fbf3c9
-                cd ~/mne-tools.github.io
-                git checkout main
-                git remote -v
-                git fetch origin
-                git reset --hard origin/main
-                git clean -xdf
-                echo "Deploying dev docs for ${CIRCLE_BRANCH}."
-                rm -Rf mne-realtime
-                cp -a /tmp/build/html mne-realtime
-                git add -A
-                git commit -m "CircleCI update of mne-realtime docs (${CIRCLE_BUILD_NUM})."
-                git push origin main
-              else
-                echo "No deployment (build: ${CIRCLE_BRANCH})."
-              fi
-        - save_cache:
-            key: website-cache
-            paths:
-              - ~/mne-tools.github.io
+              set -eo pipefail
+              printf '{"event_type": "deploy-docs", "client_payload": {"url": "%s", "sha": "%s"}}' \
+                "https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/doc.tar.gz" \
+                "${CIRCLE_SHA1}" |
+                curl -fsS -X POST \
+                  -H "Authorization: Bearer ${GH_TOKEN}" \
+                  -H "Accept: application/vnd.github+json" \
+                  -H "X-GitHub-Api-Version: 2022-11-28" \
+                  https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/dispatches \
+                  -d @-
 
 workflows:
   version: 2
