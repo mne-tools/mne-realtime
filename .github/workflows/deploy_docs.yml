@@ -1,0 +1,36 @@
+name: Deploy docs
+on:  # yamllint disable-line rule:truthy
+  repository_dispatch:
+    types: [deploy-docs]
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download docs built by CircleCI
+        env:
+          ARTIFACT_URL: ${{ github.event.client_payload.url }}
+          SHA: ${{ github.event.client_payload.sha }}
+        run: |
+          set -eo pipefail
+          # Anyone who can dispatch can already push, but keep the fetch on-host
+          [[ "$ARTIFACT_URL" == https://output.circle-artifacts.com/output/job/* ]]
+          echo "Deploying docs for ${SHA} from ${ARTIFACT_URL}" | tee -a $GITHUB_STEP_SUMMARY
+          mkdir html
+          curl -fsSL "$ARTIFACT_URL" | tar xz --strip-components=1 -C html
+          test -f html/index.html
+      - uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: html
+      - uses: actions/deploy-pages@v5.0.1
+        id: deployment
