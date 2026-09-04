@@ -67,7 +67,9 @@ jobs:
             name: Install dependencies and mne-realtime
             command: |
               pip install --upgrade --progress-bar off pip setuptools wheel
-              pip install --upgrade --progress-bar off -r requirements.txt git+https://github.com/mne-tools/mne-python@main -e .[docs] git+https://github.com/sphinx-gallery/sphinx-gallery@master sphinx git+https://github.com/numpy/numpydoc
+              # sphinx-gallery from PyPI, not master: master generates backreference
+              # doc targets that escape srcdir for out-of-srcdir examples_dirs
+              pip install --upgrade --progress-bar off -r requirements.txt git+https://github.com/mne-tools/mne-python@main -e .[docs] sphinx git+https://github.com/numpy/numpydoc
 
         # Look at what we have and fail early if there is some library conflict
         - run:

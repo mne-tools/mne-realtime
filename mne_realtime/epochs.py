@@ -369,9 +369,11 @@ class RtEpochs(BaseEpochs):
 
     next = __next__
 
+    # on_empty is accepted and ignored for BaseEpochs._get_data compatibility
     @verbose
-    def _get_data(self, out=True, picks=None, item=None, *, units=None,
-                  tmin=None, tmax=None, copy=True, verbose=None):
+    def _get_data(self, out=True, picks=None, item=None, *, exclude=(),
+                  units=None, tmin=None, tmax=None, copy=True,
+                  on_empty='warn', verbose=None):
         if not out:
             return
         unused = dict(tmin=tmin, units=units, tmax=tmax)
@@ -383,7 +385,10 @@ class RtEpochs(BaseEpochs):
         select = self._item_to_select(item)  # indices or slice
         use_idx = np.arange(len(self._events))[select]
         if picks is None:
-            picks = slice(None)
+            # exclude applies only when picks is None, as in BaseEpochs
+            picks = (slice(None) if not len(exclude) else
+                     _picks_to_idx(self.info, picks, none='all',
+                                   exclude=exclude))
         else:
             picks = _picks_to_idx(self.info, picks, none='all', exclude=())
         return np.array([self._epoch_queue[idx][picks] for idx in use_idx])
