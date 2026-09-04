@@ -16,13 +16,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        kind: [pip]
-        python: ['3.12']
         include:
+          - os: ubuntu-latest
+            kind: pip
+            python: '3.14'
+          - os: windows-latest
+            kind: pip
+            python: '3.12'
           - os: macos-latest
             kind: conda
-            python: '3.10'
+            python: '3.11'  # MNE-Python's minimum
     env:
       CI_OS_NAME: ${{ matrix.os }}
     defaults:
@@ -41,10 +44,10 @@ jobs:
         if: ${{ matrix.kind == 'conda' }}
       - run: git clone --single-branch -b main https://github.com/mne-tools/mne-python.git
         name: Clone MNE-Python
-      - run: |
-          source ./mne-python/tools/get_minimal_commands.sh
-          neuromag2ft --version
-        name: Install neuromag2ft
+      - name: Setup minimal commands
+        uses: mne-tools/mne-tools/actions/setup-minimal-commands@main
+      - run: neuromag2ft --version
+        name: Check neuromag2ft
         if: ${{ startswith(matrix.os, 'ubuntu') }}
       - run: |
           wget -q https://github.com/sccn/liblsl/releases/download/v1.16.2/liblsl-1.16.2-jammy_amd64.deb

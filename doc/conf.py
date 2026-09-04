@@ -261,6 +261,7 @@ sphinx_gallery_conf = {
     'doc_module': 'mne_realtime',
     'reference_url': dict(mne_realtime=None),
     'examples_dirs': examples_dirs,
+    'gallery_dirs': gallery_dirs,
     'default_thumb_file': os.path.join('_static', 'mne_helmet.png'),
     'backreferences_dir': 'generated',
     'plot_gallery': 'True',  # Avoid annoying Unicode/bool default warning
@@ -302,6 +303,7 @@ numpydoc_xref_aliases = {
     'SourceEstimate': 'mne.SourceEstimate',
     "EpochsTFR": "mne.time_frequency.EpochsTFR",
     "AverageTFR": "mne.time_frequency.AverageTFR",
+    'Projection': 'mne.Projection',
     # mne_realtime
     'RtEpochs': 'mne_realtime.RtEpochs',
 }
